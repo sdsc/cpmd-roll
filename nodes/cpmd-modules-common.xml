@@ -1,0 +1,52 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+<description>
+CPMD (Car-Parrinello Molecular Dynamics)
+http://www.cpmd.org
+</description>
+
+<copyright>
+CPMD is copyrighted by IBM Corp and MPI Stuttgart
+</copyright>
+
+<changelog>
+</changelog>
+
+<post>
+
+# Remove /etc/profile.d files in favor of loadable modules when available
+if test -f /etc/profile.d/cpmd.sh; then
+
+  /bin/rm -f /etc/profile.d/cpmd.*
+
+  if test `grep -c /opt/modulefiles/applications /etc/profile.d/modules.csh` = 0; then
+    echo 'setenv MODULEPATH /opt/modulefiles/applications:$MODULEPATH' >> \
+         /etc/profile.d/modules.csh
+  fi
+  if test `grep -c /opt/modulefiles/applications /etc/profile.d/modules.sh` = 0; then
+    echo 'export MODULEPATH=/opt/modulefiles/applications:$MODULEPATH' >> \
+         /etc/profile.d/modules.sh
+  fi
+
+  /bin/mkdir -m 0755 -p /opt/modulefiles/applications/cpmd
+
+<file name="/opt/modulefiles/applications/cpmd/3.13.2" perms="0644">
+#%Module1.0
+prepend-path PATH /opt/cpmd
+</file>
+
+<file name="/opt/modulefiles/applications/cpmd/.version.3.13.2">
+#%Module1.0
+set ModulesVersion "1.2009"
+</file>
+
+  /bin/ln -s /opt/modulefiles/applications/cpmd/.version.3.13.2 \
+             /opt/modulefiles/applications/cpmd/.version
+
+fi
+
+</post>
+
+</kickstart>

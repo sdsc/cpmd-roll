@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone="no"?>
+
+<graph>
+
+<description>
+CPMD (Car-Parrinello Molecular Dynamics)
+http://www.cpmd.org
+</description>
+
+<copyright>
+CPMD is copyrighted by IBM Corp and MPI Stuttgart
+All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
+</copyright>
+
+<changelog>
+</changelog>
+
+<edge from="base">
+  <to>cpmd-common</to>
+</edge>
+<order head="base">
+  <tail>cpmd-common</tail>
+</order>
+
+<edge from="envmodules-common">
+  <to>cpmd-modules-common</to>
+</edge>
+<order head="envmodules-common">
+  <tail>cpmd-modules-common</tail>
+</order>
+
+<order head="cpmd-common">
+  <tail>cpmd-modules-common</tail>
+</order>
+
+</graph>

@@ -12,5 +12,5 @@ names of the produced roll and rpms, e.g.,
 
 make ROLLCOMPILER=intel
 
-produces a roll with a name that begins "gamess-intel"; it contains and
+produces a roll with a name that begins "cpmd-intel"; it contains and
 installs a similarly-named rpm.

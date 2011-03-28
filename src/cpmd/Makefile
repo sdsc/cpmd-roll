@@ -112,7 +112,7 @@ build:
 	( \
           cd $(SOURCE); \
           cp ../patch-files/Makefile SOURCE; \
-          cp ../patch-files/*.F ../patch-files/*.inc SOURCE; \
+          cp ../patch-files/a.txt ../patch-files/*.F ../patch-files/*.inc SOURCE; \
 	  $(COMPILERSETUP); \
           $(MPISETUP); \
           cd SOURCE;\

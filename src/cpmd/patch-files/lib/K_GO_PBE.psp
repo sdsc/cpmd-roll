@@ -1,0 +1,28 @@
+ &ATOM
+  Z  =     19.0000000000000     
+  ZV =     9.00000000000000     
+  XC = 1134   0.6666666667
+  TYPE = NORMCONSERVING GOEDECKER
+ &END
+ &INFO
+    ============================================================
+    |    Pseudopotential Report     Thu Oct 28 09:27:39 2004   |
+    ------------------------------------------------------------
+    |  Atomic Symbol                   :   K                   |
+    |  Atomic Number                   :  19                   |
+    |  Exchange-Correlation Functional :                       |
+    |     Slater exchange :  0.6667                            |
+    |     LDA correlation : Ceperley-Alder                     |
+    |     Exchange GC     : Perdew-Burke-Ernzerhof             |
+    |     Correlation GC  : Perdew-Burke-Ernzerhof             |
+    |  Goedecker/Hartwigsen normconserving PP                  |
+    ============================================================
+ &END
+ &POTENTIAL
+     GOEDECKER
+           2                                    LMAX
+      0.400000000                                 RC
+   2    -4.965891003    -0.722778892   #C  C1 C2
+      0.294825503  2  11.307175620  -2.737338925   7.067778714 H(s) 11 12 22           
+      0.322358653  2   5.290487969  -0.409698110   0.969522682 H(p) 11 12 22           
+ &END

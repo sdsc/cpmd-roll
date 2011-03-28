@@ -1,0 +1,29 @@
+ &ATOM
+  Z  =     96.00000000000000
+  ZV =     18.00000000000000
+  XC =   55   0.6666666667
+  TYPE = NORMCONSERVING GOEDECKER
+ &END
+ &INFO
+    ============================================================
+    |    Pseudopotential Report                                |
+    ------------------------------------------------------------
+    |  Atomic Symbol                   :   Cm                  |
+    |  Atomic Number                   :  96                   |
+    |  Number of valence states        :   4                   |
+    |  Goedecker/Hartwigsen PP                                 |
+    |  Exchange-Correlation Functional :                       |
+    |     Gradient corrected HCTH/120 functional               |
+    |     Handy et al., JCP 109, 6264 (1998)                   |
+    ============================================================
+ &END
+ &POTENTIAL
+     GOEDECKER
+            4                                   LMAX
+      0.218662468                                 RC
+   2   581.746235400   500.095854200   #C  C1 C2
+      0.322463632  2 -28.557354290 -120.199527500 102.799458900 H(s) 11 12 22
+      0.373645851  2 -72.771307397    7.684412591  14.740876398 H(p) 11 12 22
+      0.575544225  1   2.023182699 H(d) 11
+      0.285840803  1 -37.701408484 H(f) 11
+ &END

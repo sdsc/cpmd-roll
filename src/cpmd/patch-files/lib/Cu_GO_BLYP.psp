@@ -1,0 +1,22 @@
+ &ATOM
+  Z  =     29.00000000000000     
+  ZV =     11.00000000000000     
+  XC = 1312   0.6666666667
+  TYPE = NORMCONSERVING GOEDECKER
+ &END
+ &INFO
+   Goedecker/Hartwigsen PP
+    Atomic Symbol: Cu
+    Atomic Number: 29
+    Exchange-Correlation Functional : BLYP
+    H(s), H(p), H(d) configuration
+ &END
+ &POTENTIAL
+     GOEDECKER
+            3                                   LMAX
+      0.528847224                                 RC
+   1     0.004119042   #C  C1
+      0.429494459  3   9.730758862  -6.650391272   2.085645508  11.949922604  -5.329156952   4.228156844 H(s) 11 12 13 22 23 33  
+      0.559840328  2   2.464367672  -0.739447305   0.916181967 H(p) 11 12 22           
+      0.264130912  2 -12.808191326  -0.005138488  -0.026154709 H(d) 11 12 22           
+ &END

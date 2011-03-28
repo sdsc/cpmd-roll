@@ -1,0 +1,29 @@
+&ATOM
+ Z  =     24.0000000000000     
+ ZV =     14.0000000000000     
+ XC = 1134   0.6666666667
+ TYPE = NORMCONSERVING GOEDECKER
+&END
+&INFO
+    ============================================================
+    |    Pseudopotential Report     Wed Oct 13 10:15:29 2004   |
+    ------------------------------------------------------------
+    |  Atomic Symbol                   :   Cr                  |
+    |  Atomic Number                   :  24                   |
+    |  Exchange-Correlation Functional :                       |
+    |     Slater exchange :  0.6667                            |
+    |     LDA correlation : Ceperley-Alder                     |
+    |     Exchange GC     : Perdew-Burke-Ernzerhof             |
+    |     Correlation GC  : Perdew-Burke-Ernzerhof             |
+    |  Goedecker/Hartwigsen normconserving PP                  |
+    ============================================================
+&END
+&POTENTIAL
+     GOEDECKER
+           3                                    LMAX
+      0.370000000                                 RC
+   2     5.374547418    -0.740944770   #C  C1 C2
+      0.310000000  2   8.587862573   1.707986983  -4.410003427 H(s) 11 12 22           
+      0.245000000  2   2.782603456   1.916057663  -4.534220000 H(p) 11 12 22           
+      0.220000000  1 -10.987685832 H(d) 11                 
+&END

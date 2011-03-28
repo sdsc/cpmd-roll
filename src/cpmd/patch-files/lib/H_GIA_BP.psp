@@ -1,0 +1,23 @@
+&ATOM
+ Z  =    1
+ ZV =    1
+ XC = 1111        .666667
+ TYPE = NORMCONSERVING CAR
+&END
+&INFO
+   ***************************************************************
+   * ATOM :     H    VALENCE CHARGE: 1.     ATOM MASS:    1.0080 *
+   * RAGGIO=  1.0000                                             *
+   * ANGULAR MOMENTUM     S     LOCAL                            *
+   * VON BARTH-CAR-TYPE PSEUDOPOTENTIAL WITH BP                  *
+   * ALPHA(CORE):     .24797                                     *
+   *       .2813198     -1.9924180       .7746050                *
+   ***************************************************************
+&END
+&POTENTIAL
+    CAR
+0.2479715
+0.2813198 -1.992418 0.774605
+0.2813198 -1.992418 0.774605
+0.2813198 -1.992418 0.774605
+&END

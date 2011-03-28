@@ -1,0 +1,28 @@
+&ATOM
+  Z  =     12.0000000000000     
+  ZV =     10.0000000000000     
+  XC = 1134   0.6666666667
+  TYPE = NORMCONSERVING GOEDECKER
+&END
+&INFO
+    ============================================================
+    |    Pseudopotential Report     Mon Nov 22 09:06:33 2004   |
+    ------------------------------------------------------------
+    |  Atomic Symbol                   :   Mg                  |
+    |  Atomic Number                   :  12                   |
+    |  Exchange-Correlation Functional :                       |
+    |     Slater exchange :  0.6667                            |
+    |     LDA correlation : Ceperley-Alder                     |
+    |     Exchange GC     : Perdew-Burke-Ernzerhof             |
+    |     Correlation GC  : Perdew-Burke-Ernzerhof             |
+    |  Goedecker/Hartwigsen normconserving PP                  |
+    ============================================================
+&END
+&POTENTIAL
+     GOEDECKER
+           2                                    LMAX
+      0.192757872                                 RC
+   2   -20.512404350     3.030564905   #C  C1 C2
+      0.141406819  1  41.007995090 H(s) 11                 
+      0.102931868  1 -10.033910473 H(p) 11                 
+&END

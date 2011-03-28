@@ -1,0 +1,18 @@
+ &ATOM
+  Z  =   31.0000000000000000
+  ZV =   21.0000000000000000
+  XC = 1100        .666667
+  TYPE = NORMCONSERVING GOEDECKER
+ &END
+ &INFO
+   Stefan Goedecker s Gallium PP of May 7, 1996: includes 3d^10, 3s^2, 3p^6
+ &END
+ &POTENTIAL
+     GOEDECKER
+ 2                                    LMAX
+       .333333333                                 RC
+   3   -16.171755365     -.797760440      .095429518   #C  C1 C2 C3
+       .235737779  2    18.141586357      .000000000     3.645589273 H(s) 11 12 22
+       .227699391  1     9.574380283      .000000000      .000000000 H(p) 11 12 22
+ &END
+

@@ -1,0 +1,17 @@
+ &ATOM
+  Z  =   4.00000000000000000
+  ZV =   4.00000000000000000
+  XC = 1100        .666667
+  TYPE = NORMCONSERVING GOEDECKER
+ &END
+ &INFO
+    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    >    BERYLLIUM LDA-PSEUDOPOTENTIAL (GOEDECKER TYPE)        >
+    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ &END
+ &POTENTIAL
+     GOEDECKER
+   0                                    LMAX
+       .3250                                 RC
+   4   -23.9909934    17.1717632    -3.3189599      .1650828   #C  C1 C2 C3 C4
+ &END

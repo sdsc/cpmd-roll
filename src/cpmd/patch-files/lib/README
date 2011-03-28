@@ -1,0 +1,6 @@
+This directory contain some norm-conserving pseudopotentials :
+
+-the SGS ones corresponds to the original  Gonze paper.
+-the SG corresponds to the original Goedecker paper.
+-the MT-GIA ones are soft pseudopotential derived using the Martin-Troullier method.
+

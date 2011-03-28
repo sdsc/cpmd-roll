@@ -1,0 +1,25 @@
+&ATOM
+ Z  =    1
+ ZV =    1
+ XC = 1134       0.666667
+ TYPE = NORMCONSERVING CAR
+&END
+&INFO
+    ============================================================
+    |  Car-von Barth hydrogen pseudopotential with PBE         |
+    |  Exchange-Correlation Functional :                       |
+    |     Slater exchange :   .6667                            |
+    |     Exchange GC     : HCTH                               |
+    |     Correlation GC  : HCTH                               |
+    |  ALPHA(CORE):     .25                                    | 
+    |     .2829562     -1.961602       .4051813                | 
+    ============================================================
+&END
+&POTENTIAL
+    CAR
+              0.25004
+    0.2829562  -1.9616016  0.405183
+    0.2829562  -1.9616016  0.405183
+    0.2829562  -1.9616016  0.405183
+&END
+

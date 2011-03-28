@@ -1,0 +1,18 @@
+ &ATOM
+  Z  =   3.00000000000000000
+  ZV =   3.00000000000000000
+  XC = 1100        .666667
+  TYPE = NORMCONSERVING GOEDECKER
+ &END
+ &INFO
+    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    >    LITHIUM LDA-PSEUDOPOTENTIAL (GOEDECKER TYPE)          >
+    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ &END
+ &POTENTIAL
+     GOEDECKER
+   0                                    LMAX
+       .4000                                 RC
+   4   -14.0093922     9.5099073    -1.7532723      .0834586   #C  C1 C2 C3 C4
+ &END
+

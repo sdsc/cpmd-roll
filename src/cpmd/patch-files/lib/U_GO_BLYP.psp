@@ -1,0 +1,30 @@
+&ATOM
+ Z  =     92.00000000000000     
+ ZV =     14.00000000000000     
+ XC = 1312   0.6666666667
+ TYPE = NORMCONSERVING GOEDECKER
+&END
+&INFO
+    ============================================================
+    |    Pseudopotential Report                                |
+    ------------------------------------------------------------
+    |  Atomic Symbol                   :   U                   |
+    |  Atomic Number                   :  92                   |
+    |  Exchange-Correlation Functional :                       |
+    |     Slater exchange :  0.6666666667                      |
+    |     LDA correlation : Lee-Yang-Parr                      |
+    |     Exchange GC     : Becke                              |
+    |     Correlation GC  : Lee-Yang-Parr                      |
+    |  Goedecker/Hartwigsen normconserving PP                  |
+    ============================================================
+&END
+&POTENTIAL
+     GOEDECKER
+            4                                   LMAX
+      0.257660192                                 RC
+   2   281.398106200   538.128581400   #C  C1 C2
+      0.363835826  2 -40.885845140-126.652832000 101.988959900 H(s) 11 12 22           
+      0.427314854  2 -72.838976123   6.654981056  11.204013514 H(p) 11 12 22           
+      0.630027058  1   1.228551694 H(d) 11                 
+      0.330072912  1 -42.431831674 H(f) 11                 
+&END

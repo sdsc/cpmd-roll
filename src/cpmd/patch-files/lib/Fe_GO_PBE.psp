@@ -1,0 +1,29 @@
+ &ATOM
+  Z  =     26.0000000000000     
+  ZV =     16.0000000000000     
+  XC = 1134   0.6666666667
+  TYPE = NORMCONSERVING GOEDECKER
+ &END
+ &INFO
+    ============================================================
+    |    Pseudopotential Report     Sat Oct  2 10:27:40 2004   |
+    ------------------------------------------------------------
+    |  Atomic Symbol                   :   Fe                  |
+    |  Atomic Number                   :  26                   |
+    |  Exchange-Correlation Functional :                       |
+    |     Slater exchange :  0.6667                            |
+    |     LDA correlation : Ceperley-Alder                     |
+    |     Exchange GC     : Perdew-Burke-Ernzerhof             |
+    |     Correlation GC  : Perdew-Burke-Ernzerhof             |
+    |  Goedecker/Hartwigsen normconserving PP                  |
+    ============================================================
+ &END
+ &POTENTIAL
+     GOEDECKER
+           3                                    LMAX
+      0.360000000                                 RC
+   2     4.959463980     0.375674921   #C  C1 C2
+      0.270000000  2   9.897984002   2.626030889  -6.780382599 H(s) 11 12 22           
+      0.250000000  2  -0.133051400   2.065748594  -4.888453398 H(p) 11 12 22           
+      0.230000000  1 -11.139287980 H(d) 11                 
+ &END

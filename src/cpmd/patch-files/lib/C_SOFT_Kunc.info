@@ -1,0 +1,57 @@
+From kunc@ccr.jussieu.fr Wed Apr 19 21:00:18 2000
+Received: by infm1.pd.infn.it id AA09260; Wed, 19 Apr 2000 21:00:17 +0200
+Received: from shiva.jussieu.fr (shiva.jussieu.fr [134.157.0.129])
+	by ospd01.pd.infn.it (8.9.3/8.9.3) with ESMTP id VAA29753
+	for <psil@pd.infn.it>; Wed, 19 Apr 2000 21:11:45 +0200 (MET DST)
+Received: from moka.ccr.jussieu.fr (moka.ccr.jussieu.fr [134.157.1.23])
+          by shiva.jussieu.fr (8.10.0/jtpda-5.3.3) with ESMTP id e3JJBhU27141
+          for <psil@pd.infn.it>; Wed, 19 Apr 2000 21:11:43 +0200 (CEST)
+Received: from (kunc@localhost)
+          by moka.ccr.jussieu.fr (8.10.0/jtpda-5.3.3) id e3JJBhp190382
+          ; Wed, 19 Apr 2000 21:11:43 +0200
+Date: Wed, 19 Apr 2000 21:11:43 +0200
+From: kunc@ccr.jussieu.fr (Karel KUNC)
+Message-Id: <200004191911.e3JJBhp190382@moka.ccr.jussieu.fr>
+To: psil@pd.infn.it
+Subject: pspt. C206
+Cc: kunc@ccr.jussieu.fr
+Status: RO
+
+Dear Pierino,
+
+Jirka Vackar forwarded me your E-mail, and I just sent you the PP file
+- my internal notation for that file is C_SGS_C206 and, for the paper,
+I ran everything with the verions cpmd30.g on the T3E in Paris.
+
+I sent the PP file from the T3E, directly, which is surrounded by armed
+security guards on all levels, namely the one concerning all communications,
+so in case you do not get it within minutes (or, say, until tomorrow)
+please, scream out and I would re-send it by some detour.
+
+I hope you will be able to reproduce the results shown in Fig.2,
+there are abundant and explicit instructions in the "comment" section.
+I suspect that the price to be paid for the softness is the cohesion
+energy which, probably, will be more overestimated than with the other
+pspts. (guessing this also from Fig. 2: from the energy at infinite cutoff
+and from its position with respect to the other pspts.) - this is one point
+which we did not test. If you get some qualified opinion (actually,
+"quantified opinion") on this point we will be, of course, interested;
+all 3 of us.
+
+I hope that you are fine in Padova and I am sure that you are doing well.
+Will I see you in Schwaebisch Gmund?
+
+With greetings,
+                Karel Kunc
+
+
+Pierino, I forgot saying that I ran (cubic box with 8 at./cell) with
+RAGGIO=0.8 ; with the other pspts. the optimal RAGGIO was 1.1 for SGS,
+1.0 for Goedecker, 0.85 for Vanderbilt and 0.8 for Troullier-Martins
+- but the differences were not big. I also tried TESR=2, only to find
+that this is overkilling.
+
+Do not make the exercises too difficult: if the students fail, it is
+always the teacher who is blamed!
+
+All the best, Karel.

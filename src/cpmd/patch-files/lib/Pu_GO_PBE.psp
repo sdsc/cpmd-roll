@@ -1,0 +1,30 @@
+&ATOM
+ Z  =     94.00000000000000     
+ ZV =     16.00000000000000     
+ XC = 1134   0.6666666667
+ TYPE = NORMCONSERVING GOEDECKER
+&END
+&INFO
+    ============================================================
+    |    Pseudopotential Report                                |
+    ------------------------------------------------------------
+    |  Atomic Symbol                   :  Pu                   |
+    |  Atomic Number                   :  94                   |
+    |  Exchange-Correlation Functional :                       |
+    |     Slater exchange :  0.6666666667                      |
+    |     LDA correlation : Ceperley-Alder                     |
+    |     Exchange GC     : Perdew-Burke-Ernzerhof             |
+    |     Correlation GC  : Perdew-Burke-Ernzerhof             |
+    |  Goedecker/Hartwigsen normconserving PP                  |
+    ============================================================
+&END
+&POTENTIAL
+     GOEDECKER
+            4                                   LMAX
+      0.216799205                                 RC
+   2   561.723767855   491.694219853   #C  C1 C2
+      0.320264068  2 -29.711541015-119.119723013 103.789041469 H(s) 11 12 22           
+      0.381616724  2 -71.835109057   7.814126579  14.806933757 H(p) 11 12 22           
+      0.560681538  1   2.324056678 H(d) 11                 
+      0.285735733  1 -36.920890454 H(f) 11                 
+&END

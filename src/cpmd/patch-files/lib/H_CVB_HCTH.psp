@@ -1,0 +1,25 @@
+&ATOM
+ Z  =    1
+ ZV =    1
+ XC =   55       0.666667
+ TYPE = NORMCONSERVING CAR
+&END
+&INFO
+    ============================================================
+    |  Car-von Barth hydrogen pseudopotential with HCTH        |
+    |  Exchange-Correlation Functional :                       |
+    |     Slater exchange :   .6667                            |
+    |     Exchange GC     : HCTH                               |
+    |     Correlation GC  : HCTH                               |
+    |  ALPHA(CORE):     .25                                    | 
+    |     .2829560     -1.961600       .4051812                | 
+    ============================================================
+&END
+&POTENTIAL
+    CAR
+              0.25002
+    0.2829560  -1.9615996  0.405182
+    0.2829560  -1.9615996  0.405182
+    0.2829560  -1.9615996  0.405182
+&END
+

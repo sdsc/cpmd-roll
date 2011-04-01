@@ -81,7 +81,7 @@ MATHLIB = none
 ifeq ("$(ROLLCOMPILER)", "intel")
   COMPILERSETUP += ; \
     export iversion=`icc -v 2>&1 | perl -pe 's!\D*(\d+).*!$$1!'`; \
-    perl -pi -e "s!ROLL_MATHPATH!$${MKL_ROOT}/lib/em64t!" SOURCE/Makefile; \
+    perl -pi -e "s!ROLL_MATHPATH!$${MKL_ROOT}/lib/em64t!" SOURCE/Makefile
   F90COMP = ifort
   MATHLIB = mkl
 endif

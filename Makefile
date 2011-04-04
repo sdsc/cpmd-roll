@@ -58,24 +58,30 @@
 ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
+ifndef ROLLNETWORK
+  ROLLNETWORK = eth
+endif
 empty:=
 space:=$(empty) $(empty)
-ROLLSUFFIX = _$(subst $(space),+,$(ROLLCOMPILER))
+ROLLSUFFIX = _$(subst $(space),+,$(ROLLCOMPILER))_$(subst $(space),+,$(ROLLNETWORK))
 
 -include $(ROLLSROOT)/etc/Rolls.mk
 
 default:
-# Copy and substitute lines of nodes/*.in that reference ROLLCOMPILER, making
-# one copy for each ROLLCOMPILER value
+# Copy and substitute lines of nodes/*.in that reference ROLLCOMPILER and/or
+# ROLLNETWORK, making one copy for each ROLLCOMPILER/ROLLNETWORK value
 	for i in `ls nodes/*.in`; do \
 	  export o=`echo $$i | sed 's/\.in//'`; \
 	  cp $$i $$o; \
 	  for c in $(ROLLCOMPILER); do \
 	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
 	  done; \
-	  perl -pi -e '$$_ = "" if m/ROLLCOMPILER/' $$o; \
+	  for n in $(ROLLNETWORK); do \
+	    perl -pi -e 'print and s/ROLLNETWORK/'$${n}'/g if m/ROLLNETWORK/' $$o; \
+	  done; \
+	  perl -pi -e '$$_ = "" if m/ROLL(COMPILER|NETWORK)/' $$o; \
 	done
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" roll
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLNETWORK="$(ROLLNETWORK)" roll
 
 clean::
 	rm -f _arch bootstrap.py

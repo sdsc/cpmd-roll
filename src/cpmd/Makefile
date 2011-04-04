@@ -61,31 +61,17 @@ ifndef ROLLNETWORK
   ROLLNETWORK = eth
 endif
 
-
--include $(ROCKSROOT)/etc/Rules.mk
-
 PKGROOT = /opt/cpmd
 SOURCE = cpmd.$(VERSION)
 REDHAT.ROOT = $(PWD)/../../
-MKL_ROOT=/opt/Compiler/intel/11.1/072/mkl
 
+-include $(ROCKSROOT)/etc/Rules.mk
 
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
     module load $(ROLLCOMPILER); \
   fi
-
-F90COMP = gfortran
-MATHLIB = none
-ifeq ("$(ROLLCOMPILER)", "intel")
-  COMPILERSETUP += ; \
-    export iversion=`icc -v 2>&1 | perl -pe 's!\D*(\d+).*!$$1!'`; \
-    perl -pi -e "s!ROLL_MATHPATH!$${MKL_ROOT}/lib/em64t!" SOURCE/Makefile
-  F90COMP = ifort
-  MATHLIB = mkl
-endif
-
 
 ifeq ("$(ROLLNETWORK)", "eth")
   OPENMPISUFFIX =
@@ -106,26 +92,33 @@ MPISETUP = \
   export PATH=$${PATH}:$${MPI_HOME}/bin; \
   export LD_LIBRARY_PATH=$${LD_LIBRARY_PATH}:$${MPI_HOME}/lib
 
+F90COMP = gfortran
+MATHLIB = none
+ifeq ("$(ROLLCOMPILER)", "intel")
+  COMPILERSETUP += ; \
+    export iversion=`icc -v 2>&1 | perl -pe 's!\D*(\d+).*!$$1!'`; \
+    perl -pi -e "s!ROLL_MATHPATH!$${MKL_ROOT}/lib/em64t!" $(SOURCE)/SOURCE/Makefile
+  F90COMP = ifort
+  MATHLIB = mkl
+endif
 
 build:
 	tar zxvf $(SOURCE).tgz
+	cp patch-files/Makefile $(SOURCE)/SOURCE
+	cp patch-files/a.txt patch-files/*.F patch-files/*.inc $(SOURCE)/SOURCE
 	( \
-          cd $(SOURCE); \
-          cp ../patch-files/Makefile SOURCE; \
-          cp ../patch-files/a.txt ../patch-files/*.F ../patch-files/*.inc SOURCE; \
 	  $(COMPILERSETUP); \
-          $(MPISETUP); \
-          cd SOURCE;\
-          export MKL_ROOT=$(MKL_ROOT); \
-          make; \
-          make plotband.x; \
+	  $(MPISETUP); \
+	  cd $(SOURCE)/SOURCE; \
+	  make; \
+	  make plotband.x \
 	)
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)/bin
 	mkdir -p $(ROOT)/$(PKGROOT)/lib
 	( \
-          cp `ls patch-files/lib/*|grep -v '\(CVS\|Root\|Repository\|Entries\)'` $(ROOT)/$(PKGROOT)/lib; \
+	  cp `ls patch-files/lib/*|grep -v '\(CVS\|Root\|Repository\|Entries\)'` $(ROOT)/$(PKGROOT)/lib; \
 	  cd $(SOURCE)/SOURCE; \
 	  cp cpmd.x plotband.x $(ROOT)/$(PKGROOT)/bin; \
 	)

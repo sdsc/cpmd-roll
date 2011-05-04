@@ -34,7 +34,8 @@ if test -f /etc/profile.d/cpmd.sh; then
 
 <file name="/opt/modulefiles/applications/cpmd/3.13.2" perms="0644">
 #%Module1.0
-prepend-path PATH /opt/cpmd
+prepend-path PATH /opt/cpmd/bin
+setenv PP_PATH /opt/cpmd/lib
 </file>
 
 <file name="/opt/modulefiles/applications/cpmd/.version.3.13.2">

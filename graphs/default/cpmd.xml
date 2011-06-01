@@ -29,6 +29,13 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
   <tail>cpmd-modules-common</tail>
 </order>
 
+<edge from="base">
+  <to>cpmd-roll-test</to>
+</edge>
+<order head="base">
+  <tail>cpmd-roll-test</tail>
+</order>
+
 <order head="cpmd-common">
   <tail>cpmd-modules-common</tail>
 </order>

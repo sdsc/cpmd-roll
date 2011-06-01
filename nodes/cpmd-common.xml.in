@@ -20,11 +20,13 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <post>
 
 <file name="/etc/profile.d/cpmd.csh" perms="0644">
-  set path = ( /opt/cpmd/bin $path )
+set path = ( /opt/cpmd/bin $path )
+setenv PP_PATH /opt/cpmd/lib
 </file>
 
 <file name="/etc/profile.d/cpmd.sh" perms="0644">
-  export PATH=/opt/cpmd/bin:$PATH
+export PATH=/opt/cpmd/bin:$PATH
+export PP_PATH=/opt/cpmd/lib
 </file>
 
 </post>

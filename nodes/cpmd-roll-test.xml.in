@@ -100,10 +100,10 @@ SKIP: {
        ! -f '/etc/profile.d/cpmd.sh', 'cpmd profile.d removed');
     like($ENV{MODULEPATH}, qr#/opt/modulefiles/applications#,
          'MODULEPATH set for applications');
-    ok(defined(glob('/opt/modulefiles/applications/cpmd/[0-9]*')),
-       'cpmd module installed');
-    ok(defined(glob('/opt/modulefiles/applications/cpmd/.version.[0-9]*')),
-       'cpmd version module installed');
+    `/bin/ls /opt/modulefiles/applications/cpmd/[0-9]* 2>&1`;
+    ok($? == 0, 'cpmd module installed');
+    `/bin/ls /opt/modulefiles/applications/cpmd/.version.[0-9]* 2>&1`;
+    ok($? == 0, 'cpmd version module installed');
     ok(-l '/opt/modulefiles/applications/cpmd/.version',
        'cpmd version module link created');
   } else {

@@ -68,7 +68,7 @@ print OUT <<END;
 #!/bin/bash
 if test -f /etc/profile.d/modules.sh; then
   . /etc/profile.d/modules.sh
-  module load ROLLCOMPILER openmpi_ROLLNETWORK cpmd
+  module load ROLLCOMPILER ROLLMPI_ROLLNETWORK cpmd
 fi
 /bin/cp /opt/cpmd/lib/SI_SGS ./${TESTFILE}SI_SGS
 mpirun -np 2 /opt/cpmd/bin/cpmd.x $TESTFILE.cpmd

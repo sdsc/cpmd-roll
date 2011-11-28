@@ -74,19 +74,19 @@ COMPILERSETUP = \
   fi
 
 ifeq ("$(ROLLNETWORK)", "eth")
-  OPENMPISUFFIX =
+  MPIMODULE = $(ROLLMPI)
 else
-  OPENMPISUFFIX = _$(ROLLNETWORK)
+  MPIMODULE = $(ROLLMPI)_$(ROLLNETWORK)
 endif
 
 MPISETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module load openmpi$(OPENMPISUFFIX); \
+    module load $(MPIMODULE); \
   fi; \
   export MPI_HOME=`which mpicxx | perl -pe 's!/bin/.*!!'`; \
   if test -z "$${MPI_HOME}"; then \
-    export MPI_HOME=/opt/openmpi; \
+    export MPI_HOME=/opt/$(ROLLMPI); \
   fi; \
   echo Using MPI from $${MPI_HOME}; \
   export PATH=$${PATH}:$${MPI_HOME}/bin; \
@@ -95,9 +95,8 @@ MPISETUP = \
 F90COMP = gfortran
 MATHLIB = none
 ifeq ("$(ROLLCOMPILER)", "intel")
-  COMPILERSETUP += ; \
-    export iversion=`icc -v 2>&1 | perl -pe 's!\D*(\d+).*!$$1!'`; \
-    perl -pi -e "s!ROLL_MATHPATH!$${MKL_ROOT}/lib/em64t!" $(SOURCE)/SOURCE/Makefile
+  COMPILERSETUP += ; export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+    perl -pi -e "s!ROLL_MATHPATH!$${MKLLIB}!" $(SOURCE)/SOURCE/Makefile
   F90COMP = ifort
   MATHLIB = mkl
 endif
@@ -115,12 +114,12 @@ build:
 	)
 
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)/bin
-	mkdir -p $(ROOT)/$(PKGROOT)/lib
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/bin
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib
 	( \
 	  cp `ls patch-files/lib/*|grep -v '\(CVS\|Root\|Repository\|Entries\)'` $(ROOT)/$(PKGROOT)/lib; \
 	  cd $(SOURCE)/SOURCE; \
-	  cp cpmd.x plotband.x $(ROOT)/$(PKGROOT)/bin; \
+	  cp cpmd.x plotband.x $(ROOT)/$(PKGROOT)/bin \
 	)
 
 clean::

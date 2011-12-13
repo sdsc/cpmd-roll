@@ -70,6 +70,9 @@ REDHAT.ROOT = $(PWD)/../../
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
+    module load intel; \
+    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+    module unload intel; \
     module load $(ROLLCOMPILER); \
   fi
 
@@ -95,8 +98,6 @@ MPISETUP = \
 F90COMP = gfortran
 MATHLIB = none
 ifeq ("$(ROLLCOMPILER)", "intel")
-  COMPILERSETUP += ; export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
-    perl -pi -e "s!ROLL_MATHPATH!$${MKLLIB}!" $(SOURCE)/SOURCE/Makefile
   F90COMP = ifort
   MATHLIB = mkl
 endif
@@ -108,6 +109,7 @@ build:
 	( \
 	  $(COMPILERSETUP); \
 	  $(MPISETUP); \
+	  perl -pi -e "s!ROLL_MATHPATH!$${MKLLIB}!" $(SOURCE)/SOURCE/Makefile; \
 	  cd $(SOURCE)/SOURCE; \
 	  make; \
 	  make plotband.x \

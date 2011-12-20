@@ -60,6 +60,9 @@ endif
 ifndef ROLLNETWORK
   ROLLNETWORK = eth
 endif
+ifndef ROLLMPI
+  ROLLMPI = openmpi
+endif
 
 PKGROOT = /opt/cpmd
 SOURCE = cpmd.$(VERSION)

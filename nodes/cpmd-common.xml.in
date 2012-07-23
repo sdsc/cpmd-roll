@@ -16,20 +16,6 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 </changelog>
 
 <package>cpmd_ROLLCOMPILER_ROLLNETWORK_ROLLMPI</package>
-
-<post>
-
-<file name="/etc/profile.d/cpmd.csh" perms="0644">
-setenv CPMDHOME /opt/cpmd
-set path = ( /opt/cpmd/bin $path )
-setenv PP_PATH /opt/cpmd/lib
-</file>
-<file name="/etc/profile.d/cpmd.sh" perms="0644">
-export CPMDHOME=/opt/cpmd
-export PATH=/opt/cpmd/bin:$PATH
-export PP_PATH=/opt/cpmd/lib
-</file>
-
-</post>
+<package>cpmd-modules</package>
 
 </kickstart>

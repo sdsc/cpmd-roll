@@ -1,0 +1,4 @@
+#%Module1.0
+setenv CPMDHOME /opt/cpmd
+prepend-path PATH /opt/cpmd/bin
+setenv PP_PATH /opt/cpmd/lib

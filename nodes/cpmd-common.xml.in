@@ -15,7 +15,8 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <changelog>
 </changelog>
 
-<package>cpmd_ROLLCOMPILER_ROLLNETWORK_ROLLMPI</package>
+<package>cpmd_ROLLCOMPILER_ROLLMPI_ROLLNETWORK</package>
 <package>cpmd-modules</package>
+<package>cpmd-roll-test</package>
 
 </kickstart>

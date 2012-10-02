@@ -1,4 +1,4 @@
-ROLLNAME = cpmd$(ROLLSUFFIX)
+ROLLNAME = cpmd
 RELEASE  = 0
 COLOR    = orange
 

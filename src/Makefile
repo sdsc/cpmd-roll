@@ -75,6 +75,6 @@ copyright rpm pkg clean::
               done; \
 	    done; \
 	  else \
-	    (cd $$i; $(MAKE) $@) ; \
+	    (cd $$i; $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLMPI="$(ROLLMPI)" ROLLNETWORK="$(ROLLNETWORK)" $@) ; \
 	  fi; \
 	done

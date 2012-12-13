@@ -104,16 +104,19 @@ ifeq ("$(ROLLCOMPILER)", "intel")
   F90COMP = ifort
   MATHLIB = mkl
 endif
+ifeq ("$(ROLLCOMPILER)", "pgi")
+  F90COMP = pgf90
+  MATHLIB = mkl
+endif
 
 build:
 	tar zxvf $(SOURCE).tgz
-	cp patch-files/Makefile $(SOURCE)/SOURCE
-	cp patch-files/a.txt patch-files/*.F patch-files/*.inc $(SOURCE)/SOURCE
 	( \
 	  $(COMPILERSETUP); \
 	  $(MPISETUP); \
-	  perl -pi -e "s!ROLL_MATHPATH!$${MKLLIB}!" $(SOURCE)/SOURCE/Makefile; \
-	  cd $(SOURCE)/SOURCE; \
+ 	  cp patch-files/Makefile $(SOURCE); \
+	  perl -pi -e "s!ROLL_MATHPATH!$${MKLLIB}!" $(SOURCE)/Makefile; \
+	  cd $(SOURCE); \
 	  make; \
 	  make plotband.x \
 	)

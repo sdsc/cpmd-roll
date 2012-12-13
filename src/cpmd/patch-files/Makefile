@@ -1,9 +1,9 @@
 #----------------------------------------------------------------------------
 # Makefile for cpmd.x (plane wave electronic calculation)
 # Configuration: IFORT-AMD64-MPI
-# Creation of Makefile: Jun 28 2010
-# on Linux tmgt-10-0.local 2.6.18-164.6.1.el5 #1 SMP Tue Nov 3 16:12:36 EST 2009 x86_64 x86_64 x86_64 GNU/Linux
-# Author: jpg
+# Creation of Makefile: Dec 12 2012
+# on Linux gcn-19-28.sdsc.edu 2.6.34.7-1 #1 SMP Thu Nov 24 11:27:26 PST 2011 x86_64 x86_64 x86_64 GNU/Linux
+# Author: root
 #----------------------------------------------------------------------------
 #
 SHELL = /bin/sh
@@ -12,7 +12,7 @@ SHELL = /bin/sh
 SRC  = .
 DEST = .
 BIN  = .
-FFLAGS = -pc64  -O2 -unroll 
+FFLAGS = -O2 -unroll 
 LFLAGS =  -L.  -LROLL_MATHPATH -lmkl_solver_lp64_sequential -Wl,--start-group -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -Wl,--end-group -lpthread
 CFLAGS = -O2 -Wall -m64
 CPP = /lib/cpp -P -C -traditional
@@ -25,6 +25,8 @@ LD = mpif77 -i-static
 AR = ar
 #----------------------------------------------------------------------------
 # Personal Configuration
+# My_Conf: 
+# All arguments:  IFORT-AMD64-MPI
 #----------------------------------------------------------------------------
 #----------------------------------------------------------------------------
 # End of Personal Configuration
@@ -40,7 +42,7 @@ OBJECTS = $(OBJ_AL) $(OBJ_WF) $(OBJ_GM) $(OBJ_MD) $(OBJ_MT) \
           $(OBJ_PA) $(OBJ_IS) $(OBJ_ST) $(OBJ_SY) $(OBJ_AT) \
           $(OBJ_LA) $(OBJ_KP) $(OBJ_PI) $(OBJ_PM) $(OBJ_CL) \
           $(OBJ_PE) $(OBJ_KD) $(OBJ_MM) $(OBJ_VW) $(OBJ_BS) \
-          $(OBJ_SH) $(INTERFACE_OBJECTS)
+          $(OBJ_SH) $(OBJ_FM) $(INTERFACE_OBJECTS)
 OBJ_AL  = softex.o envir.o setcnst.o azzero.o control.o \
           control_def.o control_pri.o control_bcast.o control_test.o \
           header.o inscan.o memory.o freem.o readsr.o timer.o \
@@ -59,7 +61,7 @@ OBJ_AL  = softex.o envir.o setcnst.o azzero.o control.o \
           vofrhot.o vofrhoc.o initclust.o jacobi.o rnlrh.o rnlfor.o \
           potfor.o ppener.o reigs.o geofile.o rpiiint.o eicalc.o testex.o \
           densto.o proja.o atoms.o fitpack.o wv30.o rv30.o wr30wfn.o \
-          setbasis.o nfunc.o gcxctbl.o hfx.o debfor.o \
+          setbasis.o nfunc.o gcxctbl.o hfx.o debfor.o merge.o \
           rhoofr_c.o jacobi_c.o velocitinp.o setirec.o compress.o interp3d.o \
           ptheory.o clinbcg.o elstpo.o exterp.o mulliken.o espchg.o \
           atomc.o eextern.o interpt.o egointer.o fileopen.o scratch.o \
@@ -69,11 +71,11 @@ OBJ_AL  = softex.o envir.o setcnst.o azzero.o control.o \
           fftmain.o fftutil.o fftchk.o fftprp.o fft3d.o mltfft.o gfft.o \
           gfftmain.o esslfft.o x1fft.o hpfft.o ympfft.o t3dfft.o scslfft.o fftwfft.o \
           densrd.o eam_pot.o tauofr.o vtaupsi.o metafun.o ainitwf.o dginit.o \
-          kin_energy.o vpsi_lse.o disortho.o linalg.o norhoe.o ssic.o
+          kin_energy.o vpsi_lse.o disortho.o linalg.o norhoe.o ssic.o prng.o gle.o
 #WaveFunctions optimization
 OBJ_WF  = wfopts.o rwfopt.o updwf.o odiis.o pcgrad.o \
-           k_updwf.o k_odiis.o k_forces.o k_hesele.o k_pcgrad.o \
-           k_diis_rhofix.o
+          k_updwf.o k_odiis.o k_forces.o k_hesele.o k_pcgrad.o \
+          k_diis_rhofix.o cdft.o transme.o syscomb.o icdft.o
 #GeoMetry optimisation 
 OBJ_GM  = gmopts.o rgmopt.o fstart.o struc.o empfor.o puttau.o constr.o \
           rrfo.o rbfgs.o rgdiis.o sdion.o hessin.o hessout.o hessup.o \
@@ -92,7 +94,8 @@ OBJ_MD  = mdpt.o mdmain.o dynit.o shake.o rattle.o resetac.o dispp.o nosalloc.o 
           rortv.o crotwf.o noscinit.o prpcnosmove.o prpcmove.o prpnosmove.o \
           prcnosmove.o ddipo.o kddipo.o opeigr.o opeigr_c.o sample.o sd_wannier.o \
           wannier_center.o wannier_print.o purge.o wc_dos.o comvel.o rotvel.o \
-          printfor.o cplngs.o
+          printfor.o cplngs.o td_cayley.o td_util.o ehrenfest.o read_prop.o \
+          forces_prop.o box_boundary.o
 #Kohn-Sham energies
 OBJ_KS  = davidson.o ksdiag.o vgsortho.o hpsi.o spsi.o \
           gsortho.o rhov1.o
@@ -114,7 +117,8 @@ OBJ_PP  = proppt.o prowfn.o dipo.o lodipo.o exdipo.o cmaos.o difrho.o \
           u_upd_exp_sum.o g_loc_spread_sum.o u_upd_spread_sum.o \
           g_loc_realspace.o g_loc_xyzmat.o g_loc_opeigr.o efield.o molorb.o \
           molstates.o epr_efg.o core_spect.o potmed.o\
-          nuclear_p.o rwfopt_nuc.o rinforce_nuc.o write_pp.o
+          nuclear_p.o rwfopt_nuc.o rinforce_nuc.o write_pp.o td_nacvs.o \
+          proylm.o
 #PErturbation theory
 OBJ_PE  = h0psi1_p.o v1ofrho_p.o fnonloc_p.o \
           mddiag-interaction_p.o gndstate_p.o legendre_p.o \
@@ -174,7 +178,11 @@ OBJ_KD  = kdp_diag.o kdp_prep.o kdp_rho.o kdp_stress_kin.o kdpoints.o \
 OBJ_MM  = mm_init.o mm_dim.o mm_qmmm_forcedr.o mm_mdmain.o \
           mm_cpmd_add_MM_forces_f77.o mm_cpmd_esp_charges_f77.o \
           mm_cpmd_ext_pot_f77.o mm_mddiag.o mm_forces_diag.o \
-          mm_rho_forcedr.o td_mm_qmmm_forcedr.o mm_qmmm_forcedr_bs.o  
+          mm_rho_forcedr.o td_mm_qmmm_forcedr.o mm_qmmm_forcedr_bs.o \
+          mm_forces_prop.o
+#FORCEMATCH
+OBJ_FM  = forcematch_kfit.o forcematch_qfit.o forcematch_util.o \
+          mm_forcematch.o prep_forcematch.o
 #CLassical dynamics
 OBJ_CL  = cl_init.o mdclas.o readff.o clas_force.o
 #Van der Waals correction
@@ -183,7 +191,7 @@ OBJ_VW  = vdwin.o vdw.o
 OBJ_BS = bs_forces_diag.o bswfo.o lsforce.o setbsstate.o wrccfl.o
 #Surface Hopping
 OBJ_SH  = mdshop_cp.o mdshop_bo.o mm_mdshop_cp.o mm_mdshop_bo.o \
-          fusion.o rk4ov.o shop_adds.o sh_tddft.o
+          fusion.o rk4ov.o shop_adds.o sh_tddft.o sh_util.o
 #C Code
 OBJ_CC  = sysdepend.o 
 
@@ -210,8 +218,8 @@ INCFILES = system.h adat.inc atom.inc atwf.inc bc.inc   benc.inc aavan.inc \
            mm_dim.inc mm_input.inc mm_ion_dens.inc comvel.inc vdwc.inc eam.inc \
            tpot.inc g_loc.inc cnst_dyn.inc hfx.inc dg.inc \
 	   bsym.inc bsympnt.inc tauf.inc cores.inc \
-           printp.inc mfep.inc \
-           dir.cld gromos.h equiv_file 
+           printp.inc mfep.inc merge.inc cdft.inc transme.inc prng.inc gle.inc \
+           td_input.inc dir.cld gromos.h equiv_file \
 
 #----------------------------------------------------------------------------
 # OBJECTS USED IN CPMD LIBRARY
@@ -219,24 +227,26 @@ INCFILES = system.h adat.inc atom.inc atwf.inc bc.inc   benc.inc aavan.inc \
 OBJ_LIB = $(OBJ_CC) $(OBJECTS)
 INCFILES = aavan.inc adat.inc andp.inc andr.inc atimes.inc atom.inc \
            atwf.inc bc.inc benc.inc broy.inc bsym.inc bsympnt.inc \
-           cell.inc clas.inc cnst_dyn.inc cnst.inc comvel.inc condu.inc \
-           conv.inc coor.inc cores.inc cotr.inc cplngs.inc cppt.inc \
-           cray_mpp.inc cvan.inc ddip.inc dg.inc dipo.inc dpot.inc \
-           eam.inc efld2.inc efld.inc elct2.inc elct.inc empf.inc \
-           ener.inc envj.inc epot.inc extpot.inc fcas.inc fft.inc \
-           fileopen.inc filn.inc fint.inc func.inc geq0.inc g_loc.inc \
-           gvec.inc harm.inc head.inc hfx.inc implhv.inc ions.inc \
-           irat.inc isos.inc kdpc.inc kdp.inc kpnt.inc kpts.inc \
-           ksmat.inc ldos.inc linres.inc lodp.inc lscal.inc memc.inc \
-           metr.inc mfep.inc mm_dim.inc mm_extrap.inc mm_input.inc mm_ion_dens.inc \
-           mols.inc movi.inc nlcc.inc nlps.inc nofo.inc norm.inc \
+           cdft.inc cell.inc clas.inc cnst_dyn.inc cnst.inc comvel.inc \
+           condu.inc conv.inc coor.inc cores.inc cotr.inc cplngs.inc \
+           cppt.inc cray_mpp.inc cvan.inc ddip.inc dg.inc dipo.inc \
+           dpot.inc eam.inc efld2.inc efld.inc elct2.inc elct.inc \
+           empf.inc ener.inc envj.inc epot.inc extpot.inc fcas.inc \
+           fft.inc fileopen.inc filn.inc fint.inc fm_cnst.inc forcematch.inc \
+           func.inc geq0.inc gle.inc g_loc.inc gvec.inc harm.inc \
+           head.inc hfx.inc implhv.inc ions.inc irat.inc isos.inc \
+           kdpc.inc kdp.inc kpnt.inc kpts.inc ksmat.inc ldos.inc \
+           linres.inc lodp.inc lscal.inc memc.inc merge.inc metr.inc \
+           mfep.inc mm_dim.inc mm_extrap.inc mm_input.inc mm_ion_dens.inc mols.inc \
+           movi.inc mw.inc nlcc.inc nlps.inc nofo.inc norm.inc \
            nort.inc nose.inc pimd.inc poin.inc pola.inc prcp.inc \
-           prden.inc printp.inc prop.inc pslo.inc pstat.inc qspl.inc \
-           ragg.inc read.inc response_p.inc rmas.inc ropt.inc rswf.inc \
-           scrp.inc sfac.inc sgpp.inc shock.inc shop.inc simul.inc \
-           soft.inc sphe.inc spin.inc store.inc str2.inc strs.inc \
-           struc.inc swap.inc symm4.inc symm.inc tauf.inc tbxc.inc \
-           temps.inc time.inc tpar.inc tpot.inc vdbp.inc vdbt.inc \
+           prden.inc printp.inc prng.inc prop.inc pslo.inc pstat.inc \
+           qspl.inc ragg.inc read.inc response_p.inc rmas.inc ropt.inc \
+           rswf.inc scrp.inc sfac.inc sgpp.inc shock.inc shop_ekinqm.inc \
+           shop.inc shop_rest_2.inc shop_rest.inc simul.inc soft.inc sphe.inc \
+           spin.inc store.inc str2.inc strs.inc struc.inc swap.inc \
+           symm4.inc symm.inc tauf.inc tbxc.inc td_input.inc temps.inc \
+           time.inc tpar.inc tpot.inc transme.inc vdbp.inc vdbt.inc \
            vdwc.inc wann.inc xinr.inc 
 
 EXE_OBJ=cpmd.o plotband.o
@@ -244,6 +254,7 @@ EXE_OBJ=cpmd.o plotband.o
 # Compile cpmd.x
 #----------------------------------------------------------------------------
 cpmd.x : cpmd.o $(OBJECTS)   $(OBJ_CC)
+	@$(SRC)/BIN/check_systemh $(SRC)/system.h
 	rm -f timetag.f
 	$(CPP) $(CPPFLAGS) $(SRC)/timetag.F ./timetag.f
 	$(FC) $(FFLAGS) ./timetag.f
@@ -272,32 +283,6 @@ lib : $(OBJ_LIB)
 	 $(RANLIB) libcpmd.a
 
 #----------------------------------------------------------------------------
-# Generate the manual
-#----------------------------------------------------------------------------
-doc : manual.ps
-
-docpdf: manual.pdf
-
-manual.ps: manual.dvi
-	dvips -o $@ manual.dvi
-
-manual.dvi: $(SRC)/manual.tex
-	rm -f manual.aux manual.ilg manual.log manual.idx 		manual.ind  manual.out  manual.toc
-	latex $(SRC)/manual.tex
-	latex $(SRC)/manual.tex
-	makeindex manual
-	latex $(SRC)/manual.tex
-	latex $(SRC)/manual.tex
-
-manual.pdf: $(SRC)/manual.tex
-	rm -f manual.aux manual.ilg manual.log manual.idx 		manual.ind  manual.out  manual.toc
-	pdflatex $(SRC)/manual.tex
-	pdflatex $(SRC)/manual.tex
-	makeindex manual
-	pdflatex $(SRC)/manual.tex
-	pdflatex $(SRC)/manual.tex
-
-#----------------------------------------------------------------------------
 # Create a new makefile with new dependencies but retain the configuration.
 #----------------------------------------------------------------------------
 reconfig:
@@ -311,8 +296,10 @@ clean :
 	rm -f *~ .*~ *.o *.f *.L $(CHKS) $(PRJS) $(CHKS:.chk=.html)
 	rm -f *.aux *.brf *.dvi *.idx *.ilg *.ind *.log $(EXE_OBJ:.o=.html)
 	rm -f *.out *.ps *.pdf *.toc $(EXE_OBJ:.o=.prj) $(EXE_OBJ:.o=.chk)
-	rm -f ./MM_Interface/*.f ./MM_Interface/*.o ./MM_Interface/*.L
-	rm -f ./Gromos/*.f ./Gromos/*.o ./Gromos/*.L
+
+realclean : 
+	$(MAKE) clean
+	rm -rf cpmd.x
 
 #----------------------------------------------------------------------------
 # Explicit rules
@@ -323,6 +310,8 @@ clean :
 $(OBJECTS:.o=.f) $(EXE_OBJ:.o=.f): 
 	rm -f $@
 	$(CPP) $(CPPFLAGS) $(SRC)/$(@:.f=.F) $(DEST)/$@
+	sed 's|\.\./||g' $(DEST)/$@ > $(DEST)/$@.tmp
+	mv $(DEST)/$@.tmp $(DEST)/$@
 
 $(OBJECTS) $(EXE_OBJ):
 	$(FC) $(FFLAGS) $(DEST)/$< -o  $(DEST)/$@
@@ -378,7 +367,7 @@ anneal.o:       anneal.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/bsym.inc \
 atomc.f:        $(SRC)/atomc.F
 atomc.o:        atomc.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/atwf.inc \
                 $(SRC)/qspl.inc $(SRC)/cnst.inc $(SRC)/gvec.inc \
-                $(SRC)/metr.inc
+                $(SRC)/cdft.inc $(SRC)/metr.inc $(SRC)/isos.inc
 
 atoms.f:        $(SRC)/atoms.F
 atoms.o:        atoms.f $(SRC)/adat.inc
@@ -388,7 +377,7 @@ atomwf.o:       atomwf.f $(SRC)/system.h $(SRC)/ener.inc $(SRC)/geq0.inc \
                 $(SRC)/ions.inc $(SRC)/pslo.inc $(SRC)/atwf.inc \
                 $(SRC)/nlps.inc $(DEST)/irat.inc $(SRC)/spin.inc \
                 $(SRC)/nlcc.inc $(SRC)/kpts.inc $(SRC)/sfac.inc \
-                $(SRC)/sphe.inc $(SRC)/func.inc
+                $(SRC)/sphe.inc $(SRC)/func.inc $(SRC)/elct.inc
 
 atrho.f:        $(SRC)/atrho.F
 atrho.o:        atrho.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/spin.inc \
@@ -427,8 +416,12 @@ bogol.o:        bogol.f $(SRC)/system.h $(SRC)/kpts.inc $(SRC)/kpnt.inc \
                 $(SRC)/nlps.inc $(SRC)/fint.inc $(SRC)/tauf.inc \
                 $(SRC)/spin.inc
 
+box_boundary.f: $(SRC)/box_boundary.F
+box_boundary.o: box_boundary.f $(SRC)/system.h $(SRC)/ions.inc \
+                $(SRC)/isos.inc $(SRC)/cell.inc $(SRC)/comvel.inc
+
 broyden.f:      $(SRC)/broyden.F
-broyden.o:      broyden.f $(SRC)/geq0.inc $(SRC)/broy.inc
+broyden.o:      broyden.f $(SRC)/geq0.inc $(SRC)/broy.inc $(SRC)/spin.inc
 
 bs_forces_diag.f:$(SRC)/bs_forces_diag.F
 bs_forces_diag.o:bs_forces_diag.f $(SRC)/system.h $(SRC)/spin.inc \
@@ -456,6 +449,14 @@ calc_pij.o:     calc_pij.f $(SRC)/system.h $(SRC)/cppt.inc \
 
 canon.f:        $(SRC)/canon.F
 canon.o:        canon.f $(SRC)/system.h $(SRC)/spin.inc
+
+cdft.f:         $(SRC)/cdft.F
+cdft.o:         cdft.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/atwf.inc \
+                $(SRC)/qspl.inc $(SRC)/cdft.inc $(SRC)/isos.inc \
+                $(SRC)/metr.inc $(DEST)/irat.inc $(SRC)/cnst.inc \
+                $(SRC)/pslo.inc $(SRC)/elct.inc $(SRC)/prop.inc \
+                $(SRC)/coor.inc $(SRC)/spin.inc $(SRC)/adat.inc \
+                $(SRC)/ener.inc $(SRC)/cppt.inc $(SRC)/gvec.inc
 
 chain_dr.f:     $(SRC)/chain_dr.F
 chain_dr.o:     chain_dr.f $(SRC)/system.h $(SRC)/ions.inc \
@@ -501,7 +502,7 @@ compress.o:     compress.f
 
 comvel.f:       $(SRC)/comvel.F
 comvel.o:       comvel.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/rmas.inc \
-                $(SRC)/nose.inc $(SRC)/ions.inc
+                $(SRC)/nose.inc $(SRC)/ions.inc $(SRC)/cotr.inc
 
 conduct.f:      $(SRC)/conduct.F
 conduct.o:      conduct.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/cppt.inc \
@@ -527,7 +528,9 @@ control_bcast.o:control_bcast.f $(SRC)/system.h $(SRC)/spin.inc \
                 $(SRC)/fint.inc $(SRC)/atwf.inc $(SRC)/store.inc \
                 $(SRC)/wann.inc $(SRC)/cotr.inc $(SRC)/prop.inc \
                 $(SRC)/mm_input.inc $(SRC)/xinr.inc $(SRC)/g_loc.inc \
-                $(SRC)/comvel.inc $(SRC)/fileopen.inc $(SRC)/vdwc.inc
+                $(SRC)/comvel.inc $(SRC)/fileopen.inc $(SRC)/vdwc.inc \
+                $(SRC)/shop.inc $(SRC)/shop_rest.inc $(SRC)/merge.inc \
+                $(SRC)/cdft.inc $(SRC)/prng.inc $(SRC)/gle.inc
 
 control_def.f:  $(SRC)/control_def.F
 control_def.o:  control_def.f $(SRC)/system.h $(SRC)/spin.inc \
@@ -540,7 +543,8 @@ control_def.o:  control_def.f $(SRC)/system.h $(SRC)/spin.inc \
                 $(SRC)/prop.inc $(SRC)/conv.inc $(SRC)/xinr.inc \
                 $(SRC)/g_loc.inc $(SRC)/comvel.inc $(SRC)/time.inc \
                 $(SRC)/memc.inc $(SRC)/cnst_dyn.inc $(SRC)/vdwc.inc \
-                $(SRC)/read.inc $(SRC)/fileopen.inc
+                $(SRC)/read.inc $(SRC)/fileopen.inc $(SRC)/cdft.inc \
+                $(SRC)/prng.inc $(SRC)/gle.inc
 
 control.f:      $(SRC)/control.F
 control.o:      control.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/ions.inc \
@@ -550,10 +554,12 @@ control.o:      control.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/ions.inc \
                 $(SRC)/broy.inc $(SRC)/nlps.inc $(SRC)/fint.inc \
                 $(SRC)/atwf.inc $(SRC)/store.inc $(SRC)/wann.inc \
                 $(SRC)/envj.inc $(SRC)/cotr.inc $(SRC)/kpts.inc \
-                $(SRC)/prop.inc $(SRC)/shop.inc $(SRC)/mm_input.inc \
-                $(SRC)/xinr.inc $(SRC)/g_loc.inc $(SRC)/lscal.inc \
-                $(SRC)/comvel.inc $(SRC)/time.inc $(SRC)/memc.inc \
-                $(SRC)/vdwc.inc $(SRC)/fileopen.inc
+                $(SRC)/prop.inc $(SRC)/shop.inc $(SRC)/shop_rest.inc \
+                $(SRC)/mm_input.inc $(SRC)/xinr.inc $(SRC)/g_loc.inc \
+                $(SRC)/lscal.inc $(SRC)/comvel.inc $(SRC)/time.inc \
+                $(SRC)/memc.inc $(SRC)/vdwc.inc $(SRC)/fileopen.inc \
+                $(SRC)/merge.inc $(SRC)/cdft.inc $(SRC)/prng.inc \
+                $(SRC)/gle.inc
 
 control_pri.f:  $(SRC)/control_pri.F
 control_pri.o:  control_pri.f $(SRC)/system.h $(SRC)/spin.inc \
@@ -565,7 +571,8 @@ control_pri.o:  control_pri.f $(SRC)/system.h $(SRC)/spin.inc \
                 $(SRC)/wann.inc $(SRC)/envj.inc $(SRC)/cotr.inc \
                 $(SRC)/kpts.inc $(SRC)/shop.inc $(SRC)/xinr.inc \
                 $(SRC)/lscal.inc $(SRC)/comvel.inc $(SRC)/memc.inc \
-                $(SRC)/time.inc $(SRC)/fileopen.inc $(SRC)/vdwc.inc
+                $(SRC)/time.inc $(SRC)/fileopen.inc $(SRC)/adat.inc \
+                $(SRC)/vdwc.inc $(SRC)/prng.inc $(SRC)/gle.inc
 
 control_test.f: $(SRC)/control_test.F
 control_test.o: control_test.f $(SRC)/system.h $(SRC)/spin.inc \
@@ -575,7 +582,7 @@ control_test.o: control_test.f $(SRC)/system.h $(SRC)/spin.inc \
                 $(SRC)/andr.inc $(SRC)/nlps.inc $(SRC)/fint.inc \
                 $(SRC)/atwf.inc $(SRC)/store.inc $(SRC)/wann.inc \
                 $(SRC)/kpts.inc $(SRC)/lscal.inc $(SRC)/broy.inc \
-                $(SRC)/mm_input.inc $(SRC)/comvel.inc
+                $(SRC)/mm_input.inc $(SRC)/comvel.inc $(SRC)/cdft.inc
 
 copot.f:        $(SRC)/copot.F
 copot.o:        copot.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/ions.inc \
@@ -610,7 +617,7 @@ cplngs.o:       cplngs.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/cplngs.inc \
 cpmd.f:         $(SRC)/cpmd.F
 cpmd.o:         cpmd.f $(SRC)/system.h $(SRC)/soft.inc $(SRC)/prop.inc \
                 $(SRC)/poin.inc $(SRC)/pimd.inc $(SRC)/fileopen.inc \
-                $(SRC)/time.inc
+                $(SRC)/mw.inc $(SRC)/gle.inc $(SRC)/time.inc
 
 crotwf.f:       $(SRC)/crotwf.F
 crotwf.o:       crotwf.f $(SRC)/system.h $(SRC)/spin.inc
@@ -678,7 +685,7 @@ densrd.o:       densrd.f $(SRC)/system.h $(SRC)/cell.inc $(SRC)/gvec.inc \
 densto.f:       $(SRC)/densto.F
 densto.o:       densto.f $(SRC)/system.h $(SRC)/cell.inc $(SRC)/gvec.inc \
                 $(SRC)/ions.inc $(DEST)/irat.inc $(SRC)/fileopen.inc \
-                $(SRC)/response_p.inc $(SRC)/mm_dim.inc
+                $(SRC)/mm_dim.inc $(SRC)/response_p.inc
 
 deort.f:        $(SRC)/deort.F
 deort.o:        deort.f
@@ -701,7 +708,7 @@ detsp.o:        detsp.f $(SRC)/system.h $(SRC)/coor.inc $(SRC)/dpot.inc \
 dftin.f:        $(SRC)/dftin.F
 dftin.o:        dftin.f $(SRC)/system.h $(SRC)/tbxc.inc $(DEST)/irat.inc \
                 $(SRC)/func.inc $(SRC)/ener.inc $(SRC)/linres.inc \
-                $(SRC)/hfx.inc $(SRC)/wann.inc
+                $(SRC)/hfx.inc $(SRC)/wann.inc $(SRC)/vdwc.inc
 
 dginit.f:       $(SRC)/dginit.F
 dginit.o:       dginit.f $(SRC)/dg.inc
@@ -719,7 +726,7 @@ dipo.o:         dipo.f $(SRC)/system.h $(SRC)/dipo.inc $(SRC)/geq0.inc \
 
 disortho.f:     $(SRC)/disortho.F
 disortho.o:     disortho.f $(SRC)/system.h $(SRC)/spin.inc \
-                $(SRC)/ions.inc
+                $(SRC)/ions.inc $(SRC)/geq0.inc
 
 dispp.f:        $(SRC)/dispp.F
 dispp.o:        dispp.f $(SRC)/system.h $(SRC)/ions.inc
@@ -828,6 +835,11 @@ ehpsi.o:        ehpsi.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/pslo.inc \
                 $(SRC)/sfac.inc $(SRC)/fft.inc $(SRC)/kpts.inc \
                 $(SRC)/spin.inc $(SRC)/kpnt.inc $(SRC)/sgpp.inc
 
+ehrenfest.f:    $(SRC)/ehrenfest.F
+ehrenfest.o:    ehrenfest.f $(SRC)/system.h $(SRC)/ions.inc \
+                $(SRC)/elct.inc $(SRC)/td_input.inc $(SRC)/spin.inc \
+                $(SRC)/efld.inc
+
 eicalc.f:       $(SRC)/eicalc.F
 eicalc.o:       eicalc.f $(SRC)/system.h $(SRC)/sfac.inc $(SRC)/ions.inc \
                 $(SRC)/cppt.inc
@@ -867,7 +879,8 @@ elf.o:          elf.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/cppt.inc \
                 $(SRC)/ions.inc $(SRC)/elct.inc $(SRC)/pslo.inc \
                 $(SRC)/poin.inc $(SRC)/qspl.inc $(SRC)/fft.inc \
                 $(SRC)/atwf.inc $(SRC)/ener.inc $(SRC)/prden.inc \
-                $(SRC)/kpts.inc $(SRC)/pimd.inc $(SRC)/bsym.inc
+                $(SRC)/kpts.inc $(SRC)/pimd.inc $(SRC)/bsym.inc \
+                $(SRC)/mw.inc
 
 elstpo.f:       $(SRC)/elstpo.F
 elstpo.o:       elstpo.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/cppt.inc \
@@ -1035,6 +1048,19 @@ forcedr.o:      forcedr.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/pslo.inc \
                 $(SRC)/cotr.inc $(SRC)/tpar.inc $(SRC)/pimd.inc \
                 $(SRC)/bsym.inc $(SRC)/mm_dim.inc $(SRC)/kpts.inc
 
+forcematch_kfit.f:$(SRC)/forcematch_kfit.F
+forcematch_kfit.o:forcematch_kfit.f $(SRC)/forcematch.inc $(SRC)/fm_cnst.inc \
+                $(SRC)/system.h $(SRC)/gromos.h $(SRC)/mm_dim.inc \
+                $(SRC)/mm_input.inc
+
+forcematch_qfit.f:$(SRC)/forcematch_qfit.F
+forcematch_qfit.o:forcematch_qfit.f $(SRC)/fileopen.inc $(SRC)/forcematch.inc \
+                $(SRC)/system.h $(SRC)/mm_dim.inc $(SRC)/gromos.h
+
+forcematch_util.f:$(SRC)/forcematch_util.F
+forcematch_util.o:forcematch_util.f $(SRC)/system.h $(SRC)/mm_dim.inc \
+                $(SRC)/forcematch.inc $(SRC)/fileopen.inc $(SRC)/gromos.h
+
 forcep.f:       $(SRC)/forcep.F
 forcep.o:       forcep.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/fft.inc \
                 $(SRC)/isos.inc
@@ -1045,8 +1071,8 @@ forces_diag.o:  forces_diag.f $(SRC)/system.h $(SRC)/spin.inc \
                 $(SRC)/ropt.inc $(SRC)/andr.inc $(SRC)/andp.inc \
                 $(SRC)/soft.inc $(SRC)/cotr.inc $(SRC)/tpar.inc \
                 $(SRC)/store.inc $(SRC)/elct2.inc $(SRC)/kpts.inc \
-                $(SRC)/mm_extrap.inc $(SRC)/pslo.inc $(SRC)/nlps.inc \
-                $(SRC)/fint.inc
+                $(SRC)/mm_extrap.inc $(SRC)/cdft.inc $(SRC)/pslo.inc \
+                $(SRC)/nlps.inc $(SRC)/fint.inc
 
 forces.f:       $(SRC)/forces.F
 forces.o:       forces.f $(SRC)/system.h $(SRC)/norm.inc $(SRC)/pslo.inc \
@@ -1061,6 +1087,15 @@ forces_p.o:     forces_p.f $(SRC)/system.h $(SRC)/norm.inc \
                 $(SRC)/geq0.inc $(SRC)/cppt.inc $(SRC)/spin.inc \
                 $(SRC)/ions.inc $(SRC)/kpts.inc $(SRC)/nlps.inc \
                 $(SRC)/response_p.inc $(SRC)/ener.inc
+
+forces_prop.f:  $(SRC)/forces_prop.F
+forces_prop.o:  forces_prop.f $(SRC)/system.h $(SRC)/spin.inc \
+                $(SRC)/elct.inc $(SRC)/ener.inc $(SRC)/norm.inc \
+                $(SRC)/ropt.inc $(SRC)/andr.inc $(SRC)/andp.inc \
+                $(SRC)/soft.inc $(SRC)/cotr.inc $(SRC)/tpar.inc \
+                $(SRC)/store.inc $(SRC)/td_input.inc $(SRC)/kpts.inc \
+                $(SRC)/kpnt.inc $(SRC)/geq0.inc $(SRC)/cnst.inc \
+                $(DEST)/irat.inc $(SRC)/efld.inc
 
 formf.f:        $(SRC)/formf.F
 formf.o:        formf.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/atom.inc \
@@ -1112,11 +1147,12 @@ fukui_p.o:      fukui_p.f $(SRC)/system.h $(DEST)/irat.inc \
                 $(SRC)/nlps.inc $(SRC)/sfac.inc
 
 functionals.f:  $(SRC)/functionals.F
-functionals.o:  functionals.f $(SRC)/func.inc
+functionals.o:  functionals.f $(SRC)/func.inc $(SRC)/cnst.inc
 
 fusion.f:       $(SRC)/fusion.F
 fusion.o:       fusion.f $(SRC)/system.h $(SRC)/shop.inc $(SRC)/filn.inc \
-                $(SRC)/coor.inc $(SRC)/store.inc $(SRC)/elct.inc
+                $(SRC)/coor.inc $(SRC)/store.inc $(SRC)/elct.inc \
+                $(SRC)/mm_dim.inc
 
 gcener.f:       $(SRC)/gcener.F
 gcener.o:       gcener.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/fft.inc \
@@ -1132,7 +1168,8 @@ genxc.o:        genxc.f $(SRC)/system.h $(SRC)/tbxc.inc $(SRC)/func.inc
 geofile.f:      $(SRC)/geofile.F
 geofile.o:      geofile.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/metr.inc \
                 $(SRC)/pimd.inc $(SRC)/adat.inc $(SRC)/cnst.inc \
-                $(SRC)/fileopen.inc $(DEST)/irat.inc $(SRC)/mm_dim.inc
+                $(SRC)/fileopen.inc $(DEST)/irat.inc $(SRC)/mm_dim.inc \
+                $(SRC)/mw.inc
 
 get_addr.f:     $(SRC)/get_addr.F
 get_addr.o:     get_addr.f
@@ -1164,6 +1201,11 @@ gfftmain.o:     gfftmain.f $(SRC)/system.h $(SRC)/fft.inc
 
 ghermit.f:      $(SRC)/ghermit.F
 ghermit.o:      ghermit.f
+
+gle.f:          $(SRC)/gle.F
+gle.o:          gle.f $(SRC)/system.h $(SRC)/gle.inc $(SRC)/cnst.inc \
+                $(SRC)/ions.inc $(SRC)/rmas.inc $(SRC)/store.inc \
+                $(SRC)/prng.inc $(SRC)/coor.inc $(SRC)/isos.inc
 
 global.f:       $(SRC)/global.F
 global.o:       global.f $(SRC)/system.h $(SRC)/pimd.inc
@@ -1352,6 +1394,13 @@ htrstr.o:       htrstr.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/cppt.inc \
                 $(SRC)/geq0.inc $(SRC)/sfac.inc $(SRC)/pslo.inc \
                 $(SRC)/ions.inc $(SRC)/strs.inc $(SRC)/str2.inc \
                 $(SRC)/ragg.inc
+
+icdft.f:        $(SRC)/icdft.F
+icdft.o:        icdft.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/elct.inc \
+                $(SRC)/ener.inc $(SRC)/fft.inc $(SRC)/cppt.inc \
+                $(SRC)/coor.inc $(SRC)/rswf.inc $(SRC)/cdft.inc \
+                $(SRC)/filn.inc $(SRC)/store.inc $(SRC)/ions.inc \
+                $(SRC)/transme.inc $(SRC)/cnst.inc $(SRC)/geq0.inc
 
 initclust.f:    $(SRC)/initclust.F
 initclust.o:    initclust.f $(SRC)/system.h $(SRC)/isos.inc \
@@ -1620,9 +1669,9 @@ lr_tddft.f:     $(SRC)/lr_tddft.F
 lr_tddft.o:     lr_tddft.f $(SRC)/system.h $(SRC)/elct.inc \
                 $(SRC)/poin.inc $(SRC)/spin.inc $(SRC)/isos.inc \
                 $(SRC)/ener.inc $(SRC)/nlcc.inc $(SRC)/tpot.inc \
-                $(SRC)/tauf.inc $(SRC)/linres.inc $(SRC)/efld.inc \
-                $(SRC)/mm_input.inc $(SRC)/mm_dim.inc $(SRC)/cppt.inc \
-                $(SRC)/pimd.inc
+                $(SRC)/tauf.inc $(SRC)/linres.inc $(DEST)/irat.inc \
+                $(SRC)/efld.inc $(SRC)/mm_input.inc $(SRC)/mm_dim.inc \
+                $(SRC)/cppt.inc $(SRC)/pimd.inc
 
 lr_upd.f:       $(SRC)/lr_upd.F
 lr_upd.o:       lr_upd.f $(SRC)/system.h $(SRC)/tpar.inc $(SRC)/soft.inc \
@@ -1640,10 +1689,10 @@ lsd_elf.o:      lsd_elf.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/cppt.inc \
                 $(SRC)/poin.inc $(SRC)/qspl.inc $(SRC)/fft.inc \
                 $(SRC)/atwf.inc $(SRC)/ener.inc $(SRC)/prden.inc \
                 $(SRC)/kpts.inc $(SRC)/pimd.inc $(SRC)/spin.inc \
-                $(SRC)/bsym.inc
+                $(SRC)/bsym.inc $(SRC)/mw.inc
 
 lsd_func.f:     $(SRC)/lsd_func.F
-lsd_func.o:     lsd_func.f $(SRC)/func.inc
+lsd_func.o:     lsd_func.f $(SRC)/func.inc $(SRC)/cnst.inc
 
 lsfbtr.f:       $(SRC)/lsfbtr.F
 lsfbtr.o:       lsfbtr.f
@@ -1681,7 +1730,8 @@ mddiag.o:       mddiag.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/ener.inc \
                 $(SRC)/kpnt.inc $(SRC)/atwf.inc $(SRC)/store.inc \
                 $(SRC)/linres.inc $(SRC)/response_p.inc $(SRC)/comvel.inc \
                 $(SRC)/bsym.inc $(SRC)/cnst_dyn.inc $(SRC)/fileopen.inc \
-                $(SRC)/mm_extrap.inc
+                $(SRC)/mm_extrap.inc $(SRC)/cdft.inc $(SRC)/gle.inc \
+                $(SRC)/isos.inc $(SRC)/td_input.inc $(SRC)/efld.inc
 
 mddiag-interaction_p.f:$(SRC)/mddiag-interaction_p.F
 mddiag-interaction_p.o:mddiag-interaction_p.f $(SRC)/system.h \
@@ -1703,7 +1753,7 @@ mdfile.o:       mdfile.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/ener.inc \
                 $(SRC)/fint.inc $(SRC)/poin.inc $(SRC)/kpts.inc \
                 $(SRC)/kpnt.inc $(SRC)/atwf.inc $(SRC)/store.inc \
                 $(SRC)/linres.inc $(SRC)/response_p.inc $(SRC)/comvel.inc \
-                $(SRC)/fileopen.inc
+                $(SRC)/fileopen.inc $(SRC)/mm_extrap.inc
 
 mdmain.f:       $(SRC)/mdmain.F
 mdmain.o:       mdmain.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/ener.inc \
@@ -1713,16 +1763,18 @@ mdmain.o:       mdmain.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/ener.inc \
                 $(SRC)/coor.inc $(SRC)/geq0.inc $(SRC)/spin.inc \
                 $(DEST)/irat.inc $(SRC)/nlcc.inc $(SRC)/cotr.inc \
                 $(SRC)/nlps.inc $(SRC)/store.inc $(SRC)/kpts.inc \
-                $(SRC)/wann.inc $(SRC)/cnst_dyn.inc $(SRC)/adat.inc \
-                $(SRC)/comvel.inc $(SRC)/bsym.inc $(SRC)/bsympnt.inc \
-                $(SRC)/fileopen.inc
+                $(SRC)/wann.inc $(SRC)/mw.inc $(SRC)/pimd.inc \
+                $(SRC)/cnst_dyn.inc $(SRC)/adat.inc $(SRC)/comvel.inc \
+                $(SRC)/bsym.inc $(SRC)/bsympnt.inc $(SRC)/fileopen.inc \
+                $(SRC)/gle.inc $(SRC)/isos.inc
 
 mdpt.f:         $(SRC)/mdpt.F
 mdpt.o:         mdpt.f $(SRC)/system.h $(SRC)/elct.inc $(SRC)/pslo.inc \
                 $(SRC)/ions.inc $(SRC)/nlps.inc $(SRC)/atwf.inc \
                 $(SRC)/kpts.inc $(SRC)/str2.inc $(SRC)/clas.inc \
                 $(SRC)/ddip.inc $(SRC)/linres.inc $(SRC)/bsym.inc \
-                $(SRC)/shop.inc $(SRC)/mm_dim.inc
+                $(SRC)/shop.inc $(SRC)/shop_rest.inc $(SRC)/shop_rest_2.inc \
+                $(SRC)/mm_dim.inc $(SRC)/mw.inc
 
 mdshop_bo.f:    $(SRC)/mdshop_bo.F
 mdshop_bo.o:    mdshop_bo.f $(SRC)/system.h $(SRC)/cnst.inc \
@@ -1737,7 +1789,7 @@ mdshop_bo.o:    mdshop_bo.f $(SRC)/system.h $(SRC)/cnst.inc \
                 $(SRC)/store.inc $(SRC)/linres.inc $(SRC)/response_p.inc \
                 $(SRC)/comvel.inc $(SRC)/bsym.inc $(SRC)/cnst_dyn.inc \
                 $(SRC)/fileopen.inc $(SRC)/wann.inc $(SRC)/shop.inc \
-                $(SRC)/mm_extrap.inc
+                $(SRC)/mm_extrap.inc $(SRC)/shop_rest.inc $(SRC)/shop_rest_2.inc
 
 mdshop_cp.f:    $(SRC)/mdshop_cp.F
 mdshop_cp.o:    mdshop_cp.f $(SRC)/system.h $(SRC)/cnst.inc \
@@ -1746,12 +1798,18 @@ mdshop_cp.o:    mdshop_cp.f $(SRC)/system.h $(SRC)/cnst.inc \
                 $(SRC)/geq0.inc $(SRC)/ions.inc $(DEST)/irat.inc \
                 $(SRC)/kpts.inc $(SRC)/nlcc.inc $(SRC)/nlps.inc \
                 $(SRC)/norm.inc $(SRC)/nose.inc $(SRC)/pslo.inc \
-                $(SRC)/ropt.inc $(SRC)/shop.inc $(SRC)/soft.inc \
-                $(SRC)/spin.inc $(SRC)/store.inc $(SRC)/tpar.inc \
-                $(SRC)/wann.inc $(SRC)/comvel.inc
+                $(SRC)/ropt.inc $(SRC)/shop.inc $(SRC)/shop_rest.inc \
+                $(SRC)/shop_rest_2.inc $(SRC)/soft.inc $(SRC)/spin.inc \
+                $(SRC)/store.inc $(SRC)/tpar.inc $(SRC)/wann.inc \
+                $(SRC)/comvel.inc
 
 memory.f:       $(SRC)/memory.F
 memory.o:       memory.f $(SRC)/system.h $(SRC)/memc.inc $(DEST)/irat.inc
+
+merge.f:        $(SRC)/merge.F
+merge.o:        merge.f $(SRC)/system.h $(SRC)/filn.inc $(SRC)/coor.inc \
+                $(SRC)/store.inc $(SRC)/elct.inc $(SRC)/cppt.inc \
+                $(SRC)/merge.inc
 
 meta_cell.f:    $(SRC)/meta_cell.F
 meta_cell.o:    meta_cell.f $(SRC)/system.h $(SRC)/ions.inc \
@@ -1771,8 +1829,8 @@ meta_colvar.o:  meta_colvar.f $(SRC)/system.h $(SRC)/ions.inc \
 meta_colvar_inp.f:$(SRC)/meta_colvar_inp.F
 meta_colvar_inp.o:meta_colvar_inp.f $(SRC)/system.h $(SRC)/cotr.inc \
                 $(DEST)/irat.inc $(SRC)/store.inc $(SRC)/ions.inc \
-                $(SRC)/prcp.inc $(SRC)/cnst_dyn.inc $(SRC)/cnst.inc \
-                $(SRC)/mm_dim.inc $(SRC)/mm_input.inc
+                $(SRC)/prcp.inc $(SRC)/mw.inc $(SRC)/cnst_dyn.inc \
+                $(SRC)/cnst.inc $(SRC)/mm_dim.inc $(SRC)/mm_input.inc
 
 meta_colvar_util.f:$(SRC)/meta_colvar_util.F
 meta_colvar_util.o:meta_colvar_util.f $(SRC)/system.h $(SRC)/cnst_dyn.inc \
@@ -1782,8 +1840,8 @@ meta_colvar_util.o:meta_colvar_util.f $(SRC)/system.h $(SRC)/cnst_dyn.inc \
 
 meta_cv.f:      $(SRC)/meta_cv.F
 meta_cv.o:      meta_cv.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/isos.inc \
-                $(SRC)/cotr.inc $(DEST)/irat.inc $(SRC)/adat.inc \
-                $(SRC)/fileopen.inc $(SRC)/cnst_dyn.inc $(SRC)/strs.inc \
+                $(SRC)/cotr.inc $(SRC)/cnst_dyn.inc $(DEST)/irat.inc \
+                $(SRC)/adat.inc $(SRC)/fileopen.inc $(SRC)/strs.inc \
                 $(SRC)/metr.inc
 
 meta_cv_qmmm.f: $(SRC)/meta_cv_qmmm.F
@@ -1792,21 +1850,24 @@ meta_cv_qmmm.o: meta_cv_qmmm.f $(SRC)/system.h $(SRC)/ions.inc \
                 $(SRC)/mm_input.inc $(DEST)/irat.inc $(SRC)/fileopen.inc
 
 meta_dyn_def.f: $(SRC)/meta_dyn_def.F
-meta_dyn_def.o: meta_dyn_def.f $(SRC)/system.h $(SRC)/cnst_dyn.inc \
-                $(SRC)/store.inc
+meta_dyn_def.o: meta_dyn_def.f $(SRC)/system.h $(SRC)/mw.inc \
+                $(SRC)/cnst_dyn.inc $(SRC)/store.inc
 
 meta_exlagr.f:  $(SRC)/meta_exlagr.F
 meta_exlagr.o:  meta_exlagr.f $(SRC)/system.h $(SRC)/ions.inc \
                 $(SRC)/cotr.inc $(SRC)/cnst_dyn.inc $(DEST)/irat.inc \
                 $(SRC)/tpar.inc $(SRC)/ropt.inc $(SRC)/soft.inc \
                 $(SRC)/store.inc $(SRC)/adat.inc $(SRC)/cnst.inc \
-                $(SRC)/strs.inc $(SRC)/fileopen.inc $(SRC)/mm_dim.inc
+                $(SRC)/strs.inc $(SRC)/fileopen.inc $(SRC)/mm_dim.inc \
+                $(SRC)/mw.inc $(SRC)/pimd.inc
 
 meta_exlagr_util.f:$(SRC)/meta_exlagr_util.F
 meta_exlagr_util.o:meta_exlagr_util.f $(SRC)/system.h $(SRC)/cnst_dyn.inc \
-                $(SRC)/cnst.inc $(SRC)/ener.inc $(SRC)/nose.inc \
-                $(SRC)/ropt.inc $(SRC)/fileopen.inc $(DEST)/irat.inc \
-                $(SRC)/ions.inc $(SRC)/strs.inc $(SRC)/metr.inc
+                $(SRC)/cnst.inc $(SRC)/mw.inc $(SRC)/ener.inc \
+                $(SRC)/nose.inc $(SRC)/ropt.inc $(SRC)/fileopen.inc \
+                $(DEST)/irat.inc $(SRC)/ions.inc $(SRC)/strs.inc \
+                $(SRC)/metr.inc $(SRC)/filn.inc $(SRC)/pimd.inc \
+                $(SRC)/cotr.inc
 
 meta_exl_mult.f:$(SRC)/meta_exl_mult.F
 meta_exl_mult.o:meta_exl_mult.f $(SRC)/system.h $(SRC)/ions.inc \
@@ -1821,7 +1882,7 @@ meta_ex_mul_util.o:meta_ex_mul_util.f $(SRC)/system.h $(SRC)/cnst_dyn.inc \
                 $(SRC)/ropt.inc $(SRC)/fileopen.inc
 
 metafun.f:      $(SRC)/metafun.F
-metafun.o:      metafun.f $(SRC)/func.inc
+metafun.o:      metafun.f $(SRC)/func.inc $(SRC)/cnst.inc
 
 meta_hpot.f:    $(SRC)/meta_hpot.F
 meta_hpot.o:    meta_hpot.f $(SRC)/system.h $(SRC)/cnst_dyn.inc \
@@ -1865,6 +1926,16 @@ mm_dim.f:       $(SRC)/mm_dim.F
 mm_dim.o:       mm_dim.f $(SRC)/system.h $(SRC)/tpar.inc $(SRC)/ions.inc \
                 $(SRC)/mm_dim.inc $(SRC)/mm_input.inc
 
+mm_forcematch.f:$(SRC)/mm_forcematch.F
+mm_forcematch.o:mm_forcematch.f $(SRC)/system.h $(SRC)/ener.inc \
+                $(SRC)/elct.inc $(SRC)/pslo.inc $(SRC)/ions.inc \
+                $(SRC)/ropt.inc $(SRC)/coor.inc $(SRC)/geq0.inc \
+                $(SRC)/spin.inc $(DEST)/irat.inc $(SRC)/nlcc.inc \
+                $(SRC)/andr.inc $(SRC)/andp.inc $(SRC)/poin.inc \
+                $(SRC)/kpts.inc $(SRC)/kpnt.inc $(SRC)/store.inc \
+                $(SRC)/fileopen.inc $(SRC)/efld.inc $(SRC)/mm_dim.inc \
+                $(SRC)/mm_input.inc $(SRC)/forcematch.inc
+
 mm_forces_diag.f:$(SRC)/mm_forces_diag.F
 mm_forces_diag.o:mm_forces_diag.f $(SRC)/system.h $(SRC)/spin.inc \
                 $(SRC)/elct.inc $(SRC)/ener.inc $(SRC)/norm.inc \
@@ -1872,12 +1943,21 @@ mm_forces_diag.o:mm_forces_diag.f $(SRC)/system.h $(SRC)/spin.inc \
                 $(SRC)/soft.inc $(SRC)/store.inc $(SRC)/linres.inc \
                 $(SRC)/mm_input.inc $(DEST)/irat.inc $(SRC)/mm_extrap.inc
 
+mm_forces_prop.f:$(SRC)/mm_forces_prop.F
+mm_forces_prop.o:mm_forces_prop.f $(SRC)/system.h $(SRC)/spin.inc \
+                $(SRC)/elct.inc $(SRC)/ener.inc $(SRC)/norm.inc \
+                $(SRC)/ropt.inc $(SRC)/andr.inc $(SRC)/andp.inc \
+                $(SRC)/soft.inc $(SRC)/store.inc $(SRC)/linres.inc \
+                $(SRC)/mm_input.inc $(DEST)/irat.inc $(SRC)/td_input.inc \
+                $(SRC)/kpts.inc $(SRC)/kpnt.inc $(SRC)/geq0.inc \
+                $(SRC)/cnst.inc $(SRC)/mm_dim.inc
+
 mm_init.f:      $(SRC)/mm_init.F
 mm_init.o:      mm_init.f $(SRC)/system.h $(DEST)/irat.inc \
                 $(SRC)/coor.inc $(SRC)/rmas.inc $(SRC)/ions.inc \
                 $(SRC)/store.inc $(SRC)/isos.inc $(SRC)/cotr.inc \
-                $(SRC)/cell.inc $(SRC)/mm_dim.inc $(SRC)/mm_input.inc \
-                $(SRC)/mm_ion_dens.inc
+                $(SRC)/fileopen.inc $(SRC)/adat.inc $(SRC)/cell.inc \
+                $(SRC)/mm_dim.inc $(SRC)/mm_input.inc $(SRC)/mm_ion_dens.inc
 
 mm_mddiag.f:    $(SRC)/mm_mddiag.F
 mm_mddiag.o:    mm_mddiag.f $(SRC)/system.h $(SRC)/cnst.inc \
@@ -1892,7 +1972,8 @@ mm_mddiag.o:    mm_mddiag.f $(SRC)/system.h $(SRC)/cnst.inc \
                 $(SRC)/store.inc $(SRC)/linres.inc $(SRC)/response_p.inc \
                 $(SRC)/rmas.inc $(SRC)/isos.inc $(SRC)/cnst_dyn.inc \
                 $(SRC)/comvel.inc $(SRC)/fileopen.inc $(SRC)/efld.inc \
-                $(SRC)/mm_dim.inc $(SRC)/mm_input.inc $(SRC)/mm_extrap.inc
+                $(SRC)/mm_dim.inc $(SRC)/mm_input.inc $(SRC)/mm_extrap.inc \
+                $(SRC)/td_input.inc
 
 mm_mdmain.f:    $(SRC)/mm_mdmain.F
 mm_mdmain.o:    mm_mdmain.f $(SRC)/system.h $(SRC)/cnst.inc \
@@ -1905,7 +1986,7 @@ mm_mdmain.o:    mm_mdmain.f $(SRC)/system.h $(SRC)/cnst.inc \
                 $(SRC)/kpts.inc $(SRC)/wann.inc $(SRC)/rmas.inc \
                 $(SRC)/cnst_dyn.inc $(SRC)/adat.inc $(SRC)/comvel.inc \
                 $(SRC)/fileopen.inc $(SRC)/bsym.inc $(SRC)/efld.inc \
-                $(SRC)/mm_dim.inc $(SRC)/mm_input.inc
+                $(SRC)/mm_dim.inc $(SRC)/mm_input.inc $(SRC)/shop_ekinqm.inc
 
 mm_mdshop_bo.f: $(SRC)/mm_mdshop_bo.F
 mm_mdshop_bo.o: mm_mdshop_bo.f $(SRC)/system.h $(SRC)/cnst.inc \
@@ -1920,8 +2001,9 @@ mm_mdshop_bo.o: mm_mdshop_bo.f $(SRC)/system.h $(SRC)/cnst.inc \
                 $(SRC)/store.inc $(SRC)/linres.inc $(SRC)/response_p.inc \
                 $(SRC)/rmas.inc $(SRC)/isos.inc $(SRC)/cnst_dyn.inc \
                 $(SRC)/comvel.inc $(SRC)/fileopen.inc $(SRC)/shop.inc \
-                $(SRC)/wann.inc $(SRC)/efld.inc $(SRC)/mm_dim.inc \
-                $(SRC)/mm_input.inc $(SRC)/mm_extrap.inc
+                $(SRC)/shop_rest.inc $(SRC)/shop_rest_2.inc \
+                $(SRC)/efld.inc $(SRC)/mm_dim.inc $(SRC)/mm_input.inc \
+                $(SRC)/mm_extrap.inc
 
 mm_mdshop_cp.f: $(SRC)/mm_mdshop_cp.F
 mm_mdshop_cp.o: mm_mdshop_cp.f $(SRC)/system.h $(SRC)/cnst.inc \
@@ -1933,8 +2015,9 @@ mm_mdshop_cp.o: mm_mdshop_cp.f $(SRC)/system.h $(SRC)/cnst.inc \
                 $(SRC)/cotr.inc $(SRC)/nlps.inc $(SRC)/store.inc \
                 $(SRC)/kpts.inc $(SRC)/wann.inc $(SRC)/rmas.inc \
                 $(SRC)/cnst_dyn.inc $(SRC)/adat.inc $(SRC)/comvel.inc \
-                $(SRC)/fileopen.inc $(SRC)/shop.inc $(SRC)/efld.inc \
-                $(SRC)/mm_dim.inc $(SRC)/mm_input.inc
+                $(SRC)/fileopen.inc $(SRC)/shop.inc $(SRC)/shop_rest.inc \
+                $(SRC)/shop_rest_2.inc $(SRC)/efld.inc $(SRC)/mm_dim.inc \
+                $(SRC)/mm_input.inc
 
 mm_qmmm_forcedr_bs.f:$(SRC)/mm_qmmm_forcedr_bs.F
 mm_qmmm_forcedr_bs.o:mm_qmmm_forcedr_bs.f $(SRC)/system.h $(SRC)/ener.inc \
@@ -2035,13 +2118,13 @@ nlsm1_s.o:      nlsm1_s.f $(SRC)/system.h $(SRC)/nlps.inc $(SRC)/ions.inc \
 
 nmr_chi_p.f:    $(SRC)/nmr_chi_p.F
 nmr_chi_p.o:    nmr_chi_p.f $(SRC)/system.h $(SRC)/cppt.inc \
-                $(SRC)/fft.inc $(SRC)/response_p.inc
+                $(SRC)/fft.inc $(SRC)/response_p.inc $(SRC)/elct.inc
 
 nmr_current_p.f:$(SRC)/nmr_current_p.F
 nmr_current_p.o:nmr_current_p.f $(SRC)/system.h $(SRC)/cppt.inc \
                 $(SRC)/coor.inc $(SRC)/cnst.inc $(SRC)/fft.inc \
                 $(SRC)/ions.inc $(SRC)/geq0.inc $(SRC)/response_p.inc \
-                $(SRC)/gvec.inc $(SRC)/prop.inc $(SRC)/elct.inc \
+                $(SRC)/elct.inc $(SRC)/gvec.inc $(SRC)/prop.inc \
                 $(SRC)/wann.inc
 
 nmr_full_p.f:   $(SRC)/nmr_full_p.F
@@ -2070,7 +2153,8 @@ nmr_shift_p.f:  $(SRC)/nmr_shift_p.F
 nmr_shift_p.o:  nmr_shift_p.f $(SRC)/system.h $(SRC)/fft.inc \
                 $(SRC)/response_p.inc $(SRC)/geq0.inc $(SRC)/cppt.inc \
                 $(SRC)/ions.inc $(SRC)/coor.inc $(SRC)/cnst.inc \
-                $(SRC)/adat.inc $(SRC)/prop.inc $(SRC)/gvec.inc
+                $(SRC)/adat.inc $(SRC)/prop.inc $(SRC)/elct.inc \
+                $(SRC)/gvec.inc
 
 nmr_util_p.f:   $(SRC)/nmr_util_p.F
 nmr_util_p.o:   nmr_util_p.f $(SRC)/system.h $(SRC)/coor.inc \
@@ -2093,7 +2177,7 @@ nosalloc.f:     $(SRC)/nosalloc.F
 nosalloc.o:     nosalloc.f $(SRC)/system.h $(SRC)/ions.inc \
                 $(SRC)/nose.inc $(SRC)/pimd.inc $(DEST)/irat.inc \
                 $(SRC)/rmas.inc $(SRC)/mm_input.inc $(SRC)/mm_dim.inc \
-                $(SRC)/fileopen.inc $(SRC)/bsym.inc
+                $(SRC)/fileopen.inc $(SRC)/bsym.inc $(SRC)/mw.inc
 
 noscinit.f:     $(SRC)/noscinit.F
 noscinit.o:     noscinit.f $(SRC)/system.h $(SRC)/nose.inc \
@@ -2328,7 +2412,8 @@ pm_gmopts.o:    pm_gmopts.f $(SRC)/system.h $(SRC)/ions.inc \
 pm_init.f:      $(SRC)/pm_init.F
 pm_init.o:      pm_init.f $(SRC)/system.h $(SRC)/pimd.inc $(SRC)/ions.inc \
                 $(SRC)/rmas.inc $(SRC)/cnst.inc $(DEST)/irat.inc \
-                $(SRC)/adat.inc $(SRC)/fileopen.inc $(SRC)/cotr.inc
+                $(SRC)/adat.inc $(SRC)/fileopen.inc $(SRC)/cotr.inc \
+                $(SRC)/mfep.inc $(SRC)/envj.inc
 
 pm_mdpt.f:      $(SRC)/pm_mdpt.F
 pm_mdpt.o:      pm_mdpt.f $(SRC)/system.h $(SRC)/elct.inc $(SRC)/pslo.inc \
@@ -2338,7 +2423,8 @@ pm_mdpt.o:      pm_mdpt.f $(SRC)/system.h $(SRC)/elct.inc $(SRC)/pslo.inc \
                 $(SRC)/shop.inc $(SRC)/mm_dim.inc $(SRC)/printp.inc \
                 $(SRC)/coor.inc $(SRC)/filn.inc $(SRC)/store.inc \
                 $(SRC)/cotr.inc $(SRC)/pimd.inc $(SRC)/fileopen.inc \
-                $(SRC)/soft.inc $(SRC)/mfep.inc $(SRC)/cnst.inc
+                $(SRC)/soft.inc $(SRC)/mfep.inc $(SRC)/cnst.inc \
+                $(DEST)/irat.inc
 
 pm_wf.f:        $(SRC)/pm_wf.F
 pm_wf.o:        pm_wf.f $(SRC)/system.h $(SRC)/elct.inc $(SRC)/ions.inc \
@@ -2395,6 +2481,14 @@ prcpmd.o:       prcpmd.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/ener.inc \
                 $(SRC)/prcp.inc $(SRC)/store.inc $(SRC)/kpts.inc \
                 $(SRC)/comvel.inc $(SRC)/cnst_dyn.inc $(SRC)/fileopen.inc
 
+prep_forcematch.f:$(SRC)/prep_forcematch.F
+prep_forcematch.o:prep_forcematch.f $(SRC)/system.h $(SRC)/elct.inc \
+                $(SRC)/pslo.inc $(SRC)/ions.inc $(SRC)/nlps.inc \
+                $(SRC)/atwf.inc $(SRC)/kpts.inc $(SRC)/str2.inc \
+                $(SRC)/clas.inc $(SRC)/ddip.inc $(SRC)/linres.inc \
+                $(SRC)/bsym.inc $(SRC)/shop.inc $(SRC)/shop_rest.inc \
+                $(SRC)/shop_rest_2.inc $(SRC)/mm_dim.inc $(SRC)/mw.inc
+
 printave.f:     $(SRC)/printave.F
 printave.o:     printave.f $(SRC)/system.h
 
@@ -2412,11 +2506,15 @@ printp.o:       printp.f $(SRC)/system.h $(DEST)/irat.inc $(SRC)/ions.inc \
                 $(SRC)/ropt.inc $(SRC)/metr.inc $(SRC)/strs.inc \
                 $(SRC)/rmas.inc $(SRC)/prcp.inc $(SRC)/ddip.inc \
                 $(SRC)/clas.inc $(SRC)/store.inc $(SRC)/adat.inc \
-                $(SRC)/cell.inc $(SRC)/cnst_dyn.inc $(SRC)/fileopen.inc \
-                $(SRC)/printp.inc $(SRC)/mm_dim.inc
+                $(SRC)/cell.inc $(SRC)/mw.inc $(SRC)/cnst_dyn.inc \
+                $(SRC)/fileopen.inc $(SRC)/printp.inc $(SRC)/mm_dim.inc \
+                $(SRC)/mfep.inc
 
 prmem.f:        $(SRC)/prmem.F
 prmem.o:        prmem.f $(SRC)/envj.inc
+
+prng.f:         $(SRC)/prng.F
+prng.o:         prng.f $(SRC)/system.h $(SRC)/prng.inc
 
 proja.f:        $(SRC)/proja.F
 proja.o:        proja.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/norm.inc \
@@ -2442,6 +2540,12 @@ prowfn.o:       prowfn.f $(SRC)/system.h $(SRC)/atom.inc $(SRC)/ener.inc \
                 $(SRC)/ions.inc $(SRC)/pslo.inc $(SRC)/atwf.inc \
                 $(SRC)/sfac.inc $(DEST)/irat.inc $(SRC)/prop.inc \
                 $(SRC)/prden.inc $(SRC)/fileopen.inc
+
+proylm.f:       $(SRC)/proylm.F
+proylm.o:       proylm.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/cppt.inc \
+                $(SRC)/spin.inc $(SRC)/adat.inc $(DEST)/irat.inc \
+                $(SRC)/prop.inc $(SRC)/fileopen.inc $(SRC)/geq0.inc \
+                $(SRC)/gvec.inc
 
 prpcmove.f:     $(SRC)/prpcmove.F
 prpcmove.o:     prpcmove.f $(SRC)/system.h $(SRC)/nose.inc \
@@ -2534,7 +2638,8 @@ ratom.o:        ratom.f $(SRC)/system.h $(SRC)/coor.inc $(SRC)/dpot.inc \
                 $(SRC)/movi.inc $(SRC)/nlcc.inc $(SRC)/ragg.inc \
                 $(SRC)/pslo.inc $(SRC)/symm.inc $(DEST)/irat.inc \
                 $(SRC)/clas.inc $(SRC)/atwf.inc $(SRC)/mm_input.inc \
-                $(SRC)/mm_dim.inc $(SRC)/cnst_dyn.inc $(SRC)/adat.inc
+                $(SRC)/mm_dim.inc $(SRC)/mw.inc $(SRC)/cnst_dyn.inc \
+                $(SRC)/adat.inc
 
 rattle.f:       $(SRC)/rattle.F
 rattle.o:       rattle.f $(SRC)/system.h $(SRC)/tpar.inc $(SRC)/ions.inc \
@@ -2546,6 +2651,10 @@ rbfgs.o:        rbfgs.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/tpar.inc \
 
 readff.f:       $(SRC)/readff.F
 readff.o:       readff.f $(SRC)/system.h $(SRC)/clas.inc
+
+read_prop.f:    $(SRC)/read_prop.F
+read_prop.o:    read_prop.f $(SRC)/system.h $(SRC)/efld.inc \
+                $(DEST)/irat.inc $(SRC)/gvec.inc $(SRC)/td_input.inc
 
 readsr.f:       $(SRC)/readsr.F
 readsr.o:       readsr.f
@@ -2624,8 +2733,8 @@ rgmopt.o:       rgmopt.f $(SRC)/system.h $(SRC)/atwf.inc $(SRC)/spin.inc \
                 $(SRC)/metr.inc $(SRC)/symm.inc $(SRC)/xinr.inc \
                 $(SRC)/response_p.inc $(SRC)/fft.inc $(SRC)/implhv.inc \
                 $(DEST)/irat.inc $(SRC)/linres.inc $(SRC)/bsym.inc \
-                $(SRC)/bsympnt.inc $(SRC)/efld.inc $(SRC)/mm_dim.inc \
-                $(SRC)/mm_input.inc $(SRC)/lscal.inc
+                $(SRC)/bsympnt.inc $(SRC)/cdft.inc $(SRC)/efld.inc \
+                $(SRC)/mm_dim.inc $(SRC)/mm_input.inc $(SRC)/lscal.inc
 
 rgs.f:          $(SRC)/rgs.F
 rgs.o:          rgs.f $(SRC)/system.h $(SRC)/geq0.inc
@@ -2684,7 +2793,7 @@ rhopri.o:       rhopri.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/ions.inc \
                 $(SRC)/ropt.inc $(SRC)/cppt.inc $(SRC)/ener.inc \
                 $(SRC)/kpts.inc $(SRC)/kpnt.inc $(SRC)/prden.inc \
                 $(SRC)/pimd.inc $(SRC)/bsym.inc $(SRC)/response_p.inc \
-                $(SRC)/store.inc
+                $(SRC)/store.inc $(SRC)/cdft.inc $(SRC)/mw.inc
 
 rhov1.f:        $(SRC)/rhov1.F
 rhov1.o:        rhov1.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/pslo.inc \
@@ -2745,7 +2854,7 @@ rinvel.o:       rinvel.f $(SRC)/system.h $(SRC)/coor.inc $(SRC)/cnst.inc \
                 $(SRC)/pimd.inc
 
 rk4ov.f:        $(SRC)/rk4ov.F
-rk4ov.o:        rk4ov.f $(SRC)/shop.inc $(SRC)/ropt.inc
+rk4ov.o:        rk4ov.f $(SRC)/system.h $(SRC)/shop.inc $(SRC)/ropt.inc
 
 rkpnt.f:        $(SRC)/rkpnt.F
 rkpnt.o:        rkpnt.f $(SRC)/system.h $(DEST)/irat.inc $(SRC)/envj.inc \
@@ -2908,12 +3017,14 @@ rtbis.o:        rtbis.f
 rv30.f:         $(SRC)/rv30.F
 rv30.o:         rv30.f $(SRC)/system.h $(SRC)/filn.inc $(SRC)/nose.inc \
                 $(DEST)/irat.inc $(SRC)/store.inc $(SRC)/fileopen.inc \
-                $(SRC)/geq0.inc $(SRC)/ions.inc $(SRC)/symm.inc \
-                $(SRC)/elct.inc $(SRC)/ener.inc $(SRC)/metr.inc \
-                $(SRC)/cell.inc $(SRC)/poin.inc $(SRC)/kpts.inc \
-                $(SRC)/kpnt.inc $(SRC)/pimd.inc $(SRC)/clas.inc \
-                $(SRC)/spin.inc $(SRC)/cotr.inc $(SRC)/lscal.inc \
-                $(SRC)/bsym.inc $(SRC)/mm_dim.inc $(SRC)/mm_extrap.inc
+                $(SRC)/cdft.inc $(SRC)/mw.inc $(SRC)/geq0.inc \
+                $(SRC)/ions.inc $(SRC)/symm.inc $(SRC)/elct.inc \
+                $(SRC)/ener.inc $(SRC)/metr.inc $(SRC)/cell.inc \
+                $(SRC)/poin.inc $(SRC)/kpts.inc $(SRC)/kpnt.inc \
+                $(SRC)/pimd.inc $(SRC)/clas.inc $(SRC)/spin.inc \
+                $(SRC)/cotr.inc $(SRC)/lscal.inc $(SRC)/bsym.inc \
+                $(SRC)/mm_dim.inc $(SRC)/shop_rest.inc $(SRC)/mm_extrap.inc \
+                $(SRC)/shop_rest_2.inc $(SRC)/prng.inc $(SRC)/gle.inc
 
 rwfopt.f:       $(SRC)/rwfopt.F
 rwfopt.o:       rwfopt.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/ener.inc \
@@ -2923,9 +3034,11 @@ rwfopt.o:       rwfopt.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/ener.inc \
                 $(SRC)/ions.inc $(SRC)/andr.inc $(SRC)/andp.inc \
                 $(SRC)/nlps.inc $(SRC)/fint.inc $(SRC)/cnst.inc \
                 $(SRC)/poin.inc $(SRC)/kpts.inc $(SRC)/kpnt.inc \
-                $(SRC)/fft.inc $(SRC)/store.inc $(SRC)/efld.inc \
-                $(SRC)/mm_input.inc $(SRC)/mm_dim.inc $(SRC)/cplngs.inc \
-                $(SRC)/lscal.inc $(SRC)/isos.inc $(SRC)/linres.inc
+                $(SRC)/fft.inc $(SRC)/store.inc $(SRC)/rswf.inc \
+                $(SRC)/cdft.inc $(DEST)/irat.inc $(SRC)/clas.inc \
+                $(SRC)/efld.inc $(SRC)/mm_input.inc $(SRC)/mm_dim.inc \
+                $(SRC)/td_input.inc $(SRC)/cplngs.inc $(SRC)/lscal.inc \
+                $(SRC)/isos.inc $(SRC)/linres.inc
 
 rwfopt_nuc.f:   $(SRC)/rwfopt_nuc.F
 rwfopt_nuc.o:   rwfopt_nuc.f $(SRC)/system.h $(SRC)/spin.inc \
@@ -3048,8 +3161,9 @@ setbasis.o:     setbasis.f $(SRC)/system.h $(SRC)/atom.inc \
                 $(SRC)/adat.inc $(SRC)/ions.inc $(SRC)/dpot.inc \
                 $(SRC)/pslo.inc $(SRC)/atwf.inc $(SRC)/qspl.inc \
                 $(DEST)/irat.inc $(SRC)/pimd.inc $(SRC)/response_p.inc \
-                $(SRC)/cppt.inc $(SRC)/cnst.inc $(SRC)/gvec.inc \
-                $(SRC)/sphe.inc $(SRC)/sfac.inc $(SRC)/geq0.inc
+                $(SRC)/mw.inc $(SRC)/cdft.inc $(SRC)/cppt.inc \
+                $(SRC)/cnst.inc $(SRC)/gvec.inc $(SRC)/sphe.inc \
+                $(SRC)/vdbp.inc $(SRC)/sfac.inc $(SRC)/geq0.inc
 
 setbsstate.f:   $(SRC)/setbsstate.F
 setbsstate.o:   setbsstate.f $(SRC)/system.h $(SRC)/bsym.inc \
@@ -3062,7 +3176,8 @@ setcnst.o:      setcnst.f $(SRC)/system.h $(SRC)/soft.inc $(SRC)/cnst.inc
 setirec.f:      $(SRC)/setirec.F
 setirec.o:      setirec.f $(SRC)/system.h $(SRC)/store.inc \
                 $(SRC)/kpts.inc $(SRC)/clas.inc $(SRC)/nose.inc \
-                $(DEST)/irat.inc $(SRC)/cotr.inc
+                $(SRC)/gle.inc $(SRC)/shop_rest.inc $(DEST)/irat.inc \
+                $(SRC)/cotr.inc
 
 setsc.f:        $(SRC)/setsc.F
 setsc.o:        setsc.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/gvec.inc \
@@ -3094,21 +3209,31 @@ shake.o:        shake.f $(SRC)/system.h $(SRC)/tpar.inc $(SRC)/ions.inc \
 
 shop_adds.f:    $(SRC)/shop_adds.F
 shop_adds.o:    shop_adds.f $(SRC)/system.h $(SRC)/shop.inc \
-                $(SRC)/elct.inc $(SRC)/spin.inc $(SRC)/ener.inc \
-                $(SRC)/sfac.inc $(SRC)/geq0.inc $(SRC)/coor.inc \
-                $(SRC)/ropt.inc $(SRC)/ions.inc $(SRC)/fileopen.inc \
+                $(SRC)/shop_rest.inc $(SRC)/elct.inc $(SRC)/spin.inc \
+                $(SRC)/ener.inc $(SRC)/sfac.inc $(SRC)/geq0.inc \
+                $(SRC)/coor.inc $(SRC)/ropt.inc $(SRC)/shop_ekinqm.inc \
+                $(SRC)/mm_dim.inc $(SRC)/ions.inc $(SRC)/fileopen.inc \
                 $(DEST)/irat.inc
 
 sh_tddft.f:     $(SRC)/sh_tddft.F
 sh_tddft.o:     sh_tddft.f $(SRC)/system.h $(SRC)/cnst.inc \
                 $(SRC)/spin.inc $(SRC)/linres.inc $(DEST)/irat.inc \
-                $(SRC)/tpar.inc $(SRC)/elct.inc $(SRC)/isos.inc \
-                $(SRC)/ropt.inc $(SRC)/geq0.inc $(SRC)/poin.inc \
-                $(SRC)/ener.inc $(SRC)/norm.inc $(SRC)/cppt.inc \
-                $(SRC)/soft.inc $(SRC)/nlps.inc $(SRC)/fint.inc \
-                $(SRC)/conv.inc $(SRC)/ddip.inc $(SRC)/nlcc.inc \
-                $(SRC)/tauf.inc $(SRC)/func.inc $(SRC)/store.inc \
-                $(SRC)/kpts.inc
+                $(SRC)/tpar.inc $(SRC)/fileopen.inc $(SRC)/elct.inc \
+                $(SRC)/isos.inc $(SRC)/ropt.inc $(SRC)/geq0.inc \
+                $(SRC)/poin.inc $(SRC)/ener.inc $(SRC)/norm.inc \
+                $(SRC)/cppt.inc $(SRC)/soft.inc $(SRC)/nlps.inc \
+                $(SRC)/fint.inc $(SRC)/conv.inc $(SRC)/ddip.inc \
+                $(SRC)/nlcc.inc $(SRC)/tauf.inc $(SRC)/func.inc \
+                $(SRC)/store.inc $(SRC)/kpts.inc $(SRC)/ions.inc \
+                $(SRC)/cotr.inc $(SRC)/mm_dim.inc $(SRC)/mm_input.inc \
+                $(SRC)/rmas.inc $(SRC)/gvec.inc $(SRC)/prop.inc \
+                $(SRC)/metr.inc $(SRC)/symm.inc
+
+sh_util.f:      $(SRC)/sh_util.F
+sh_util.o:      sh_util.f $(SRC)/system.h $(SRC)/linres.inc \
+                $(SRC)/tpar.inc $(DEST)/irat.inc $(SRC)/cnst.inc \
+                $(SRC)/nose.inc $(SRC)/spin.inc $(SRC)/fileopen.inc \
+                $(SRC)/mm_dim.inc $(SRC)/ions.inc $(SRC)/mm_input.inc
 
 simple_model_p.f:$(SRC)/simple_model_p.F
 simple_model_p.o:simple_model_p.f $(SRC)/system.h $(SRC)/response_p.inc \
@@ -3195,6 +3320,13 @@ symtrz.o:       symtrz.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/symm.inc \
                 $(SRC)/cnst.inc $(SRC)/fft.inc $(DEST)/irat.inc \
                 $(SRC)/gvec.inc $(SRC)/geq0.inc
 
+syscomb.f:      $(SRC)/syscomb.F
+syscomb.o:      syscomb.f $(SRC)/system.h $(SRC)/shop.inc $(SRC)/filn.inc \
+                $(SRC)/coor.inc $(SRC)/store.inc $(SRC)/spin.inc \
+                $(SRC)/elct.inc $(SRC)/prden.inc $(SRC)/ions.inc \
+                $(SRC)/rmas.inc $(SRC)/cppt.inc $(SRC)/cnst.inc \
+                $(SRC)/cell.inc
+
 sysdepend.o:    $(SRC)/sysdepend.c
 
 sysin.f:        $(SRC)/sysin.F
@@ -3206,7 +3338,7 @@ sysin.o:        sysin.f $(SRC)/system.h $(SRC)/elct.inc $(SRC)/cell.inc \
                 $(SRC)/pslo.inc $(SRC)/store.inc $(SRC)/elct2.inc \
                 $(SRC)/kdpc.inc $(SRC)/clas.inc $(SRC)/fcas.inc \
                 $(SRC)/cplngs.inc $(SRC)/ddip.inc $(SRC)/hfx.inc \
-                $(SRC)/shock.inc $(SRC)/dg.inc
+                $(SRC)/shock.inc $(SRC)/dg.inc $(SRC)/cdft.inc
 
 t3dfft.f:       $(SRC)/t3dfft.F
 t3dfft.o:       t3dfft.f $(SRC)/system.h $(SRC)/fft.inc
@@ -3215,6 +3347,14 @@ tauofr.f:       $(SRC)/tauofr.F
 tauofr.o:       tauofr.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/fft.inc \
                 $(SRC)/tauf.inc $(SRC)/elct.inc $(SRC)/pslo.inc \
                 $(SRC)/cnst.inc $(SRC)/geq0.inc $(SRC)/cppt.inc
+
+td_cayley.f:    $(SRC)/td_cayley.F
+td_cayley.o:    td_cayley.f $(SRC)/system.h $(SRC)/ions.inc \
+                $(SRC)/cppt.inc $(SRC)/coor.inc $(SRC)/dipo.inc \
+                $(SRC)/fft.inc $(SRC)/cnst.inc $(SRC)/elct.inc \
+                $(SRC)/sfac.inc $(SRC)/sgpp.inc $(SRC)/nlps.inc \
+                $(SRC)/geq0.inc $(SRC)/kpts.inc $(SRC)/ener.inc \
+                $(SRC)/td_input.inc $(SRC)/spin.inc $(SRC)/soft.inc
 
 td_dav.f:       $(SRC)/td_dav.F
 td_dav.o:       td_dav.f $(SRC)/system.h $(SRC)/elct.inc $(SRC)/tpar.inc \
@@ -3239,6 +3379,18 @@ td_mm_qmmm_forcedr.f:$(SRC)/td_mm_qmmm_forcedr.F
 td_mm_qmmm_forcedr.o:td_mm_qmmm_forcedr.f $(SRC)/system.h $(SRC)/ener.inc \
                 $(DEST)/irat.inc $(SRC)/ropt.inc $(SRC)/mm_input.inc \
                 $(SRC)/mm_dim.inc
+
+td_nacvs.f:     $(SRC)/td_nacvs.F
+td_nacvs.o:     td_nacvs.f $(SRC)/system.h $(SRC)/ions.inc \
+                $(SRC)/coor.inc $(SRC)/sgpp.inc $(SRC)/spin.inc \
+                $(SRC)/elct.inc $(SRC)/cplngs.inc $(SRC)/nlps.inc \
+                $(SRC)/linres.inc $(DEST)/irat.inc $(SRC)/fft.inc \
+                $(SRC)/isos.inc $(SRC)/cppt.inc $(SRC)/ropt.inc \
+                $(SRC)/sfac.inc $(SRC)/poin.inc $(SRC)/ener.inc \
+                $(SRC)/symm.inc $(SRC)/pslo.inc $(SRC)/cvan.inc \
+                $(SRC)/cnst.inc $(SRC)/geq0.inc $(SRC)/rmas.inc \
+                $(SRC)/nose.inc $(SRC)/cotr.inc $(SRC)/cell.inc \
+                $(SRC)/fileopen.inc
 
 td_nhdav.f:     $(SRC)/td_nhdav.F
 td_nhdav.o:     td_nhdav.f $(SRC)/system.h $(SRC)/elct.inc \
@@ -3280,8 +3432,18 @@ td_rdiis.o:     td_rdiis.f $(SRC)/system.h $(SRC)/elct.inc \
                 $(SRC)/ropt.inc $(SRC)/geq0.inc $(SRC)/cppt.inc \
                 $(SRC)/cnst.inc $(SRC)/linres.inc $(SRC)/spin.inc
 
+td_util.f:      $(SRC)/td_util.F
+td_util.o:      td_util.f $(SRC)/system.h $(SRC)/cppt.inc $(SRC)/geq0.inc \
+                $(SRC)/elct.inc $(SRC)/coor.inc $(SRC)/ions.inc \
+                $(SRC)/fft.inc $(SRC)/td_input.inc $(SRC)/cnst.inc \
+                $(SRC)/kpnt.inc $(DEST)/irat.inc $(SRC)/ener.inc \
+                $(SRC)/efld.inc $(SRC)/dipo.inc $(SRC)/kpts.inc \
+                $(SRC)/spin.inc $(SRC)/sfac.inc $(SRC)/cell.inc \
+                $(SRC)/gvec.inc
+
 testex.f:       $(SRC)/testex.F
-testex.o:       testex.f $(SRC)/system.h $(DEST)/irat.inc $(SRC)/pimd.inc
+testex.o:       testex.f $(SRC)/system.h $(DEST)/irat.inc $(SRC)/pimd.inc \
+                $(SRC)/mw.inc
 
 teststore.f:    $(SRC)/teststore.F
 teststore.o:    teststore.f $(SRC)/system.h $(SRC)/store.inc
@@ -3299,6 +3461,14 @@ totstr.f:       $(SRC)/totstr.F
 totstr.o:       totstr.f $(SRC)/system.h $(SRC)/strs.inc $(SRC)/metr.inc \
                 $(SRC)/cnst.inc $(SRC)/prcp.inc $(SRC)/vdwc.inc \
                 $(SRC)/shock.inc $(SRC)/cnst_dyn.inc
+
+transme.f:      $(SRC)/transme.F
+transme.o:      transme.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/elct.inc \
+                $(SRC)/geq0.inc $(SRC)/cdft.inc $(SRC)/cppt.inc \
+                $(SRC)/transme.inc $(SRC)/fft.inc $(SRC)/rswf.inc \
+                $(SRC)/gvec.inc $(DEST)/irat.inc $(SRC)/ions.inc \
+                $(SRC)/shop.inc $(SRC)/filn.inc $(SRC)/coor.inc \
+                $(SRC)/store.inc
 
 tst2min.f:      $(SRC)/tst2min.F
 tst2min.o:      tst2min.f $(SRC)/system.h $(SRC)/cnst_dyn.inc \
@@ -3451,7 +3621,8 @@ vofrhoa.f:      $(SRC)/vofrhoa.F
 vofrhoa.o:      vofrhoa.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/ener.inc \
                 $(SRC)/ions.inc $(SRC)/simul.inc $(SRC)/sfac.inc \
                 $(SRC)/cppt.inc $(SRC)/geq0.inc $(SRC)/fft.inc \
-                $(SRC)/efld.inc $(SRC)/elct.inc $(SRC)/isos.inc
+                $(SRC)/efld.inc $(SRC)/elct.inc $(SRC)/td_input.inc \
+                $(SRC)/isos.inc
 
 vofrhob.f:      $(SRC)/vofrhob.F
 vofrhob.o:      vofrhob.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/ions.inc \
@@ -3479,7 +3650,8 @@ vofrhoh.f:      $(SRC)/vofrhoh.F
 vofrhoh.o:      vofrhoh.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/ener.inc \
                 $(SRC)/isos.inc $(SRC)/ions.inc $(SRC)/simul.inc \
                 $(SRC)/sfac.inc $(SRC)/cppt.inc $(SRC)/geq0.inc \
-                $(SRC)/fft.inc $(SRC)/efld.inc $(SRC)/elct.inc
+                $(SRC)/fft.inc $(SRC)/efld.inc $(SRC)/elct.inc \
+                $(SRC)/td_input.inc
 
 vofrhos.f:      $(SRC)/vofrhos.F
 vofrhos.o:      vofrhos.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/ions.inc \
@@ -3494,13 +3666,16 @@ vofrhot.f:      $(SRC)/vofrhot.F
 vofrhot.o:      vofrhot.f $(SRC)/system.h $(SRC)/cnst.inc $(SRC)/ener.inc \
                 $(SRC)/ions.inc $(SRC)/simul.inc $(SRC)/sfac.inc \
                 $(SRC)/cppt.inc $(SRC)/geq0.inc $(SRC)/fft.inc \
-                $(SRC)/efld.inc $(SRC)/elct.inc $(SRC)/isos.inc
+                $(SRC)/efld.inc $(SRC)/elct.inc $(SRC)/td_input.inc \
+                $(SRC)/isos.inc
 
 vpsi.f:         $(SRC)/vpsi.F
 vpsi.o:         vpsi.f $(SRC)/system.h $(SRC)/spin.inc $(SRC)/cppt.inc \
                 $(SRC)/cnst.inc $(SRC)/geq0.inc $(SRC)/fft.inc \
                 $(SRC)/rswf.inc $(SRC)/prcp.inc $(SRC)/kpts.inc \
-                $(SRC)/kpnt.inc $(SRC)/ener.inc $(SRC)/dg.inc
+                $(SRC)/kpnt.inc $(SRC)/ener.inc $(SRC)/dg.inc \
+                $(SRC)/cdft.inc $(SRC)/td_input.inc $(SRC)/efld.inc \
+                $(DEST)/irat.inc $(SRC)/ddip.inc
 
 vpsi_lse.f:     $(SRC)/vpsi_lse.F
 vpsi_lse.o:     vpsi_lse.f $(SRC)/system.h $(SRC)/spin.inc \
@@ -3527,7 +3702,7 @@ wannier_center.o:wannier_center.f $(SRC)/system.h $(SRC)/wann.inc \
                 $(SRC)/metr.inc $(SRC)/store.inc $(SRC)/hfx.inc \
                 $(DEST)/irat.inc $(SRC)/ions.inc $(SRC)/ropt.inc \
                 $(SRC)/cnst.inc $(SRC)/adat.inc $(SRC)/response_p.inc \
-                $(SRC)/fileopen.inc $(SRC)/mm_dim.inc
+                $(SRC)/fileopen.inc $(SRC)/mm_dim.inc $(SRC)/cdft.inc
 
 wannier.f:      $(SRC)/wannier.F
 wannier.o:      wannier.f
@@ -3538,7 +3713,9 @@ wannier_print.o:wannier_print.f $(SRC)/system.h $(SRC)/wann.inc \
 
 wc_dos.f:       $(SRC)/wc_dos.F
 wc_dos.o:       wc_dos.f $(SRC)/system.h $(SRC)/geq0.inc $(SRC)/wann.inc \
-                $(SRC)/spin.inc $(SRC)/fileopen.inc $(SRC)/cnst.inc
+                $(SRC)/spin.inc $(SRC)/fileopen.inc $(SRC)/cnst.inc \
+                $(SRC)/cppt.inc $(SRC)/coor.inc $(SRC)/ions.inc \
+                $(SRC)/fft.inc $(SRC)/prop.inc
 
 wfnio.f:        $(SRC)/wfnio.F
 wfnio.o:        wfnio.f $(SRC)/system.h $(DEST)/irat.inc $(SRC)/spin.inc \
@@ -3571,17 +3748,18 @@ wrccfl.o:       wrccfl.f $(SRC)/system.h $(SRC)/bsym.inc $(SRC)/ropt.inc \
 wrener.f:       $(SRC)/wrener.F
 wrener.o:       wrener.f $(SRC)/system.h $(SRC)/store.inc $(SRC)/ions.inc \
                 $(SRC)/ropt.inc $(SRC)/clas.inc $(SRC)/temps.inc \
-                $(SRC)/mm_input.inc $(SRC)/nlps.inc $(SRC)/fint.inc \
-                $(SRC)/spin.inc $(SRC)/ener.inc $(SRC)/pslo.inc \
-                $(SRC)/adat.inc $(SRC)/cnst.inc $(SRC)/response_p.inc \
-                $(SRC)/mm_dim.inc $(SRC)/kpts.inc $(SRC)/kpnt.inc \
-                $(SRC)/conv.inc $(SRC)/strs.inc $(SRC)/rmas.inc \
-                $(SRC)/coor.inc $(SRC)/metr.inc
+                $(SRC)/mm_input.inc $(SRC)/cdft.inc $(SRC)/nlps.inc \
+                $(SRC)/fint.inc $(SRC)/spin.inc $(SRC)/ener.inc \
+                $(SRC)/pslo.inc $(SRC)/adat.inc $(SRC)/cnst.inc \
+                $(SRC)/response_p.inc $(SRC)/mm_dim.inc $(SRC)/vdwc.inc \
+                $(SRC)/kpts.inc $(SRC)/kpnt.inc $(SRC)/conv.inc \
+                $(SRC)/strs.inc $(SRC)/rmas.inc $(SRC)/coor.inc \
+                $(SRC)/metr.inc
 
 wrgeo.f:        $(SRC)/wrgeo.F
 wrgeo.o:        wrgeo.f $(SRC)/system.h $(SRC)/ions.inc $(SRC)/adat.inc \
-                $(SRC)/mm_dim.inc $(SRC)/mm_input.inc $(DEST)/irat.inc \
-                $(SRC)/ropt.inc $(SRC)/cnst.inc $(SRC)/store.inc \
+                $(SRC)/mm_dim.inc $(SRC)/mm_input.inc $(SRC)/store.inc \
+                $(DEST)/irat.inc $(SRC)/ropt.inc $(SRC)/cnst.inc \
                 $(SRC)/fileopen.inc
 
 wrintf.f:       $(SRC)/wrintf.F
@@ -3602,13 +3780,15 @@ wr_temps.o:     wr_temps.f $(SRC)/system.h $(SRC)/cnst.inc \
 wv30.f:         $(SRC)/wv30.F
 wv30.o:         wv30.f $(SRC)/system.h $(SRC)/filn.inc $(SRC)/nose.inc \
                 $(SRC)/benc.inc $(SRC)/kpts.inc $(SRC)/store.inc \
-                $(SRC)/fileopen.inc $(SRC)/adat.inc $(SRC)/ions.inc \
-                $(SRC)/symm.inc $(SRC)/elct.inc $(SRC)/ener.inc \
-                $(SRC)/metr.inc $(SRC)/cell.inc $(SRC)/poin.inc \
-                $(SRC)/kpnt.inc $(SRC)/pimd.inc $(SRC)/clas.inc \
-                $(SRC)/spin.inc $(SRC)/cotr.inc $(SRC)/lscal.inc \
-                $(DEST)/irat.inc $(SRC)/bsym.inc $(SRC)/mm_dim.inc \
-                $(SRC)/mm_extrap.inc
+                $(SRC)/fileopen.inc $(SRC)/cdft.inc $(SRC)/mw.inc \
+                $(SRC)/adat.inc $(SRC)/ions.inc $(SRC)/symm.inc \
+                $(SRC)/elct.inc $(SRC)/ener.inc $(SRC)/metr.inc \
+                $(SRC)/cell.inc $(SRC)/poin.inc $(SRC)/kpnt.inc \
+                $(SRC)/pimd.inc $(SRC)/clas.inc $(SRC)/spin.inc \
+                $(SRC)/cotr.inc $(SRC)/lscal.inc $(DEST)/irat.inc \
+                $(SRC)/bsym.inc $(SRC)/mm_dim.inc $(SRC)/mm_extrap.inc \
+                $(SRC)/shop.inc $(SRC)/shop_rest.inc $(SRC)/shop_rest_2.inc \
+                $(SRC)/prng.inc $(SRC)/gle.inc
 
 x1fft.f:        $(SRC)/x1fft.F
 x1fft.o:        x1fft.f $(SRC)/system.h $(SRC)/fft.inc

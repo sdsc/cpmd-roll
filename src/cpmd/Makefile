@@ -126,7 +126,7 @@ install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib
 	( \
 	  cp `ls patch-files/lib/*|grep -v '\(CVS\|Root\|Repository\|Entries\)'` $(ROOT)/$(PKGROOT)/lib; \
-	  cd $(SOURCE)/SOURCE; \
+	  cd $(SOURCE); \
 	  cp cpmd.x plotband.x $(ROOT)/$(PKGROOT)/bin \
 	)
 

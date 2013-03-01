@@ -65,7 +65,7 @@ SKIP: {
 
   skip 'cpmd not installed', 4 if ! $isInstalled;
   $output = `/bin/bash $TESTFILE.sh 2>&1`;
-  ok($output =~ /TOTAL ENERGY.*-31.21877326 A.U./, 'cpmd test run');
+  like($output, qr/TOTAL ENERGY.*-31.21877\d* A.U./, 'cpmd test run');
 
   skip 'modules not installed', 3 if ! -f '/etc/profile.d/modules.sh';
   `/bin/ls /opt/modulefiles/applications/cpmd/[0-9]* 2>&1`;

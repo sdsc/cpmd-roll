@@ -1,0 +1,5 @@
+                PATCH FILES
+
+lib: directory of pseudopotential files
+Makefile: makefile with mpi wrappers substituted for compiler names and paths to mkl
+vdbp.inc: removed blanks at the end of a line that were causing problems

@@ -1,14 +1,61 @@
-#----------------------------------------------------------------------------
-# Makefile for cpmd.x (plane wave electronic calculation)
-# Configuration: IFORT-AMD64-MPI
-# Creation of Makefile: Dec 12 2012
-# on Linux gcn-19-28.sdsc.edu 2.6.34.7-1 #1 SMP Thu Nov 24 11:27:26 PST 2011 x86_64 x86_64 x86_64 GNU/Linux
-# Author: root
-#----------------------------------------------------------------------------
+# $Id$
 #
+# @Copyright@
+# 
+# 				Rocks(r)
+# 		         www.rocksclusters.org
+# 		         version 5.6 (Emerald Boa)
+# 		         version 6.1 (Emerald Boa)
+# 
+# Copyright (c) 2000 - 2013 The Regents of the University of California.
+# All rights reserved.	
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+# 
+# 1. Redistributions of source code must retain the above copyright
+# notice, this list of conditions and the following disclaimer.
+# 
+# 2. Redistributions in binary form must reproduce the above copyright
+# notice unmodified and in its entirety, this list of conditions and the
+# following disclaimer in the documentation and/or other materials provided 
+# with the distribution.
+# 
+# 3. All advertising and press materials, printed or electronic, mentioning
+# features or use of this software must display the following acknowledgement: 
+# 
+# 	"This product includes software developed by the Rocks(r)
+# 	Cluster Group at the San Diego Supercomputer Center at the
+# 	University of California, San Diego and its contributors."
+# 
+# 4. Except as permitted for the purposes of acknowledgment in paragraph 3,
+# neither the name or logo of this software nor the names of its
+# authors may be used to endorse or promote products derived from this
+# software without specific prior written permission.  The name of the
+# software includes the following terms, and any derivatives thereof:
+# "Rocks", "Rocks Clusters", and "Avalanche Installer".  For licensing of 
+# the associated name, interested parties should contact Technology 
+# Transfer & Intellectual Property Services, University of California, 
+# San Diego, 9500 Gilman Drive, Mail Code 0910, La Jolla, CA 92093-0910, 
+# Ph: (858) 534-5815, FAX: (858) 534-7345, E-MAIL:invent@ucsd.edu
+# 
+# THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS''
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS
+# BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+# BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+# OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+# IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# 
+# @Copyright@
+#
+# $Log$
 SHELL = /bin/sh
-#
-#--------------- Default Configuration for IFORT-AMD64-MPI ---------------
 SRC  = .
 DEST = .
 BIN  = .
@@ -23,20 +70,9 @@ CC = mpicc
 FC = mpif77 -c 
 LD = mpif77 -i-static 
 AR = ar
-#----------------------------------------------------------------------------
-# Personal Configuration
-# My_Conf: 
-# All arguments:  IFORT-AMD64-MPI
-#----------------------------------------------------------------------------
-#----------------------------------------------------------------------------
-# End of Personal Configuration
-#----------------------------------------------------------------------------
 CFGDEST = .
 CFGMACH = IFORT-AMD64-MPI
 CFGQMMM = 
-#
-#  LIST OF FILES
-#
 OBJECTS = $(OBJ_AL) $(OBJ_WF) $(OBJ_GM) $(OBJ_MD) $(OBJ_MT) \
           $(OBJ_KS) $(OBJ_VA) $(OBJ_PP) $(OBJ_VD) $(OBJ_NC) \
           $(OBJ_PA) $(OBJ_IS) $(OBJ_ST) $(OBJ_SY) $(OBJ_AT) \
@@ -72,21 +108,17 @@ OBJ_AL  = softex.o envir.o setcnst.o azzero.o control.o \
           gfftmain.o esslfft.o x1fft.o hpfft.o ympfft.o t3dfft.o scslfft.o fftwfft.o \
           densrd.o eam_pot.o tauofr.o vtaupsi.o metafun.o ainitwf.o dginit.o \
           kin_energy.o vpsi_lse.o disortho.o linalg.o norhoe.o ssic.o prng.o gle.o
-#WaveFunctions optimization
 OBJ_WF  = wfopts.o rwfopt.o updwf.o odiis.o pcgrad.o \
           k_updwf.o k_odiis.o k_forces.o k_hesele.o k_pcgrad.o \
           k_diis_rhofix.o cdft.o transme.o syscomb.o icdft.o
-#GeoMetry optimisation 
 OBJ_GM  = gmopts.o rgmopt.o fstart.o struc.o empfor.o puttau.o constr.o \
           rrfo.o rbfgs.o rgdiis.o sdion.o hessin.o hessout.o hessup.o \
           dum2.o detdof.o cnstfc.o fixcom.o cnstpr.o moverho.o \
           elf.o lsd_elf.o rlbfgs.o rprfo.o adapttol.o
-#MeTadynamics
 OBJ_MT  = meta_hpot.o meta_dyn_def.o meta_colvar.o meta_colvar_inp.o \
           meta_colvar_util.o meta_exlagr.o meta_exlagr_util.o meta_cv.o \
           meta_cv_qmmm.o tst2min.o tst2min_inp.o chain_dr.o meta_cell.o \
           meta_exl_mult.o meta_ex_mul_util.o meta_localizespin.o
-#Molecular Dynamics
 OBJ_MD  = mdpt.o mdmain.o dynit.o shake.o rattle.o resetac.o dispp.o nosalloc.o \
           noseinit.o nospinit.o noseng.o nosepa.o noseup.o enosmove.o pnosmove.o \
           ekinpp.o freqs.o printave.o printp.o rekine.o rinvel.o rscvp.o \
@@ -96,16 +128,13 @@ OBJ_MD  = mdpt.o mdmain.o dynit.o shake.o rattle.o resetac.o dispp.o nosalloc.o 
           wannier_center.o wannier_print.o purge.o wc_dos.o comvel.o rotvel.o \
           printfor.o cplngs.o td_cayley.o td_util.o ehrenfest.o read_prop.o \
           forces_prop.o box_boundary.o
-#Kohn-Sham energies
 OBJ_KS  = davidson.o ksdiag.o vgsortho.o hpsi.o spsi.o \
           gsortho.o rhov1.o
-#Vibrational Analysis
 OBJ_VA  = secdpt.o secder.o sdlinres.o sd_ii.o sd_loc2.o sd_nl2.o rnlsm_2d.o \
           nl_res.o sd_loc.o sd_nl.o rho1ofr.o v1ofrho1.o lr_force.o \
           opt_lr.o lr_upd.o dd_xc.o eind_ii.o eind_loc.o eind_nl.o lr_in.o \
           lr_xcpot.o lr_ortho.o lr_pcg.o canon.o lr_tddft.o vibana.o \
           dd_xc_ana.o dd_functionals.o
-#ProPerties calculations
 OBJ_PP  = proppt.o prowfn.o dipo.o lodipo.o exdipo.o cmaos.o difrho.o \
           conduct.o polarise.o calc_pij.o localize.o jrotation.o \
           orbhard.o ohfd.o ohlr.o specpt.o td_dav.o td_rdiis.o td_nhdav.o lr_diag.o \
@@ -119,7 +148,6 @@ OBJ_PP  = proppt.o prowfn.o dipo.o lodipo.o exdipo.o cmaos.o difrho.o \
           molstates.o epr_efg.o core_spect.o potmed.o\
           nuclear_p.o rwfopt_nuc.o rinforce_nuc.o write_pp.o td_nacvs.o \
           proylm.o
-#PErturbation theory
 OBJ_PE  = h0psi1_p.o v1ofrho_p.o fnonloc_p.o \
           mddiag-interaction_p.o gndstate_p.o legendre_p.o \
           interaction_p.o interaction_manno_p.o \
@@ -137,67 +165,45 @@ OBJ_PE  = h0psi1_p.o v1ofrho_p.o fnonloc_p.o \
           matrix_p.o ks_ener_p.o kpert_util_p.o fukui_p.o mdfile.o \
           epr_p.o epr_current_p.o epr_util_p.o epr_hyp.o epr_dv0.o \
           epr_effpot.o
-#VanDerbilt pseudopotentials
 OBJ_VD  = readvan.o aainit.o vdbinit.o rhov.o qvan1.o qvan2.o \
           newd.o rnlfl.o augchg.o
-#Non-linear Core correction
 OBJ_NC  = nlccset.o copot.o corec.o cofor.o nlccstr.o
-#PArallel work
 OBJ_PA  = startpa.o loadpa.o sumfnl.o glosum.o summat.o my_para.o \
           glomax.o glomin.o groups.o
-#ISolated system
 OBJ_IS  = hipin.o hip.o mtin.o
-#STress tensor calculation
 OBJ_ST  = stress.o vlocst.o htrstr.o xcstr.o drhov.o \
           nlsl.o nlsm1_s.o dqvan2.o dylmr.o ffsum.o qrada_s.o \
           totstr.o putbet.o ranc.o newcell.o sdcell.o prpt.o prcpmd.o \
           npt_md.o
-#SYmmetry
 OBJ_SY  = symmetry.o chksym.o symtrz.o multtb.o molsym.o
-#ATomic
 OBJ_AT  = lsfbtr.o
-#LAnczos diagonalisation
 OBJ_LA  = friesner.o friesner_c.o  ehpsi.o    rrandd.o updrho.o anderson.o \
           adjmu.o    forces_diag.o mddiag.o   extrap.o bogol.o  calc_alm.o \
           vbeta.o    rhodiis.o     rwswap.o   frsblk.o frsblk_c.o \
           mixing_r.o mixing_g.o    broyden.o  dist_friesner.o  \
           dist_prowfn.o ksmat_dist.o gs_disortho.o
-#KPoints
 OBJ_KP  = enbandpri.o   rkpnt.o    k290.o   k290_2.o  kpclean.o
-#Path Integral
 OBJ_PI  = pi_cntl.o pi_init.o pi_mdpt.o pi_wf.o pi_md.o pi_diag.o \
           rreadf.o repgen.o \
           fharm.o global.o stagetrans.o pinmtrans.o getfu.o getfnm.o \
           getgyr.o getcor.o prtgyr.o evirial.o wr_temps.o
-#Path Minimisation
 OBJ_PM  = pm_cntl.o pm_init.o pm_wf.o pm_gmopts.o pm_mdpt.o
-#KdP Theory
 OBJ_KD  = kdp_diag.o kdp_prep.o kdp_rho.o kdp_stress_kin.o kdpoints.o \
           rhoofr_kdp.o
-#QMMM Code 
 OBJ_MM  = mm_init.o mm_dim.o mm_qmmm_forcedr.o mm_mdmain.o \
           mm_cpmd_add_MM_forces_f77.o mm_cpmd_esp_charges_f77.o \
           mm_cpmd_ext_pot_f77.o mm_mddiag.o mm_forces_diag.o \
           mm_rho_forcedr.o td_mm_qmmm_forcedr.o mm_qmmm_forcedr_bs.o \
           mm_forces_prop.o
-#FORCEMATCH
 OBJ_FM  = forcematch_kfit.o forcematch_qfit.o forcematch_util.o \
           mm_forcematch.o prep_forcematch.o
-#CLassical dynamics
 OBJ_CL  = cl_init.o mdclas.o readff.o clas_force.o
-#Van der Waals correction
 OBJ_VW  = vdwin.o vdw.o
-#Broken Symmetry
 OBJ_BS = bs_forces_diag.o bswfo.o lsforce.o setbsstate.o wrccfl.o
-#Surface Hopping
 OBJ_SH  = mdshop_cp.o mdshop_bo.o mm_mdshop_cp.o mm_mdshop_bo.o \
           fusion.o rk4ov.o shop_adds.o sh_tddft.o sh_util.o
-#C Code
 OBJ_CC  = sysdepend.o 
 
-#----------------------------------------------------------------------------
-# LIST OF INCLUDE FILES
-#----------------------------------------------------------------------------
 INCFILES = system.h adat.inc atom.inc atwf.inc bc.inc   benc.inc aavan.inc \
            cell.inc cnst.inc coor.inc cotr.inc \
            cppt.inc cvan.inc dipo.inc dpot.inc elct.inc empf.inc \
@@ -221,9 +227,6 @@ INCFILES = system.h adat.inc atom.inc atwf.inc bc.inc   benc.inc aavan.inc \
            printp.inc mfep.inc merge.inc cdft.inc transme.inc prng.inc gle.inc \
            td_input.inc dir.cld gromos.h equiv_file \
 
-#----------------------------------------------------------------------------
-# OBJECTS USED IN CPMD LIBRARY
-#----------------------------------------------------------------------------
 OBJ_LIB = $(OBJ_CC) $(OBJECTS)
 INCFILES = aavan.inc adat.inc andp.inc andr.inc atimes.inc atom.inc \
            atwf.inc bc.inc benc.inc broy.inc bsym.inc bsympnt.inc \
@@ -250,9 +253,6 @@ INCFILES = aavan.inc adat.inc andp.inc andr.inc atimes.inc atom.inc \
            vdwc.inc wann.inc xinr.inc 
 
 EXE_OBJ=cpmd.o plotband.o
-#----------------------------------------------------------------------------
-# Compile cpmd.x
-#----------------------------------------------------------------------------
 cpmd.x : cpmd.o $(OBJECTS)   $(OBJ_CC)
 	@$(SRC)/BIN/check_systemh $(SRC)/system.h
 	rm -f timetag.f
@@ -262,9 +262,6 @@ cpmd.x : cpmd.o $(OBJECTS)   $(OBJ_CC)
 	if [ "$(BIN)" != "." ]; then ln -s $(BIN)/cpmd.x cpmd.x; fi
 	$(LD) -o $(BIN)/cpmd.x cpmd.o timetag.o $(OBJECTS) $(OBJ_CC)   $(LFLAGS)
 
-#----------------------------------------------------------------------------
-# Compile plotband.x
-#----------------------------------------------------------------------------
 plotband.x: plotband.o $(OBJECTS) $(OBJ_CC)  
 	rm -f timetag.f
 	$(CPP) $(CPPFLAGS) $(SRC)/timetag.F ./timetag.f
@@ -273,24 +270,15 @@ plotband.x: plotband.o $(OBJECTS) $(OBJ_CC)
 	[ "$(BIN)" != "." ] && ln -s $(BIN)/$@ $@ || echo ' '
 	$(LD) -o $(BIN)/$@ plotband.o timetag.o $(OBJECTS) $(OBJ_CC)   $(LFLAGS)
 
-#----------------------------------------------------------------------------
-# Generate library libcpmd.a
-#----------------------------------------------------------------------------
 lib : $(OBJ_LIB)
 	 rm -f ./timetag.f
 	 $(FC) $(FFLAGS) ./timetag.f
 	 $(AR) libcpmd.a timetag.o $(OBJ_LIB)
 	 $(RANLIB) libcpmd.a
 
-#----------------------------------------------------------------------------
-# Create a new makefile with new dependencies but retain the configuration.
-#----------------------------------------------------------------------------
 reconfig:
 	( cd $(SRC) ; $(SHELL) ./mkconfig.sh $(CFGQMMM) -r -m -SRC=$(SRC) -DEST=$(CFGDEST) $(CFGMACH) ; cd $(CFGDEST) )
 
-#----------------------------------------------------------------------------
-# Remove all *.o and *.f
-#----------------------------------------------------------------------------
 clean : 
 	rm -f $(OBJECTS) $(EXE_OBJ) $(OBJ_CC) $(OBJECTS:.o=.f) cpmd.vcg CallTree.html
 	rm -f *~ .*~ *.o *.f *.L $(CHKS) $(PRJS) $(CHKS:.chk=.html)
@@ -301,9 +289,6 @@ realclean :
 	$(MAKE) clean
 	rm -rf cpmd.x
 
-#----------------------------------------------------------------------------
-# Explicit rules
-#----------------------------------------------------------------------------
 .SUFFIXES:
 .SUFFIXES: .o .f .F .chk
 
@@ -320,9 +305,6 @@ $(OBJ_CC) :
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $(SRC)/$(@:.o=.c)
 
 
-#----------------------------------------------------------------------------
-# Rules for using ftnchek
-#----------------------------------------------------------------------------
 CHECKOPTS= -arguments=no-arrayness,no-type,number -pretty=no-parenthesis \
            -style=do-construct,distinct-do -portability=real-do,tabs -mkhtml \
 	   -crossref=calls,common
@@ -337,9 +319,6 @@ cpmd.chk: cpmd.f $(CHKS)
 .f.chk:
 	ftnchek -include=$(SRC) -project $(CHECKOPTS) -usage=no-ext-undefined,no-com-\* -library $< > $@
 
-#----------------------------------------------------------------------------
-# Dependencies
-#----------------------------------------------------------------------------
 aainit.f:       $(SRC)/aainit.F
 aainit.o:       aainit.f $(SRC)/system.h $(SRC)/aavan.inc $(SRC)/cnst.inc
 
@@ -3826,7 +3805,6 @@ znum_mat.o:     znum_mat.f $(SRC)/system.h $(SRC)/spin.inc \
                 $(SRC)/g_loc.inc $(SRC)/metr.inc
 
 
-# create a regular timestamped cpmd package from the cvs tree
 gtar-cpmd  :
 	@( d=`date +%Y%m%d` ; b=`basename $$PWD` ; cd .. ;		\
 	tar -c --exclude \*,v --exclude \*.bak --exclude \*~ --exclude CVS	\
@@ -3836,7 +3814,6 @@ gtar-cpmd  :
 	--exclude \*.orig --exclude \*.rej -zvvf $$b-$$d.tar.gz $$b &&	\
 	echo successfully created $$b-$$d-tar.gz ; cd $$b )
 
-# create a QM/MM timestamped cpmd package from the cvs tree
 gtar-qmmm :
 	@( d=`date +%Y%m%d` ; b=`basename $$PWD` ; cd .. ;		\
 	tar -c --exclude \*,v --exclude \*.bak --exclude \*~ --exclude CVS	\

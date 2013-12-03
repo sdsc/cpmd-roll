@@ -98,5 +98,5 @@ cvsclean: clean
 	done
 	rm -fr RPMS SRPMS
 
-distclean:: clean
+distclean:: cvsclean
 	-rm -f build.log

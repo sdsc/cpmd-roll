@@ -1,4 +1,48 @@
 #%Module1.0
+set compiler "nocompiler"
+set mpi ""
+if {[module-info mode switch1] || [module-info mode switch3]} {
+  set commandWords [split [exec /bin/ps -p [pid] -o args=] " "]
+  set switchFrom [lindex [split [module-info name] "/"] 0]
+  set switchTo [lindex [split [lindex $commandWords end] "/"] 0]
+  set loadApps [expr  [string equal $switchTo $switchFrom]]
+} elseif {[module-info mode remove]} {
+  set loadApps 0
+} else {
+   set loadApps 1
+}
+if { $loadApps  }  {
+ if {[info exists env(LOADEDMODULES)]} {
+  foreach app [split $env(LOADEDMODULES) ":"] {
+     if { [ string match "*intel*" $app ] == 1 } {
+          set compiler "intel"
+     } elseif { [ string match "*pgi*" $app ] == 1 } {
+          set compiler "pgi"
+     } elseif { [ string match "*gnu*" $app ] == 1 } {
+          set compiler "gnu"
+     }
+     if { [ string match "*mvapich2*" $app ] == 1 } {
+          set mpi "mvapich2"
+     } elseif { [ string match "*openmpi*" $app ] == 1 } {
+          set mpi "openmpi"
+     } elseif { [ string match "*mpich2*" $app ] == 1 } {
+          set mpi "mpich2"
+     }
+  }
+ }
+
+ if { [ string equal "nocompiler" $compiler ] ==  1 } {
+      module load ROLLCOMPILER
+      module load ROLLMPI_ROLLNETWORK
+  } elseif { [ string equal "ROLLCOMPILER" $compiler ] ==  1 } {
+      module unload ${mpi}_ROLLNETWORK
+      module load ROLLMPI_ROLLNETWORK
+  } else {
+      module unload $compiler
+      module load ROLLCOMPILER
+      module load ROLLMPI_ROLLNETWORK
+  }
+}
 setenv CPMDHOME /opt/cpmd
 prepend-path PATH /opt/cpmd/bin
 setenv PP_PATH /opt/cpmd/lib

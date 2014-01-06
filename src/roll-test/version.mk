@@ -1,3 +1,3 @@
 NAME	= cpmd-roll-test
-VERSION	= 1
+VERSION	= 0
 RELEASE	= 0

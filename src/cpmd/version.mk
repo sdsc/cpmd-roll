@@ -2,6 +2,7 @@ NAME               = cpmd_$(ROLLCOMPILER)_$(ROLLMPI)_$(ROLLNETWORK)
 VERSION            = 3.15.3
 RELEASE            = 0
 PKGROOT            = /opt/cpmd
+RPM.EXTRAS         = AutoReq:No
 
 SRC_SUBDIR         = cpmd
 

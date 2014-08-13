@@ -70,9 +70,9 @@ install::
 	  mkdir -p $(ROOT)/$(PKGROOT)
 	  cp cpmd.module $(ROOT)/$(PKGROOT)/$(VERSION)
 	  cp cpmd.version $(ROOT)/$(PKGROOT)/.version.$(VERSION)
-	  perl -pi -e 's/ROLLCOMPILER/$(ROLLCOMPILER)/g' $(ROOT)/$(PKGROOT)/$(VERSION)
-	  perl -pi -e 's/ROLLMPI/$(ROLLMPI)/g' $(ROOT)/$(PKGROOT)/$(VERSION)
-	  perl -pi -e 's/ROLLNETWORK/$(ROLLNETWORK)/g' $(ROOT)/$(PKGROOT)/$(VERSION)
+	  perl -pi -e 's#ROLLCOMPILER#$(ROLLCOMPILER)#g' $(ROOT)/$(PKGROOT)/$(VERSION)
+	  perl -pi -e 's#ROLLMPI#$(ROLLMPI)#g' $(ROOT)/$(PKGROOT)/$(VERSION)
+	  perl -pi -e 's#ROLLNETWORK#$(ROLLNETWORK)#g' $(ROOT)/$(PKGROOT)/$(VERSION)
 	  perl -pi -e 's/VERSION/$(VERSION)/g' $(ROOT)/$(PKGROOT)/$(VERSION)
 	  perl -pi -e 's/VERSION/$(VERSION)/g' $(ROOT)/$(PKGROOT)/.version.$(VERSION)
 	  ln -s $(PKGROOT)/.version.$(VERSION) $(ROOT)/$(PKGROOT)/.version

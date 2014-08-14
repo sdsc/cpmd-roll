@@ -23,7 +23,7 @@ Rocks development machine.
 
 ## Dependencies
 
-Unknown at this time.
+None.
 
 
 ## Building
@@ -48,24 +48,28 @@ for openmpi ethernet.  To build for a different configuration, use the
 `ROLLCOMPILER`, `ROLLMPI` and `ROLLNETWORK` make variables, e.g.,
 
 ```shell
-make ROLLCOMPILER=intel ROLLMPI=mpich2 ROLLNETWORK=mx 
+make ROLLCOMPILER=intel ROLLMPI=mvapich2 ROLLNETWORK=mx 
 ```
 
 The build process currently supports one or more of the values "intel", "pgi",
-and "gnu" for the `ROLLCOMPILER` variable, defaulting to "gnu".  It supports
-`ROLLMPI` values "openmpi", "mpich2", and "mvapich2", defaulting to "openmpi".
-It uses any `ROLLNETWORK` variable value(s) to load appropriate mpi modules,
-assuming that there are modules named `$(ROLLMPI)_$(ROLLNETWORK)` available
-(e.g., `openmpi_ib`, `mpich2_mx`, etc.).
+and "gnu" for the `ROLLCOMPILER` variable, defaulting to "gnu".
+It uses any `ROLLMPI` and `ROLLNETWORK` variable values to load appropriate mpi
+modules, assuming that there are modules named `$(ROLLMPI)_$(ROLLNETWORK)`
+available (e.g., `openmpi_ib`, `mvapich2_mx`, etc.).  The build process also
+uses the ROLLCOMPILER value to load an environment module, and it supports
+using the ROLLCOMPILER value to specify a particular compiler version, e.g.,
+
+```shell
+% make ROLLCOMPILER=gnu/4.8.1 ROLLMPI=openmpi ROLLNETWORK=ib
+```
 
 If the `ROLLCOMPILER`, `ROLLNETWORK` and/or `ROLLMPI` variables are specified,
-their values are incorporated into the names of the produced roll and rpms, e.g.,
+their values are incorporated into the names of the produced rpms, e.g.,
 
 ```shell
 make ROLLCOMPILER=intel ROLLMPI=mvapich2 ROLLNETWORK=ib
 ```
-produces a roll with a name that begins "`cpmd_intel_mvapich2_ib`"; it
-contains and installs similarly-named rpms.
+produces an rpm with a name that begins "`cpmd_intel_mvapich2_ib`".
 
 For gnu compilers, the roll also supports a `ROLLOPTS` make variable value of
 'avx', indicating that the target architecture supports AVX instructions.
@@ -99,10 +103,4 @@ run the test scripts execute the following command(s):
 
 ```shell
 % /root/rolltests/cpmd.t 
-ok 1 - cpmd is installed
-ok 2 - cpmd test run
-ok 3 - cpmd module installed
-ok 4 - cpmd version module installed
-ok 5 - cpmd version module link created
-1..5
 ```

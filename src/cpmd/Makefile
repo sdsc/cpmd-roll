@@ -63,16 +63,20 @@ PKGROOT = /opt/cpmd
 include Rules.mk
 include pull.mk
 
+CFLAGS := -c -O2
 CPPFLAGS := -D__Linux -DFFT_FFTW -DPARALLEL -DPOINTER8 -DINTEL_MKL 
 ifeq ("$(ROLLCOMPILER)", "intel")
+  CFLAGS += -Wall
   F90COMP = ifort
   FFLAGS = -c -xHost
 else ifeq ("$(ROLLCOMPILER)", "pgi")
-  CPPFLAGS += -D__PGI -D__pgf90
+  CFLAGS += -m64
+  CPPFLAGS += -D__PGI -D__pgf90 -D__DERF -UFFT_FFTW -DFFT_DEFAULT
   F90COMP = pgf90
   FFLAGS = -c -r8 -pc=64 -Msignextend
   LFLAGS = -Bstatic
 else
+  CFLAGS += -Wall
   CPPFLAGS += -D__GNU
   F90COMP = gfortran
   FFLAGS = -c -O2 -fcray-pointer -fno-whole-file
@@ -129,8 +133,9 @@ build: $(SRC_DIRS)
 	  cd $(SOURCE_DIR); \
 	  ./mkconfig.sh LINUX-x86_64-FEDORA-MPI > Makefile; \
 	  export LFLAGS="-L. -L$${MKLLIB} -lmkl_rt -lm -lpthread -L$${FFTWHOME}/lib -lfftw $(LFLAGS)"; \
-	  $(MAKE) CPPFLAGS="$(CPPFLAGS)" FFLAGS="$(FFLAGS)" LFLAGS="$${LFLAGS}"; \
-	  $(MAKE) CPPFLAGS="$(CPPFLAGS)" FFLAGS="$(FFLAGS)" LFLAGS="$${LFLAGS}" plotband.x \
+	  export LFLAGS="-L. -L$${MKLLIB} -lmkl_rt -lm -lpthread -L$${FFTWHOME}/lib -lfftw"; \
+	  $(MAKE) CC=mpicc CFLAGS="$(CFLAGS)" FC=mpif90 FFLAGS="$(FFLAGS)" LD=mpif90 LFLAGS="$${LFLAGS}" CPPFLAGS="$(CPPFLAGS)"; \
+	  $(MAKE) CC=mpicc CFLAGS="$(CFLAGS)" FC=mpif90 FFLAGS="$(FFLAGS)" LD=mpif90 LFLAGS="$${LFLAGS}" CPPFLAGS="$(CPPFLAGS)" plotband.x \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	

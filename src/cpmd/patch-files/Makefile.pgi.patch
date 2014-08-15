@@ -1,0 +1,16 @@
+--- cpmd.3.15.3/Makefile	2014-08-14 20:59:14.685911688 -0700
++++ patch-files/Makefile.pgi	2014-08-14 21:00:52.458209310 -0700
+@@ -13,11 +13,11 @@
+ DEST = .
+ BIN  = .
+ FFLAGS = -r8 -pc=64 -Msignextend  
+-LFLAGS = -Bstatic -L. -latlas_x86_64 
++LFLAGS = -Bstatic -L. -LROLL_MATHPATH -lmkl_rt -lm -lpthread -LROLL_FFTWPATH -lfftw
+ CFLAGS = 
+ CPP = /lib/cpp -P -C -traditional
+ CPPFLAGS = -D__Linux -D__PGI -DFFT_DEFAULT -DPOINTER8 -D__pgf90 \
+-               -DPARALLEL -DMYRINET -D__DERF  
++               -DPARALLEL -DMYRINET -D__DERF  -DINTEL_MKL
+ NOOPT_FLAG = 
+ CC = mpicc -O2 -Wall -m64
+ FC = mpif77 -c -fastsse -tp k8-64

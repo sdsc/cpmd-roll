@@ -115,9 +115,19 @@ build: $(SRC_DIRS)
 	( \
 	  $(COMPILERSETUP); \
 	  $(MPISETUP); \
-	  cp patch-files/Makefile $(SOURCE_DIR); \
-	  perl -pi -e "s!ROLL_MATHPATH!$${MKLLIB}!" $(SOURCE_DIR)/Makefile; \
 	  cd $(SOURCE_DIR); \
+          if test "$(ROLLCOMPILER)" = "intel"; then \
+              ./mkconfig.sh LINUX_IA64_INTEL-MPI > Makefile; \
+	      patch Makefile ../patch-files/Makefile.intel.patch; \
+          elif test "$(ROLLCOMPILER)" = "gnu"; then \
+              ./mkconfig.sh LINUX-x86_64-FEDORA-MPI >Makefile; \
+	      patch Makefile ../patch-files/Makefile.gnu.patch; \
+          elif test "$(ROLLCOMPILER)" = "pgi"; then \
+              ./mkconfig.sh PGI-AMD64-MPI >Makefile; \
+	      patch Makefile ../patch-files/Makefile.pgi.patch; \
+          fi; \
+          perl -pi -e "s!ROLL_MATHPATH!$${MKLLIB}!" Makefile; \
+          perl -pi -e "s!ROLL_FFTWPATH!/opt/fftw/2.1.5/$(ROLLCOMPILER)/$(ROLLMPI)/$(ROLLNETWORK)/lib!" Makefile; \
 	  $(MAKE); \
 	  $(MAKE) plotband.x;\
 	)

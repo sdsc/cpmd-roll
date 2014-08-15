@@ -1,0 +1,18 @@
+--- cpmd.3.15.3/Makefile	2014-08-14 14:58:26.004573019 -0700
++++ patch-files/Makefile.intel	2014-08-14 14:54:06.729161440 -0700
+@@ -24,12 +24,11 @@
+ SRC  = .
+ DEST = .
+ BIN  = .
+-FFLAGS =  
+-LFLAGS = -L/opt/intel/mkl/lib/64 -lmkl_itp -lmkl_lapack -lmkl_itp \
+-             -lPEPCF90 -lm -lpthread 
++FFLAGS = -xHost
++LFLAGS = -LROLL_MATHPATH -lmkl_rt -lm -lpthread -LROLL_FFTWPATH -lfftw
+ CFLAGS = -D__alpha
+ CPP = /lib/cpp -P -C -traditional
+-CPPFLAGS = -D__alpha -DPOINTER8 -DFFT_DEFAULT -DALPHALINUX \
++CPPFLAGS = -D__alpha -DPOINTER8 -DFFT_FFTW -DALPHALINUX \
+         -DMYRINET -DPARALLEL=parallel -DLINUX_IA64_INTEL -DINTEL_MKL  
+ NOOPT_FLAG = 
+ CC = mpicc -c -O

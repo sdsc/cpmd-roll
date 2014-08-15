@@ -1,7 +1,19 @@
-NAME               = cpmd_$(ROLLCOMPILER)_$(ROLLMPI)_$(ROLLNETWORK)
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
+ifndef ROLLNETWORK
+  ROLLNETWORK = eth
+endif
+
+ifndef ROLLMPI
+  ROLLMPI = openmpi
+endif
+
+NAME               = cpmd_$(COMPILERNAME)_$(ROLLMPI)_$(ROLLNETWORK)
 VERSION            = 3.15.3
-RELEASE            = 0
-PKGROOT            = /opt/cpmd
+RELEASE            = 1
 RPM.EXTRAS         = AutoReq:No
 
 SRC_SUBDIR         = cpmd

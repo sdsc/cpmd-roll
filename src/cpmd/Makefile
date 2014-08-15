@@ -56,29 +56,41 @@
 #
 # $Log$
 
-ifndef ROLLCOMPILER
-  ROLLCOMPILER = gnu
-endif
-ifndef ROLLNETWORK
-  ROLLNETWORK = eth
-endif
-ifndef ROLLMPI
-  ROLLMPI = openmpi
-endif
-
 REDHAT.ROOT = $(CURDIR)/../../
+PKGROOT = /opt/cpmd
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 include pull.mk
 
+CPPFLAGS := -D__Linux -DFFT_FFTW -DPARALLEL -DPOINTER8 -DINTEL_MKL 
+ifeq ("$(ROLLCOMPILER)", "intel")
+  F90COMP = ifort
+  FFLAGS = -c -xHost
+else ifeq ("$(ROLLCOMPILER)", "pgi")
+  CPPFLAGS += -D__PGI -D__pgf90
+  F90COMP = pgf90
+  FFLAGS = -c -r8 -pc=64 -Msignextend
+  LFLAGS = -Bstatic
+else
+  CPPFLAGS += -D__GNU
+  F90COMP = gfortran
+  FFLAGS = -c -O2 -fcray-pointer -fno-whole-file
+endif
+
+ifeq ("$(ROLLNETWORK)", "mx")
+  CPPFLAGS += -DMYRINET
+endif
+
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module load intel; \
+    module load $(ROLLCOMPILER) || true; \
+  fi; \
+  echo === Compiler and version ===; \
+  $(F90COMP) --version; \
+  if test -n "$${MKL_ROOT}"; then \
     export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
-    module unload intel; \
-    module load $(ROLLCOMPILER); \
   fi
 
 ifeq ("$(ROLLNETWORK)", "eth")
@@ -96,48 +108,38 @@ MPISETUP = \
   if test -z "$${MPI_HOME}"; then \
     export MPI_HOME=/opt/$(ROLLMPI); \
   fi; \
-  echo Using MPI from $${MPI_HOME}; \
+  echo === MPI_HOME ===; \
+  echo $${MPI_HOME}; \
   export PATH=$${PATH}:$${MPI_HOME}/bin; \
   export LD_LIBRARY_PATH=$${LD_LIBRARY_PATH}:$${MPI_HOME}/lib
 
-F90COMP = gfortran
-MATHLIB = none
-ifeq ("$(ROLLCOMPILER)", "intel")
-  F90COMP = ifort
-  MATHLIB = mkl
-endif
-ifeq ("$(ROLLCOMPILER)", "pgi")
-  F90COMP = pgf90
-  MATHLIB = mkl
-endif
+FFTWSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module load fftw/2.1.5; \
+  fi; \
+  echo === FFTWHOME ===; \
+  echo $${FFTWHOME}
 
 build: $(SRC_DIRS)
 	( \
 	  $(COMPILERSETUP); \
 	  $(MPISETUP); \
+	  $(FFTWSETUP); \
 	  cd $(SOURCE_DIR); \
-          if test "$(ROLLCOMPILER)" = "intel"; then \
-              ./mkconfig.sh LINUX_IA64_INTEL-MPI > Makefile; \
-	      patch Makefile ../patch-files/Makefile.intel.patch; \
-          elif test "$(ROLLCOMPILER)" = "gnu"; then \
-              ./mkconfig.sh LINUX-x86_64-FEDORA-MPI >Makefile; \
-	      patch Makefile ../patch-files/Makefile.gnu.patch; \
-          elif test "$(ROLLCOMPILER)" = "pgi"; then \
-              ./mkconfig.sh PGI-AMD64-MPI >Makefile; \
-	      patch Makefile ../patch-files/Makefile.pgi.patch; \
-          fi; \
-          perl -pi -e "s!ROLL_MATHPATH!$${MKLLIB}!" Makefile; \
-          perl -pi -e "s!ROLL_FFTWPATH!/opt/fftw/2.1.5/$(ROLLCOMPILER)/$(ROLLMPI)/$(ROLLNETWORK)/lib!" Makefile; \
-	  $(MAKE); \
-	  $(MAKE) plotband.x;\
+	  ./mkconfig.sh LINUX-x86_64-FEDORA-MPI > Makefile; \
+	  export LFLAGS="-L. -L$${MKLLIB} -lmkl_rt -lm -lpthread -L$${FFTWHOME}/lib -lfftw $(LFLAGS)"; \
+	  $(MAKE) CPPFLAGS="$(CPPFLAGS)" FFLAGS="$(FFLAGS)" LFLAGS="$${LFLAGS}"; \
+	  $(MAKE) CPPFLAGS="$(CPPFLAGS)" FFLAGS="$(FFLAGS)" LFLAGS="$${LFLAGS}" plotband.x \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)/bin
-	mkdir -p $(ROOT)/$(PKGROOT)/lib
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/bin
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib
+	cp `ls patch-files/lib/*|grep -v '\(CVS\|Root\|Repository\|Entries\)'` $(ROOT)/$(PKGROOT)/lib
 	( \
-	  cp `ls patch-files/lib/*|grep -v '\(CVS\|Root\|Repository\|Entries\)'` $(ROOT)/$(PKGROOT)/lib; \
 	  cd $(SOURCE_DIR); \
 	  cp cpmd.x plotband.x $(ROOT)/$(PKGROOT)/bin; \
 	)
@@ -145,4 +147,3 @@ install::
 
 clean::
 	rm -rf $(SOURCE_DIR)
-

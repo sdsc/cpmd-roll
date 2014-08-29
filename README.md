@@ -23,8 +23,15 @@ Rocks development machine.
 
 ## Dependencies
 
-None.
+Intel MKL libraries.  If you're building with the Intel compiler or there is
+an mkl modulefile present (the mkl-roll provides this), then the build process
+will pick these up automatically.  Otherwise, you'll need to set the MKL_ROOT
+environment variable to the library location.
 
+FFTW libraries.  If there is
+an fftw modulefile present (the fftw-roll provides this), then the build process
+will pick these up automatically.  Otherwise, you'll need to set the FFTWHOME
+environment variable to the library location.
 
 ## Building
 

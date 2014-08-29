@@ -57,7 +57,6 @@
 # $Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
-PKGROOT = /opt/cpmd
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
@@ -90,12 +89,13 @@ COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
     module load $(ROLLCOMPILER) || true; \
+    module load mkl || true; \
   fi; \
   echo === Compiler and version ===; \
   $(F90COMP) --version; \
-  if test -n "$${MKL_ROOT}"; then \
-    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
-  fi
+  echo === MKL_ROOT ===; \
+  echo $${MKL_ROOT}; \
+  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
 
 ifeq ("$(ROLLNETWORK)", "eth")
   MPIMODULE = $(ROLLMPI)

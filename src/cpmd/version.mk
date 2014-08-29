@@ -3,25 +3,27 @@ ifndef ROLLCOMPILER
 endif
 COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
-ifndef ROLLNETWORK
-  ROLLNETWORK = eth
-endif
-
 ifndef ROLLMPI
   ROLLMPI = openmpi
 endif
 
-NAME               = cpmd_$(COMPILERNAME)_$(ROLLMPI)_$(ROLLNETWORK)
-VERSION            = 3.15.3
-RELEASE            = 1
-RPM.EXTRAS         = AutoReq:No
+ifndef ROLLNETWORK
+  ROLLNETWORK = eth
+endif
 
-SRC_SUBDIR         = cpmd
+NAME           = cpmd_$(COMPILERNAME)_$(ROLLMPI)_$(ROLLNETWORK)
+VERSION        = 3.15.3
+RELEASE        = 1
+PKGROOT        = /opt/cpmd
 
-SOURCE_NAME        = cpmd
-SOURCE_VERSION     = $(VERSION)
-SOURCE_SUFFIX      = tgz
-SOURCE_PKG         = $(SOURCE_NAME).$(SOURCE_VERSION).$(SOURCE_SUFFIX)
-SOURCE_DIR         = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
+SRC_SUBDIR     = cpmd
 
-TGZ_PKGS           = $(SOURCE_PKG)
+SOURCE_NAME    = cpmd
+SOURCE_SUFFIX  = tgz
+SOURCE_VERSION = $(VERSION)
+SOURCE_PKG     = $(SOURCE_NAME).$(SOURCE_VERSION).$(SOURCE_SUFFIX)
+SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
+
+TGZ_PKGS       = $(SOURCE_PKG)
+
+RPM.EXTRAS     = AutoReq:No

@@ -45,10 +45,7 @@ END
 open(OUT, ">$TESTFILE.sh");
 print OUT <<END;
 #!/bin/bash
-if test -f /etc/profile.d/modules.sh; then
-  . /etc/profile.d/modules.sh
-  module load ROLLCOMPILER ROLLMPI_ROLLNETWORK cpmd
-fi
+module load ROLLCOMPILER ROLLMPI_ROLLNETWORK cpmd
 /bin/cp /opt/cpmd/lib/SI_SGS ./${TESTFILE}SI_SGS
 mpirun -np 2 /opt/cpmd/bin/cpmd.x $TESTFILE.cpmd
 /bin/rm -f GEOMETRY* LATEST RESTART.1
@@ -67,7 +64,6 @@ SKIP: {
   $output = `/bin/bash $TESTFILE.sh 2>&1`;
   like($output, qr/TOTAL ENERGY.*-31.21877\d* A.U./, 'cpmd test run');
 
-  skip 'modules not installed', 3 if ! -f '/etc/profile.d/modules.sh';
   `/bin/ls /opt/modulefiles/applications/cpmd/[0-9]* 2>&1`;
   ok($? == 0, 'cpmd module installed');
   `/bin/ls /opt/modulefiles/applications/cpmd/.version.[0-9]* 2>&1`;

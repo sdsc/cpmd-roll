@@ -13,7 +13,7 @@ endif
 
 NAME           = cpmd_$(COMPILERNAME)_$(ROLLMPI)_$(ROLLNETWORK)
 VERSION        = 3.15.3
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/cpmd
 
 SRC_SUBDIR     = cpmd

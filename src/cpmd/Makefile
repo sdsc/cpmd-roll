@@ -66,18 +66,18 @@ CFLAGS := -c -O2
 CPPFLAGS := -D__Linux -DFFT_FFTW -DPARALLEL -DPOINTER8 -DINTEL_MKL 
 ifeq ("$(ROLLCOMPILER)", "intel")
   CFLAGS += -Wall
-  F90COMP = ifort
+  FC = ifort
   FFLAGS = -c -xHost
 else ifeq ("$(ROLLCOMPILER)", "pgi")
   CFLAGS += -m64
   CPPFLAGS += -D__PGI -D__pgf90 -D__DERF -UFFT_FFTW -DFFT_DEFAULT
-  F90COMP = pgf90
+  FC = pgf90
   FFLAGS = -c -r8 -pc=64 -Msignextend
   LFLAGS = -Bstatic
 else
   CFLAGS += -Wall
   CPPFLAGS += -D__GNU
-  F90COMP = gfortran
+  FC = gfortran
   FFLAGS = -c -O2 -fcray-pointer -fno-whole-file
 endif
 
@@ -86,16 +86,9 @@ ifeq ("$(ROLLNETWORK)", "mx")
 endif
 
 COMPILERSETUP = \
-  if test -e /etc/profile.d/modules.sh; then \
-    . /etc/profile.d/modules.sh; \
-    module load $(ROLLCOMPILER) || true; \
-    module load mkl || true; \
-  fi; \
+  module load $(ROLLCOMPILER) || true; \
   echo === Compiler and version ===; \
-  $(F90COMP) --version; \
-  echo === MKL_ROOT ===; \
-  echo $${MKL_ROOT}; \
-  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
+  $(FC) --version
 
 ifeq ("$(ROLLNETWORK)", "eth")
   MPIMODULE = $(ROLLMPI)
@@ -103,31 +96,26 @@ else
   MPIMODULE = $(ROLLMPI)_$(ROLLNETWORK)
 endif
 
+MKLSETUP = \
+  module load mkl || true; \
+  echo === MKL_ROOT ===; \
+  echo $${MKL_ROOT}; \
+  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
+
 MPISETUP = \
-  if test -e /etc/profile.d/modules.sh; then \
-    . /etc/profile.d/modules.sh; \
-    module load $(MPIMODULE); \
-  fi; \
-  export MPI_HOME=`which mpicxx | perl -pe 's!/bin/.*!!'`; \
-  if test -z "$${MPI_HOME}"; then \
-    export MPI_HOME=/opt/$(ROLLMPI); \
-  fi; \
-  echo === MPI_HOME ===; \
-  echo $${MPI_HOME}; \
-  export PATH=$${PATH}:$${MPI_HOME}/bin; \
-  export LD_LIBRARY_PATH=$${LD_LIBRARY_PATH}:$${MPI_HOME}/lib
+  module load $(MPIMODULE) || true; \
+  echo === MPIHOME ===; \
+  echo $${MPIHOME}
 
 FFTWSETUP = \
-  if test -e /etc/profile.d/modules.sh; then \
-    . /etc/profile.d/modules.sh; \
-    module load fftw/2.1.5; \
-  fi; \
+  module load fftw/2.1.5; \
   echo === FFTWHOME ===; \
   echo $${FFTWHOME}
 
 build: $(SRC_DIRS)
 	( \
 	  $(COMPILERSETUP); \
+	  $(MKLSETUP); \
 	  $(MPISETUP); \
 	  $(FFTWSETUP); \
 	  cd $(SOURCE_DIR); \

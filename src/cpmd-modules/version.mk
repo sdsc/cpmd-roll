@@ -1,5 +1,9 @@
-NAME       = cpmd-modules
-VERSION    = 3.15.3
-RELEASE    = 1
+NAME        = cpmd-modules
+RELEASE     = 2
+PKGROOT     = /opt/modulefiles/applications/cpmd
 
-RPM.EXTRAS = AutoReq:No
+VERSION_SRC = $(REDHAT.ROOT)/src/cpmd/version.mk
+VERSION_INC = version.inc
+include $(VERSION_INC)
+
+RPM.EXTRAS  = AutoReq:No

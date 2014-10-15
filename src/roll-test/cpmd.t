@@ -45,7 +45,7 @@ END
 open(OUT, ">$TESTFILE.sh");
 print OUT <<END;
 #!/bin/bash
-module load ROLLCOMPILER ROLLMPI_ROLLNETWORK cpmd
+module load cpmd
 /bin/cp /opt/cpmd/lib/SI_SGS ./${TESTFILE}SI_SGS
 mpirun -np 2 /opt/cpmd/bin/cpmd.x $TESTFILE.cpmd
 /bin/rm -f GEOMETRY* LATEST RESTART.1

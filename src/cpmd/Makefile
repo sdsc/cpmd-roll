@@ -63,14 +63,14 @@ include Rules.mk
 include pull.mk
 
 CFLAGS := -c -O2
-CPPFLAGS := -D__Linux -DFFT_FFTW -DPARALLEL -DPOINTER8 -DINTEL_MKL 
+CPPFLAGS := -D__Linux -DFFT_FFTW3 -DPARALLEL -DPOINTER8 -DINTEL_MKL 
 ifeq ("$(ROLLCOMPILER)", "intel")
   CFLAGS += -Wall
   FC = ifort
   FFLAGS = -c -xHost
 else ifeq ("$(ROLLCOMPILER)", "pgi")
   CFLAGS += -m64
-  CPPFLAGS += -D__PGI -D__pgf90 -D__DERF -UFFT_FFTW -DFFT_DEFAULT
+  CPPFLAGS += -D__PGI -D__pgf90 -D__DERF -UFFT_FFTW3 -DFFT_DEFAULT
   FC = pgf90
   FFLAGS = -c -r8 -pc=64 -Msignextend
   LFLAGS = -Bstatic
@@ -113,6 +113,7 @@ FFTWSETUP = \
   echo $${FFTWHOME}
 
 build: $(SRC_DIRS)
+	patch $(SOURCE_DIR)/plotband.F patch-files/plotband.F.patch
 	( \
 	  $(COMPILERSETUP); \
 	  $(MKLSETUP); \

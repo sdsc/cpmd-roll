@@ -62,39 +62,17 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 include pull.mk
 
-CFLAGS := -c -O2
-CPPFLAGS := -D__Linux -DFFT_FFTW3 -DPARALLEL -DPOINTER8 -DINTEL_MKL 
-ifeq ("$(ROLLCOMPILER)", "intel")
-  CFLAGS += -Wall
+FC = gfortran
+ifeq ("$(COMPILERNAME)", "intel")
   FC = ifort
-  FFLAGS = -c -xHost
-else ifeq ("$(ROLLCOMPILER)", "pgi")
-  CFLAGS += -m64
-  CPPFLAGS += -D__PGI -D__pgf90 -D__DERF -UFFT_FFTW3 -DFFT_DEFAULT
+else ifeq ("$(COMPILERNAME)", "pgi")
   FC = pgf90
-  FFLAGS = -c -r8 -pc=64 -Msignextend
-  LFLAGS = -Bstatic
-else
-  CFLAGS += -Wall
-  CPPFLAGS += -D__GNU
-  FC = gfortran
-  FFLAGS = -c -O2 -fcray-pointer -fno-whole-file
-endif
-
-ifeq ("$(ROLLNETWORK)", "mx")
-  CPPFLAGS += -DMYRINET
 endif
 
 COMPILERSETUP = \
   module load $(ROLLCOMPILER) || true; \
   echo === Compiler and version ===; \
   $(FC) --version
-
-ifeq ("$(ROLLNETWORK)", "eth")
-  MPIMODULE = $(ROLLMPI)
-else
-  MPIMODULE = $(ROLLMPI)_$(ROLLNETWORK)
-endif
 
 MKLSETUP = \
   module load mkl || true; \
@@ -103,7 +81,7 @@ MKLSETUP = \
   export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
 
 MPISETUP = \
-  module load $(MPIMODULE) || true; \
+  module load $(ROLLMPI) || true; \
   echo === MPIHOME ===; \
   echo $${MPIHOME}
 
@@ -111,6 +89,26 @@ FFTWSETUP = \
   module load fftw/2.1.5; \
   echo === FFTWHOME ===; \
   echo $${FFTWHOME}
+
+CFLAGS := -c -O2
+CPPFLAGS := -D__Linux -DFFT_FFTW3 -DPARALLEL -DPOINTER8 -DINTEL_MKL 
+ifeq ("$(COMPILERNAME)", "intel")
+  CFLAGS += -Wall
+  FFLAGS = -c -xHost
+else ifeq ("$(COMPILERNAME)", "pgi")
+  CFLAGS += -m64
+  CPPFLAGS += -D__PGI -D__pgf90 -D__DERF -UFFT_FFTW3 -DFFT_DEFAULT
+  FFLAGS = -c -r8 -pc=64 -Msignextend
+  LFLAGS = -Bstatic
+else
+  CFLAGS += -Wall
+  CPPFLAGS += -D__GNU
+  FFLAGS = -c -O2 -fcray-pointer -fno-whole-file
+endif
+
+ifneq ("$(MPINAME)", "$(subst mx,,$(MPINAME))")
+  CPPFLAGS += -DMYRINET
+endif
 
 build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/plotband.F patch-files/plotband.F.patch

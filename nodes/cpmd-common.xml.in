@@ -12,7 +12,7 @@ Copyright (c) 2000 - 2014 The Regents of the University of California.
 All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 </copyright>
 
-<package>cpmd_ROLLCOMPILER_ROLLMPI_ROLLNETWORK</package>
+<package>cpmd_COMPILERNAME_MPINAME</package>
 <package>cpmd-modules</package>
 <package>cpmd-roll-test</package>
 

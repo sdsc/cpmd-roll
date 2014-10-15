@@ -4,16 +4,13 @@ endif
 COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
 ifndef ROLLMPI
-  ROLLMPI = openmpi
+  ROLLMPI = rocks-openmpi
 endif
+MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
-ifndef ROLLNETWORK
-  ROLLNETWORK = eth
-endif
-
-NAME           = cpmd_$(COMPILERNAME)_$(ROLLMPI)_$(ROLLNETWORK)
+NAME           = cpmd_$(COMPILERNAME)_$(MPINAME)
 VERSION        = 3.17.1
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/cpmd
 
 SRC_SUBDIR     = cpmd

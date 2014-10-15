@@ -54,18 +54,13 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # 
 # @Copyright@
-#
-# $Log$
-#
 
 ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
+
 ifndef ROLLMPI
-  ROLLMPI = openmpi
-endif
-ifndef ROLLNETWORK
-  ROLLNETWORK = eth
+  ROLLMPI = rocks-openmpi
 endif
 
 -include $(ROLLSROOT)/etc/Rolls.mk
@@ -76,27 +71,24 @@ default:
 	  export o=`echo $$i | sed 's/\.in//'`; \
 	  cp $$i $$o; \
 	  for c in $(ROLLCOMPILER); do \
-	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
-	  done; \
-	  for n in $(ROLLNETWORK); do \
-	    perl -pi -e 'print and s/ROLLNETWORK/'$${n}'/g if m/ROLLNETWORK/' $$o; \
+	    COMPILERNAME=`echo $$c | awk -F/ '{print $$1}'`; \
+	    perl -pi -e 'print and s/COMPILERNAME/'$${COMPILERNAME}'/g if m/COMPILERNAME/' $$o; \
 	  done; \
 	  for m in $(ROLLMPI); do \
-	    perl -pi -e 'print and s/ROLLMPI/'$${m}'/g if m/ROLLMPI/' $$o; \
+	    MPINAME=`echo $$m | awk -F/ '{print $$1}'`; \
+	    perl -pi -e 'print and s/MPINAME/'$${MPINAME}'/g if m/MPINAME/' $$o; \
 	  done; \
-	  perl -pi -e '$$_ = "" if m/ROLL(COMPILER|NETWORK|MPI)/' $$o; \
+	  perl -pi -e '$$_ = "" if m/COMPILERNAME|MPINAME/' $$o; \
 	done
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLNETWORK="$(ROLLNETWORK)" ROLLMPI="$(ROLLMPI)" roll
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLMPI="$(ROLLMPI)" roll
 
 clean::
 	rm -f _arch bootstrap.py
 
-cvsclean: clean
+distclean:: clean
 	for i in `ls nodes/*.in`; do \
 	  export o=`echo $$i | sed 's/\.in//'`; \
 	  rm -f $$o; \
 	done
 	rm -fr RPMS SRPMS
-
-distclean:: cvsclean
 	-rm -f build.log

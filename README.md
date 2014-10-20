@@ -65,6 +65,7 @@ the names of the produced rpms.  For example,
 ```shell
 make ROLLCOMPILER=intel ROLLMPI=mvapich2_ib 2>&1 | tee build.log
 ```
+
 produces a roll containing an rpm with a name that begins
 `cpmd_intel_mvapich2_ib`.
 
@@ -92,7 +93,7 @@ module files in:
 ## Testing
 
 The cpmd-roll includes a test script which can be run to verify proper
-installation of the cpmd-roll documentation, binaries and module files. To
+installation of the roll documentation, binaries and module files. To
 run the test scripts execute the following command(s):
 
 ```shell

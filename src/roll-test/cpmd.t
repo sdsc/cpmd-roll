@@ -47,7 +47,12 @@ print OUT <<END;
 #!/bin/bash
 module load cpmd
 /bin/cp /opt/cpmd/lib/SI_SGS ./${TESTFILE}SI_SGS
-mpirun -np 2 /opt/cpmd/bin/cpmd.x $TESTFILE.cpmd
+output=`mpirun -np 2 /opt/cpmd/bin/cpmd.x $TESTFILE.cpmd 2>&1`
+if [[ "\$output" =~ "run-as-root" ]]; then
+  # Recent openmpi requires special option for root user
+  output=`mpirun -np 2 --allow-run-as-root /opt/cpmd/bin/cpmd.x $TESTFILE.cpmd 2>&1`
+fi
+echo \$output
 /bin/rm -f GEOMETRY* LATEST RESTART.1
 END
 close(OUT);

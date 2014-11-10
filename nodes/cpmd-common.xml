@@ -12,8 +12,8 @@ Copyright (c) 2000 - 2014 The Regents of the University of California.
 All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 </copyright>
 
-<package>cpmd_COMPILERNAME_MPINAME</package>
-<package>cpmd-modules</package>
-<package>cpmd-roll-test</package>
+<package>sdsc-cpmd</package>
+<package>sdsc-cpmd-modules</package>
+<package>sdsc-cpmd-roll-test</package>
 
 </kickstart>

@@ -8,9 +8,9 @@ ifndef ROLLMPI
 endif
 MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
-NAME           = cpmd_$(COMPILERNAME)_$(MPINAME)
+NAME           = sdsc-cpmd
 VERSION        = 3.17.1
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/cpmd
 
 SRC_SUBDIR     = cpmd

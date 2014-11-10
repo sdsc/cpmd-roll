@@ -60,35 +60,8 @@ REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
-
-FC = gfortran
-ifeq ("$(COMPILERNAME)", "intel")
-  FC = ifort
-else ifeq ("$(COMPILERNAME)", "pgi")
-  FC = pgf90
-endif
-
-COMPILERSETUP = \
-  module load $(ROLLCOMPILER) || true; \
-  echo === Compiler and version ===; \
-  $(FC) --version
-
-MKLSETUP = \
-  module load mkl || true; \
-  echo === MKL_ROOT ===; \
-  echo $${MKL_ROOT}; \
-  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
-
-MPISETUP = \
-  module load $(ROLLMPI) || true; \
-  echo === MPIHOME ===; \
-  echo $${MPIHOME}
-
-FFTWSETUP = \
-  module load fftw/2.1.5; \
-  echo === FFTWHOME ===; \
-  echo $${FFTWHOME}
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
 CFLAGS := -c -O2
 CPPFLAGS := -D__Linux -DFFT_FFTW3 -DPARALLEL -DPOINTER8 -DINTEL_MKL 
@@ -110,17 +83,38 @@ ifneq ("$(MPINAME)", "$(subst mx,,$(MPINAME))")
   CPPFLAGS += -DMYRINET
 endif
 
+LICENSE_FILES = CPMD_LICENSE
+
+$(NAME).spec: DESCRIPTION LICENSE
+
+DESCRIPTION:
+	$(MODULE_LOAD_FC); \
+	$(MODULE_LOAD_MPI); \
+	( \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_FC); \
+	  $(DESCRIBE_MKL); \
+	  $(DESCRIBE_MPI); \
+	  $(DESCRIBE_FFTW) \
+	) > $@
+
+LICENSE: $(SRC_DIRS)
+	if ! grep -qF "Copyright IBM Corp 1990-2008" $(SOURCE_DIR)/MANUAL/manual.tex; then \
+	  exit 2; \
+	fi
+	echo IBM > $@
+
 build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/plotband.F patch-files/plotband.F.patch
 	( \
-	  $(COMPILERSETUP); \
-	  $(MKLSETUP); \
-	  $(MPISETUP); \
-	  $(FFTWSETUP); \
+	  $(MODULE_LOAD_FC); \
+	  $(MODULE_LOAD_MKL); \
+	  export MKLLIB=`find $${MKLHOME}/lib/* -maxdepth 0 | head -1`; \
+	  $(MODULE_LOAD_MPI); \
+	  $(MODULE_LOAD_FFTW); \
 	  cd $(SOURCE_DIR); \
 	  ./mkconfig.sh LINUX-x86_64-FEDORA-MPI > Makefile; \
-	  export LFLAGS="-L. -L$${MKLLIB} -lmkl_rt -lm -lpthread -L$${FFTWHOME}/lib -lfftw $(LFLAGS)"; \
-	  export LFLAGS="-L. -L$${MKLLIB} -lmkl_rt -lm -lpthread -L$${FFTWHOME}/lib -lfftw"; \
+	  export LFLAGS="-L. -L$${MKLLIB} -lmkl_rt -lm -lpthread -L$${FFTWHOME}/lib -lfftw3 $(LFLAGS)"; \
 	  $(MAKE) CC=mpicc CFLAGS="$(CFLAGS)" FC=mpif90 FFLAGS="$(FFLAGS)" LD=mpif90 LFLAGS="$${LFLAGS}" CPPFLAGS="$(CPPFLAGS)"; \
 	  $(MAKE) CC=mpicc CFLAGS="$(CFLAGS)" FC=mpif90 FFLAGS="$(FFLAGS)" LD=mpif90 LFLAGS="$${LFLAGS}" CPPFLAGS="$(CPPFLAGS)" plotband.x \
 	)
@@ -135,7 +129,8 @@ install::
 	  cd $(SOURCE_DIR); \
 	  cp cpmd.x plotband.x $(ROOT)/$(PKGROOT)/bin; \
 	)
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR)
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE

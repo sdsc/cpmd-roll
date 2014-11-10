@@ -1,6 +1,6 @@
-NAME       = cpmd-roll-test
-VERSION    = 0
-RELEASE    = 1
+NAME       = sdsc-cpmd-roll-test
+VERSION    = 1
+RELEASE    = 0
 PKGROOT    = /root/rolltests
 
 RPM.EXTRAS = AutoReq:No

@@ -2,4 +2,4 @@
 setenv CPMDHOME /opt/cpmd
 prepend-path PATH /opt/cpmd/bin
 setenv PP_PATH /opt/cpmd/lib
-module load ROLLCOMPILER ROLLMPI mkl
+module load ROLLCOMPILER ROLLMPI mkl fftw

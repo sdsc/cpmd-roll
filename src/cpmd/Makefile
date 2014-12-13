@@ -83,8 +83,6 @@ ifneq ("$(MPINAME)", "$(subst mx,,$(MPINAME))")
   CPPFLAGS += -DMYRINET
 endif
 
-LICENSE_FILES = CPMD_LICENSE
-
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
@@ -99,9 +97,8 @@ DESCRIPTION:
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	if ! grep -qF "Copyright IBM Corp 1990-2008" $(SOURCE_DIR)/MANUAL/manual.tex; then \
-	  exit 2; \
-	fi
+	cp license-files/CPMD_LICENSE $(SOURCE_DIR)/
+	$(CHECK_LICENSE_FILES)
 	echo IBM > $@
 
 build: $(SRC_DIRS)

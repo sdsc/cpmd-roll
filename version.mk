@@ -1,5 +1,6 @@
-ROLLNAME = cpmd
-RELEASE  = 0
-COLOR    = orange
+ROLLNAME        = cpmd
+VERSION        :=$(shell bash version.sh -v)
+RELEASE        :=$(shell bash version.sh -h)
+COLOR           = orange
 
-REDHAT.ROOT = $(PWD)
+REDHAT.ROOT     = $(PWD)

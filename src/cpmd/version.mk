@@ -10,7 +10,7 @@ MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
 NAME           = sdsc-cpmd
 VERSION        = 3.17.1
-RELEASE        = 2
+RELEASE        = 3
 PKGROOT        = /opt/cpmd
 
 SRC_SUBDIR     = cpmd

@@ -105,7 +105,7 @@ build: $(SRC_DIRS)
 	( \
 	  $(MODULE_LOAD_FC); \
 	  $(MODULE_LOAD_MKL); \
-	  export MKLLIB=`find $${MKLHOME}/lib/* -maxdepth 0 | head -1`; \
+	  export MKLLIB=$${MKLHOME}/lib/intel64; \
 	  $(MODULE_LOAD_MPI); \
 	  $(MODULE_LOAD_FFTW); \
 	  cd $(SOURCE_DIR); \

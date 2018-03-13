@@ -77,7 +77,7 @@ else ifeq ("$(COMPILERNAME)", "pgi")
 else
   CFLAGS += -Wall
   CPPFLAGS += -D__GNU
-  FFLAGS = -c -O2 -fcray-pointer -fno-whole-file
+  FFLAGS = -c -O2 -fcray-pointer -fno-whole-file -cpp
 endif
 
 ifneq ("$(MPINAME)", "$(subst mx,,$(MPINAME))")

@@ -4,4 +4,4 @@ RELEASE    = 2
 PKGROOT    = /root/rolltests
 
 RPM.EXTRAS = AutoReq:No\nAutoProv:No
-RPM.PREFIX = $(PKGROOT)
+RPM.FILES  = $(PKGROOT)/cpmd.t

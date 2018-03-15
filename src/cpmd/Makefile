@@ -68,7 +68,7 @@ CFLAGS := -c -O2
 CPPFLAGS := -D__Linux -DFFT_FFTW3 -DPARALLEL -DPOINTER8 -DINTEL_MKL 
 ifeq ("$(COMPILERNAME)", "intel")
   CFLAGS += -Wall
-  FFLAGS = -c -xHost
+  FFLAGS = -c -xHost -cpp
 else ifeq ("$(COMPILERNAME)", "pgi")
   CFLAGS += -m64
   CPPFLAGS += -D__PGI -D__pgf90 -D__DERF -UFFT_FFTW3 -DFFT_DEFAULT

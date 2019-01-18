@@ -1,0 +1,11 @@
+--- CPMD/configure/LINUX-X86_64-INTEL-MPI-FFTW	2018-12-20 06:13:34.000000000 -0800
++++ patch-files/LINUX-X86_64-INTEL-MPI-FFTW	2019-01-14 14:37:34.029074649 -0800
+@@ -16,7 +16,7 @@
+      LD='mpif90'
+      FFLAGS_GROMOS='$(FFLAGS) -fixed'
+      FFLAGS_GROMOS_MODULES='$(FFLAGS)'
+-     CPP='/usr/bin/cpp -P -C -traditional'
++     CPP='/usr/bin/cpp -P -traditional'
+      CPPFLAGS='-D__Linux -D__HAS_FFT_FFTW3 -D__PARALLEL -DLINUX_IFC -D__HASNT_OMP_45 \
+       -D__HASNT_F03_EXECUTE_COMMAND_LINE -D__HASNT_F08_ISO_FORTRAN_ENV -D_HASNT_MPI_30'
+      NOOPT_FLAG=' -O1 '

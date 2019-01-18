@@ -1,0 +1,11 @@
+--- CPMD/configure/LINUX-PGI-MPI	2018-12-20 06:13:34.000000000 -0800
++++ patch-files/LINUX-PGI-MPI	2019-01-16 18:27:07.042862977 -0800
+@@ -51,7 +51,7 @@
+      FC='mpif90'
+      CC='mpicc'
+      LD='mpif90'
+-     CPP='/lib/cpp -P -C -traditional'
++     CPP='/lib/cpp -P -traditional'
+      CPPFLAGS='-D__Linux   -D__HAS_FFT_DEFAULT -D__PARALLEL -D__HAS_EXTERNAL_C_ERF '
+      CPPFLAGS_GROMOS='-DEWALD -DEWATCUT -DHAT_SHAPE -DUNPACKED_GRID -D__HAS_FFT_DEFAULT \
+                       -D__Linux   DFFT_DEFAULT -D__PARALLEL -D__HAS_EXTERNAL_C_ERF '

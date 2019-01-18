@@ -1,0 +1,41 @@
+--- CPMD/configure/LINUX-X86_64-GFORTRAN-MPI-CUDA	2018-12-20 06:13:34.000000000 -0800
++++ patch-files/LINUX-X86_64-GFORTRAN-MPI-CUDA	2019-01-14 20:26:39.847200133 -0800
+@@ -6,14 +6,15 @@
+ #INFO#
+ #INFO# V. Weber
+ #INFO#
+-     CUDA_PATH='/usr/local/cuda'
++     CUDA_PATH=CUDAPATH
++     MKL_ROOT=MKLROOT
+      FC='mpif90'
+      CC='gcc'
+      LD='mpif90'
+      NVCC=${CUDA_PATH}'/bin/nvcc'
+-     NVCCFLAGS='--default-stream per-thread -O3 -m64 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_62,code=sm_62'
++     NVCCFLAGS='--default-stream per-thread -O3 -m64 -gencode arch=compute_30,code=sm_30 -gencode arch=compute_35,code=sm_35 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_60,code=sm_60'
+      CPP=''
+-     CPPFLAGS='-D__Linux -D__GNU -D__HAS_FFT_DEFAULT -D__PARALLEL   -D__HAS_CUDA -D__HAS_NVTX_TIMER'
++     CPPFLAGS='-D__Linux -D__GNU -D__HAS_FFT_DEFAULT -D__PARALLEL   -D__HAS_CUDA -D__HAS_NVTX_TIMER -I${MKL_ROOT}/include'
+      FFLAGS_GROMOS='-ffixed-form $(FFLAGS)' 
+      FFLAGS_GROMOS_MODULES=' $(FFLAGS)' 
+      AR='/usr/bin/ar ruv'
+@@ -22,17 +23,15 @@
+        FFLAGS='-g -O0 -fcheck=all -Wuninitialized -Wall'
+        CFLAGS='-g -O0 -Wall'
+      else
+-       FFLAGS='-O2 -Wall'
++       FFLAGS='-ffree-line-length-512 -O2 -Wall'
+        CFLAGS='-O2 -Wall'
+      fi
+      if [ $omp ]; then
+        FFLAGS=${FFLAGS}' -fopenmp'
+        OMP3_DISABLED=`{ ${FC} -v; } 2>&1 | ${GREP} version | ${AWK} '{ print ( $3 < "4.7.0" ) ? "true" : "false" }'`
+-       LIBS='/home/manish/lapack-3.5.0/liblapack.a /home/manish/OPENBLAS/0.2.18/lib/libopenblas.a'
+-     else
+-       LIBS='/home/manish/lapack-3.5.0/liblapack.a /home/manish/OPENBLAS/0.2.18/lib/libopenblas.a'
+      fi
+      CFLAGS=${CFLAGS}' -I'${CUDA_PATH}'/include'
++     LIBS=${LIBS}' -Wl,--start-group ${MKL_ROOT}/lib/intel64/libmkl_gf_lp64.a ${MKL_ROOT}/lib/intel64/libmkl_sequential.a ${MKL_ROOT}/lib/intel64/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl'
+      LIBS=${LIBS}' -L'${CUDA_PATH}'/lib64 -lcudart -lcufft -lcusolver -lcublas -lnvToolsExt'
+      LFLAGS=' '${LIBS}
+      if [ $coverage ]; then

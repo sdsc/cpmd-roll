@@ -91,7 +91,6 @@ DESCRIPTION:
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	cp license-files/CPMD_LICENSE $(SOURCE_DIR)/
 	$(CHECK_LICENSE_FILES)
 	echo IBM > $@
 

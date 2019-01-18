@@ -129,7 +129,7 @@ build: $(SRC_DIRS)
 	
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/bin
-	cp $(SOURCE_DIR)/bin/* $(ROOT)/$(PKGROOT)/bin
+	cp $(PWD)/bin/* $(ROOT)/$(PKGROOT)/bin
 	cp -r lib $(ROOT)/$(PKGROOT)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

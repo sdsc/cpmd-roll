@@ -62,6 +62,8 @@ make ROLLCOMPILER=intel ROLLMPI=mvapich2_ib 2>&1 | tee build.log
 The build process recognizes "gnu", "intel" or "pgi" as the value for the
 `ROLLCOMPILER` variable; any MPI modulefile name may be used as the value of
 the `ROLLMPI` variable.  The default values are "gnu" and "rocks-openmpi".
+For version 4.3, no intel/mpi/cuda make file is provided and an attempt to make one failed.
+It is recommended that for this version, only the gnu compiler should be used.
 
 
 ## Installation

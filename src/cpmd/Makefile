@@ -64,20 +64,11 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-CFLAGS := -c -O2
-CPPFLAGS := -D__Linux -DFFT_FFTW3 -DPARALLEL -DPOINTER8 -DINTEL_MKL 
+CPMDTYPE=LINUX-X86_64-GFORTRAN-MPI
 ifeq ("$(COMPILERNAME)", "intel")
-  CFLAGS += -Wall
-  FFLAGS = -c -xHost -cpp
+  CPMDTYPE=LINUX-X86_64-INTEL-MPI-FFTW
 else ifeq ("$(COMPILERNAME)", "pgi")
-  CFLAGS += -m64
-  CPPFLAGS += -D__PGI -D__pgf90 -D__DERF -UFFT_FFTW3 -DFFT_DEFAULT
-  FFLAGS = -c -r8 -pc=64 -Msignextend
-  LFLAGS = -Bstatic
-else
-  CFLAGS += -Wall
-  CPPFLAGS += -D__GNU
-  FFLAGS = -c -O2 -fcray-pointer -fno-whole-file -cpp
+  CPMDTYPE=LINUX-PGI-MPI
 endif
 
 ifneq ("$(MPINAME)", "$(subst mx,,$(MPINAME))")
@@ -93,41 +84,55 @@ DESCRIPTION:
 	  $(DESCRIBE_FC); \
 	  $(DESCRIBE_MKL); \
 	  $(DESCRIBE_MPI); \
-	  $(DESCRIBE_FFTW) \
+	  $(DESCRIBE_FFTW); \
+          if test "$(CUDABUILD)" = "yes"; then \
+	     $(DESCRIBE_CUDA); \
+          fi \
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	cp license-files/CPMD_LICENSE $(SOURCE_DIR)/
 	$(CHECK_LICENSE_FILES)
 	echo IBM > $@
 
+CUDABUILD = no
+ifneq ("$(ROLLOPTS)", "$(subst cuda,,$(ROLLOPTS))")
+  CUDABUILD = yes
+endif
+
 build: $(SRC_DIRS)
-	patch $(SOURCE_DIR)/plotband.F patch-files/plotband.F.patch
+	patch $(SOURCE_DIR)/configure/$(CPMDTYPE)  patch-files/$(CPMDTYPE).patch
+	patch $(SOURCE_DIR)/src/cpmd.F90 patch-files/cpmd.F90.patch
 	( \
 	  $(MODULE_LOAD_FC); \
 	  $(MODULE_LOAD_MKL); \
 	  export MKLLIB=$${MKLHOME}/lib/intel64; \
+          perl -pi -e "s!MKLROOT!$${MKLLIB}!g" $(SOURCE_DIR)/configure/$(CPMDTYPE); \
 	  $(MODULE_LOAD_MPI); \
 	  $(MODULE_LOAD_FFTW); \
 	  cd $(SOURCE_DIR); \
-	  ./mkconfig.sh LINUX-x86_64-FEDORA-MPI > Makefile; \
-	  export LFLAGS="-L. -L$${MKLLIB} -lmkl_rt -lm -lpthread -L$${FFTWHOME}/lib -lfftw3 $(LFLAGS)"; \
-	  $(MAKE) CC=mpicc CFLAGS="$(CFLAGS)" FC=mpif90 FFLAGS="$(FFLAGS)" LD=mpif90 LFLAGS="$${LFLAGS}" CPPFLAGS="$(CPPFLAGS)"; \
-	  $(MAKE) CC=mpicc CFLAGS="$(CFLAGS)" FC=mpif90 FFLAGS="$(FFLAGS)" LD=mpif90 LFLAGS="$${LFLAGS}" CPPFLAGS="$(CPPFLAGS)" plotband.x \
+	  ./configure.sh $(CPMDTYPE); \
+          $(MAKE) -j 16; \
+          mkdir -p $(PWD)/cache/bin; \
+          cp bin/cpmd.x $(PWD)/cache/bin; \
+	  if test "$(CUDABUILD)" = "yes"; then \
+	       patch configure/$(CPMDTYPE)-CUDA  ../patch-files/$(CPMDTYPE)-CUDA.patch; \
+               $(MODULE_LOAD_CUDA); \
+               make clean; \
+               cp $(PWD)/$(CPMDTYPE)-CUDA configure; \
+	       perl -pi -e "s!CUDAPATH!$${CUDAHOME}!g" configure/$(CPMDTYPE)-CUDA; \
+	       ./configure.sh $(CPMDTYPE)-CUDA; \
+               $(MAKE) -j 16; \
+               cp bin/cpmd.x $(PWD)/cache/bin/cpmd_cuda.x; \
+          fi \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/bin
-	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib
-	cp `ls patch-files/lib/*|grep -v '\(CVS\|Root\|Repository\|Entries\)'` $(ROOT)/$(PKGROOT)/lib
-	( \
-	  cd $(SOURCE_DIR); \
-	  cp cpmd.x plotband.x $(ROOT)/$(PKGROOT)/bin; \
-	)
+	cp $(PWD)/cache/bin/* $(ROOT)/$(PKGROOT)/bin
+	cp -r lib $(ROOT)/$(PKGROOT)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE cache

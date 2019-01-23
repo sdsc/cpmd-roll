@@ -6,7 +6,7 @@
 \usepackage{multicol}
 \sloppy%\nonstopmode
 %Version CPMD
-\newcommand{\cpmdversion}{3.17.1}
+\newcommand{\cpmdversion}{4.3.0}
 \newcommand{\cpmd}{CPMD \cpmdversion}
 \newcommand{\sgn}{\mathrm{sgn}}
 
@@ -213,7 +213,7 @@ Ari P.~Seitsonen and J\"urg Hutter working at the Physical Chemistry Institute
 of the University of Zurich. Recent updates by Mauro Boero, Alessandro Curioni,
 J\"urg Hutter, Axel Kohlmeyer, Nisanth Nair and Wolfram Quester.
 
-  If you want to contribute or have constructive critisism please contact
+  If you want to contribute or have constructive criticism please contact
 \htref{mailto:cpmd@cpmd.org}{cpmd@cpmd.org}.
 
 \vspace{5mm}
@@ -226,7 +226,7 @@ use by an appropriate citation of the following kind:
 
 \noindent
 \textit{CPMD, http://www.cpmd.org/,\\
- Copyright IBM Corp 1990-2008,\\
+ Copyright IBM Corp 1990-2019,\\
  Copyright MPI f\"ur Festk\"orperforschung Stuttgart 1997-2001}.
 %
 
@@ -492,7 +492,7 @@ early 2003. The code has 150'000 lines.
   New functionalities include calculation of the electric field 
   gradient tensor along MD trajectory, EPR calculations, efficient 
   wavefunction extrapolation for BOMD, distance screening for HFX 
-  calculation and hybrid funcional with PBC, interaction perturbation method,
+  calculation and hybrid functional with PBC, interaction perturbation method,
   molecular states in TDDFT calculations, analytic second derivatives of 
   gradient corrected functionals~\cite{xcder}, Born charge tensor during 
   finite difference vibrational analysis, Gromacs  QM/MM 
@@ -518,7 +518,7 @@ early 2003. The code has 150'000 lines.
   New functionalities include additional distributed linear algebra code 
   for initialization, final wavefunction projection and Friesner 
   diagonalization, mean free energy path search method, multiscale 
-  shock method~\cite{shock}, Langevin lntegrator for metadynamics 
+  shock method~\cite{shock}, Langevin integrator for metadynamics 
   with extended Lagrangian, calculation of non-adiabatic couplings, 
   Landau-Zener Surface hopping, ROKS-based Slater transition-state
   density, linear-response DFPT with a ROKS-based reference 
@@ -529,9 +529,9 @@ early 2003. The code has 150'000 lines.
   support for fftw-3, improved  ultrasoft pseudopotential parallel code (VDB) 
   (MPI and OpenMP), optimizations for scalar CPUs, new collective 
   variables for metadynamics, variable cell support in DCD output, 
-  isotropic and zflexible cell for parrinello-rahman dynamics, 
-  damped dynamics and berendsen thermostats for electrons, ions and cell,
-  path-integral support for BO-MD, support for completely reproducable 
+  isotropic and zflexible cell for Parrinello-Rahman dynamics, 
+  damped dynamics and Berendsen thermostats for electrons, ions and cell,
+  path-integral support for BO-MD, support for completely reproducible 
   outputs for CPMD TestSuite, consistent and updated unit conversions 
   throughout the code, spin-density Mulliken analysis,
   aClimax format output of vibrational frequencies, optimization scheme 
@@ -565,25 +565,86 @@ POWER7, Fujitsu-Primergy BX900, several Linux updates and an updated
 pseudopotential library.
 
 \subsubsection{Version 3.17}
-New features, scalability improvements and bug fixes have been added since the 
+%
+New features, scalability improvements and bug fixes have been added since the
 latest version of the code.
-Among the several novel implementations we number a new highly parallel scheme 
-for the evaluation of the Hartree--Fock exact exchange with an efficient thresholding, support for parallel I/O in
-writing and reading the RESTART file, the introduction of a second parallelization layer over the molecular states which
-replaces the original TASKGROUP parallelization, increasing further the scalability together with the already available parallelization over plane-waves.
-Finally, improved OpenMP 3.0 support has been introduced both in the main code and in the QM/MM interface.
-This allows for a substantial speedup of the code in a hybrid OMP/MPI distribution (see note below). 
-Between the novel methodologies  we mention the availability of the {\emph ab-initio} vdW corrections, 
-of a fully functional Ehrenfest Dynamics module and of several improvements to the FO-DFT scheme. Additional developments include 
-novel schemes for treating  QM/MM link-atoms and the possibility of post-processing Nos\'e-Hoover trajectories and energies.
-The new version includes also porting and optimization to the IBM BlueGene/Q and different updates to the Linux architecture files.
+%
+Among the several novel implementations we number a new highly parallel scheme
+for the evaluation of the Hartree--Fock exact exchange with an efficient
+thresholding, support for parallel I/O in writing and reading the RESTART file,
+the introduction of a second parallelization layer over the molecular states
+which replaces the original TASKGROUP parallelization, increasing further the
+scalability together with the already available parallelization over
+plane-waves.
+%
+Finally, improved OpenMP 3.0 support has been introduced both in the main code
+and in the QM/MM interface.  This allows for a substantial speedup of the code
+in a hybrid OMP/MPI distribution (see note below).
+%
+Between the novel methodologies  we mention the availability of the {\it
+ab-initio} vdW corrections, of a fully functional Ehrenfest Dynamics module and
+of several improvements to the FO-DFT scheme.  Additional developments include
+novel schemes for treating  QM/MM link-atoms and the possibility of
+post-processing Nos\'e-Hoover trajectories and energies.
+%
+The new version includes also porting and optimization to the IBM BlueGene/Q
+and different updates to the Linux architecture files.
 
-{\emph Note on OMP 3.0}: The {\it collapse(n)} clause, although 
-powerful in well nested loops, may not work in old compilers and is known to have troubles
-e.g. in old Intel Fortran Compilers (versions 11 and former ones).
-Please, check carefully your OS and your compiler berfore compiling 
-blindly and refer to the discussion in
+
+\emph{Note on OMP 3.0}: The {\it collapse(n)} clause, although powerful in well
+nested loops, may not work in old compilers and is known to have troubles e.g.
+in old Intel Fortran Compilers (versions 11 and former ones). 
+%
+Please, check carefully your OS and your compiler berfore compiling blindly and
+refer to the discussion in
 http://openmp.org/forum/viewtopic.php?f=3\&t=1023\&start=10.
+
+\subsection{CPMD Version 4}
+
+\subsubsection{Version 4.0}
+%
+A new development version started in 2012 (and developed concurrently with
+version 3.17.1) with the purpose to refactor CPMD.
+
+
+\subsubsection{Version 4.1} 
+%
+Release 4.1 is the new version made available after almost two years from the
+last public release.
+%
+It sets a turning point to CPMD and its new position as a modern software
+(object oriented) while still retaining all the features and functionalities
+from the previous versions.
+
+
+Among the major technical breakthroughs: all memory allocations are converted
+to dynamical allocations using standard fortran; extensive usage of modules so
+to promote a code re-usage policy; fixed several instabilities due to
+arithmetical exceptions;  all floats operations are now converted to arbitrary
+precision; support of few more compilers; all COMMONs have been converted to
+TYPES; extensive usage of IMPLICIT NONE; removed a massive amounts of unused
+variables and procedures. Finally, we have build-up a regression tester that
+covers more than half of the functionalities (700 tests and keeps increasing
+day by day), providing a quality control for developers and users.
+
+
+Beyond cleanup and bug fixes improving the stability of all functionalities, we
+also report the implementation of new features such as: Spin-Orbit-Coupling,
+local control, inter-system-crossing SH dynamics together, Adiabatic Bohmian
+dynamics; coupling with IPHIGENIE to perform QM/MM calculations with
+polarizable schemes and a wider usage of CP\_GROUPS to improve scalability of
+different other functionalities.  The new version includes also porting,
+optimisation and different updates for various architectures. The work
+initiated with version 4.0 will continue tirelessly on the forthcoming version.
+
+\subsubsection{Version 4.3} 
+%
+With the version 4.3, we have ported some of the core-procedures to gpu. The XC procedures
+have been refactored and it was added the possibility to link to libxc.
+A new development for Eherenfest dynamics with ionized states is deployed.
+Few novel implementation: a multiple time step scheme for MD and the stress tensor LSD and UltraSoft Vanderbilt pseudopotentials and NPT
+Also a new bicanonical ensemble method is made available with version 4.3.
+Extensive cleanup and bug fixes and strenghten of the regression test suite.
 
 
 % XXX tutorial added.
@@ -593,38 +654,36 @@ http://openmp.org/forum/viewtopic.php?f=3\&t=1023\&start=10.
 %
 This version of CPMD is equipped with a shell script to create 
 a Makefile for a number of given platforms. If you run the shell 
-script \texttt{mkconfig.sh} (NOTE: this script was previously
-named \texttt{Configure}) without any options it will tell you 
+script \texttt{configure.sh} (NOTE: this script was previously
+named \texttt{config.sh}) without any options it will tell you 
 what platforms are available. Choose the label for a target 
 platform close to what your machine is and run the script again.
 
-\shellcommand{./mkconfig.sh PLATFORM > Makefile}
+\shellcommand{./configure.sh PLATFORM }
 
 \textbf{NOTE:} Due to filesystem implementation limitations,
 compilation under MacOS X, and Windows NT/XP/Vista requires the
-compilation outside of the SOURCES directory. See below.
+compilation outside of the \textbf{src} directory. See below.
 
 Most likely the generated makefile with \textbf{not} match the
 setup on your machine and you have to adapt the various definitions 
 of compilers, optimization flags, library locations and so on.
 To display additional information about a configuration type:
 
-\shellcommand{./mkconfig.sh -i PLATFORM}
+\shellcommand{./configure.sh -i PLATFORM}
 
 The executable can then be compiled using the \texttt{make} command. 
-% AK: no longer important. better not to confuse people.
-%The\texttt{mkconfig.sh} script will also set the parameter \texttt{IRAT} (in
-%\texttt{irat.inc}) according to the target platform. 
 To see all possible options use
 
-\shellcommand{./mkconfig.sh -help}
+\shellcommand{./configure.sh -help}
 
 A common problem is that the default names of the libraries and the path to
 the libraries are not correct in the \texttt{Makefile}. In this case you
 have to change the corresponding entries in the \texttt{Makefile} manually.
 If you are changing the preprocessor flags (the CPPFLAGS entry), 
 e.g.\ going from a serial to a parallel compilation, you have to delete 
-all "\texttt{.f}" and "\texttt{.o}" files first, preferably by executing:
+%all "\texttt{.f}" and "\texttt{.o}" files first, preferably by executing:
+all preprocessed, module and object files first, preferably by executing:
 
 \shellcommand{make clean}
 
@@ -633,12 +692,12 @@ all "\texttt{.f}" and "\texttt{.o}" files first, preferably by executing:
   This is highly recommended, if you need to compile several executables
   concurrently, e.g. if you are doing development on several platforms.
   This is done by creating a directory for each platform
-  (e.g. by 'mkdir ../cpmd-pc-pgi; mkdir ../cpmd-pc-pgi-mpi'  ) and then
+  (e.g. by 'mkdir ./bin/cpmd-pc-pgi; mkdir ./bin/cpmd-pc-pgi-mpi'  ) and then
   create a makefile for each of those directories and pointing to the
   original source directory with with \texttt{SRC} and \texttt{DEST}
   flags. For the above examples this would be:\\
-\shellcommand{./mkconfig.sh -m -SRC=\$PWD -DEST=../cpmd-pc-pgi PC-PGI}\\
-\shellcommand{./mkconfig.sh -m -SRC=\$PWD -DEST=../cpmd-pc-pgi-mpi  PC-PGI-MPI}\\
+\shellcommand{./configure.sh -m -SRC=\$PWD -DEST=./bin/cpmd-pc-pgi PC-PGI}\\
+\shellcommand{./configure.sh -m -SRC=\$PWD -DEST=./bin/cpmd-pc-pgi-mpi  PC-PGI-MPI}\\
   Now you can do development in the original source directory and only
   need to recompile the altered modules by typing 'make' in the
   respective subdirectories.
@@ -708,6 +767,12 @@ During the run\ cpmd.x\ creates different outputs:
   specified by the environment variable {\bf CPMD\_FILEPATH}, or the directory
   specified in the input file using the keyword \refkeyword{FILEPATH}.
 \end{itemize}
+
+In case CPMD quits with a non-zero exit status, an error message is written to a file called
+\emph{LocalError-X-X-X.log} by every task, indicating the procedure in which the error occured
+and the call stack. In certain cases (mostly when processing the input), more ample error information
+is written to the output unit as well.
+\\
 
   Jobs can be stopped at the next breakpoint by creating a file:
 
@@ -833,6 +898,8 @@ ESP          \> Containes the ESP charges of the QM atoms (QM/MM only).\\
 EL\_ENERGY   \> Contains the electrostatic interaction energy (QM/MM only).\\
 MULTIPOLE    \> Contains the dipole- and the quadrupole-momenent of the quantum system.\\
 MM\_CELL\_TRANS \> Contains the trajectory of the offset of the QM cell (QM/MM only).\\
+\\
+OCCMAT       \> The "trajectory" of the Occupation Matrix (DFT+U only)\\
 \end{tabbing}
 
 In case of path integral runs
@@ -852,6 +919,36 @@ its own directory for nearly all files. Exception are the file
 \texttt{GEOMETRY\_$s$}. The directories are built from the 
 \refkeyword{FILEPATH} path (or else from the environment variable 
 {\bf CPMD\_FILEPATH}) with the suffixes \texttt{\_$s$}, $s=\{1, \dots , P\}$.
+
+\medskip
+
+
+In case of bicanonical Ensemble MD 
+\begin{tabbing}
+1234567890123456789012 \= 1234567890123456789012  \kill
+\textsl{File}   \> \textsl{Contents}                     \\
+\\
+OUTPUT\_CNF2          \> standard output of the smaller canonical system \\
+RESTART\_CNF1         \> Restart file of the larger canonical system \\
+RESTART\_CNF2         \> Restart file of the smaller canonical system \\
+RESTART\_CNF1.x       \> Old/New restart files                 \\
+RESTART\_CNF2.x       \> Old/New restart files                 \\
+LATEST\_CNF1          \> Info file on the last restart file    \\
+LATEST\_CNF2          \> Info file on the last restart file    \\
+ENERGIES             \> Chemical potential, bicanonical weight, Kohn-Sham energy difference along the trajectory     \\
+ENERGIES\_CNF1        \> All energies along the trajectory  larger canonical system    \\
+ENERGIES\_CNF2        \> All energies along the trajectory  smaller canonical system   \\
+GEOMETRY\_CNF1        \> Current ionic positions and velocities larger canonical system \\
+GEOMETRY\_CNF2        \> Current ionic positions and velocities smaller canonical system\\
+GEOMETRY\_CNF1.xyz    \> Current ionic positions and velocities in \AA larger canonical system \\
+GEOMETRY\_CNF2.xyz    \> Current ionic positions and velocities in \AA smaller canonical system\\
+TRAJECTORY\_CNF1      \> All ionic positions and velocities along the trajectory larger canonical system\\
+TRAJECTORY\_CNF2      \> All ionic positions and velocities along the trajectory smaller canonical system\\
+TRAJEC\_CNF1.xyz      \> All ionic positions along the trajectory in xyz-format larger canonical system\\
+TRAJEC\_CNF2.xyz      \> All ionic positions along the trajectory in xyz-format smaller canonical system\\
+TRAJEC\_CNF1.dcd      \> All ionic positions along the trajectory in dcd-format larger canonical system\\
+TRAJEC\_CNF2.dcd      \> All ionic positions along the trajectory in dcd-format smaller canonical system\\
+\end{tabbing}
 
 \medskip
 
@@ -881,12 +978,13 @@ create good CPMD input files, but as a reference manual.
     version of the program you are using. Therefore the ultimate and
     authoritative input guide is the source code. Most of the input
     file is read via the code in the files\\ 
-    \texttt{control.F},  \texttt{sysin.F},    \texttt{dftin.F}, 
-    \texttt{ratom.F},    \texttt{recpnew.F},  \texttt{detsp.F},
-    \texttt{proppt.F},   \texttt{setbasis.F}, \texttt{vdwin.F},
-    \texttt{egointer.F}, \texttt{pi\_cntl.F}, \texttt{pi\_cntl.F},
-    \texttt{respin\_p.F}, \texttt{lr\_in.F},  \texttt{orbhard.F},
-    \texttt{cl\_init.F}, \texttt{cplngs.F}
+    \texttt{control\_utils.mod.F90},  \texttt{sysin\_utils.mod.F90},    \texttt{dftin\_utils.mod.F90}, 
+    \texttt{ratom\_utils.mod.F90},    \texttt{recpnew\_utils.mod.F90},  \texttt{detsp\_utils.mod.F90},
+    \texttt{proppt\_utils.mod.F90},   \texttt{setbasis\_utils.mod.F90}, \texttt{vdwin\_utils.mod.F90},
+    \texttt{respin\_p\_utils.mod.F90}, \texttt{lr\_in\_utils.mod.F90},  \texttt{orbhard\_utils.mod.F90},
+    \texttt{egointer\_utils.mod.F90}, \texttt{pi\_cntl\_utils.mod.F90}, \texttt{cl\_init\_utils.mod.F90}, 
+    \texttt{cplngs\_utils.mod.F90},  \texttt{mts\_utils.mod.F90}
+
 
   \item The input is free format except when especially stated
 
@@ -916,7 +1014,7 @@ create good CPMD input files, but as a reference manual.
   \item Lists inclosed in \textbf{[ ]} imply that you can choose {\bf any
     number} of items on the same line
 
-  \item Arguments to a keyword are given on the following line(s)
+  \item Arguments to a keyword are given on the following line(s) if not explicitly stated otherwise
 
   \item The full keyword/input line has to be within columns 1 to 80
 
@@ -976,7 +1074,7 @@ sections is ignored.
 \> This section is always evaluated, even if it is not used.\\
 \\
 \> \&PTDDFT ...  \> \&END  \>  $\leftrightarrow$ \>
-   Propagation TDDFT for Ehrenfest dynamics and spectra calculation \\
+   Propagation TDDFT for Ehrenfest dynamics and spectra \\
 \\
 \> \&LINRES ...  \> \&END  \>  $\leftrightarrow$ \>
    General input for HARDNESS and TDDFT calculations \\
@@ -1001,10 +1099,13 @@ sections is ignored.
    External field definition for EGO QM/MM interface \\
 \\
 \> \&VDW ...    \> \&END  \>  $\leftrightarrow$ \>
-   Empirical van der Waals correction\\
-   or van der Waals interaction based on Wannier functions \\
-\> This section is only evaluated if the keyword \refkeyword{VDW CORRECTION}
-   or, alternatively, \refkeyword{VDW WANNIER} is given in the \&CPMD section.\\
+   Settings associated to van der Waals-correction schemes. \\
+\> This section is only evaluated if either the keyword \refkeyword{DCACP}, \refkeyword{VDW CORRECTION}, \\
+\> or \refkeyword{VDW WANNIER} is given in
+   the \&CPMD section.\\
+\\
+\> \&MTS ...  \> \&END  \>  $\leftrightarrow$ \>
+   Parameters for the Multiple Time-Step MD scheme. \\
 \end{tabbing}
 
   A detailed discussion of the different keywords will be given in the
@@ -1025,6 +1126,7 @@ following section.
 \refkeyword{BENCHMARK}\options{}{}{}
 \refkeyword{BERENDSEN}\options{\{IONS,ELECTRONS,CELL\}}{}{}
 \refkeyword{BFGS}\options{}{}{}
+\refkeyword{BICANONICAL ENSEMBLE}\options{\{CHEMICALPOTENTIAL,\,XWEIGHT\}}{[INFO]}{}
 \refkeyword{BLOCKSIZE STATES}\options{}{}{}
 \refkeyword{BOGOLIUBOV CORRECTION}\options{}{[OFF]}{}
 \refkeyword{BOX WALLS}\options{}{}{}
@@ -1045,6 +1147,7 @@ following section.
 \refkeyword{DAMPING}\options{\{IONS,ELECTRONS,CELL\}}{}{}
 \refkeyword{DAVIDSON DIAGONALIZATION}\options{}{}{}
 \refkeyword{DAVIDSON PARAMETER}\options{}{}{}
+\refkeyword{DCACP}\options{}{}{}
 \refkeyword{DEBUG FILEOPEN}\options{}{}{}
 \refkeyword{DEBUG FORCES}\options{}{}{}
 \refkeyword{DEBUG MEMORY}\options{}{}{}
@@ -1061,7 +1164,8 @@ following section.
 \refkeyword{EXTERNAL POTENTIAL}\options{\{ADD\}}{}{}
 \refkeyword{EXTRAPOLATE WFN}\options{\{STORE\}}{}{}
 \refkeyword{EXTRAPOLATE CONSTRAINT}\options{}{}{}
-\refkeyword{FFTW WISDOM}\options{}{[ON,OFF]}{}
+% MPB: removed with FFTW I guess
+% \refkeyword{FFTW WISDOM}\options{}{[ON,OFF]}{}
 \refkeyword{FILE FUSION}\options{}{}{}
 \refkeyword{FILEPATH}\options{}{}{}
 \refkeyword{FINITE DIFFERENCES}\options{}{}{}
@@ -1083,12 +1187,12 @@ following section.
 \refkeyword{LANCZOS DIAGONALIZATION}\options{\{ALL\}}{}{}
 \refspekeyword{LANCZOS DIAGONALIZATION}{LANCZOS DIAGONALIZATION OPT}\options{\{OPT,RESET=n\}}{}{}
 \refkeyword{LANCZOS PARAMETER}\options{[N=n]}{[ALL]}{}
-\refkeyword{LANGEVIN}\options{\{WHITE, CPMD, OPTIMAL, CUSTOM\}}{[MOVECOM]}{}
+\refkeyword{LANGEVIN}\options{\{WHITE, CPMD, OPTIMAL, SMART, CUSTOM\}}{[MOVECOM]}{}
 \refkeyword{LBFGS}\options{}{[NREM, NTRUST, NRESTT, TRUSTR]}{}
 \refkeyword{LINEAR RESPONSE}\options{}{}{}
 \refkeyword{LSD}\options{}{}{}
 \refkeyword{LOCAL SPIN DENSITY}\options{}{}{}
-\refkeyword{MAXCPUTIME}\options{}{}{}
+\refkeyword{MAXRUNTIME}\options{}{}{}
 \refkeyword{MAXITER}\options{}{}{}
 \refkeyword{MAXSTEP}\options{}{}{}
 \refkeyword{MEMORY}\options{}{[SMALL, BIG]}{}
@@ -1139,6 +1243,7 @@ following section.
 \refkeyword{ROKS}\options{}{\{SINGLET, TRIPLET\},\{DELOCALIZED, LOCALIZED, GOEDECKER\}}{}
 \refkeyword{SCALED MASSES}\options{}{[OFF]}{}
 \refkeyword{SHIFT POTENTIAL}\options{}{}{}
+\refkeyword{SOC}\options{}{}{}
 \refkeyword{SPLINE}\options{}{[POINTS, QFUNCTION, INIT, RANGE]}{}
 \refkeyword{SSIC}\options{}{}{}
 \refkeyword{STEEPEST DESCENT}\options{}{[ELECTRONS, IONS, CELL,
@@ -1166,6 +1271,7 @@ following section.
 \refspekeyword{USE\_IN\_STREAM}{USE IN STREAM}\options{}{}{}
 \refspekeyword{USE\_OUT\_STREAM}{USE OUT STREAM}\options{}{}{}
 \refspekeyword{USE\_MPI\_IO}{USE MPI IO}\options{}{}{}
+\refspekeyword{USE\_MTS}{USE MTS}\options{}{}{}
 \refkeyword{QMMM}\options{}{[QMMMEASY]}{}{}{}
 %_FM[
 \refkeyword{FORCEMATCH}\options{}{}{}
@@ -1174,6 +1280,7 @@ following section.
 \refkeyword{VIBRATIONAL ANALYSIS}\options{}{[FD, LR, IN], [GAUSS, SAMPLE, ACLIMAX]}{}
 \refkeyword{VMIRROR}\options{}{}{}
 \refkeyword{VDW CORRECTION}\options{}{[ON, OFF]}{}
+\refkeyword{VDW DCACP}\options{}{}{}
 \refkeyword{VDW WANNIER}\options{}{}{}
 \refkeyword{WANNIER DOS}\options{}{}{}
 \refkeyword{WANNIER MOLECULAR}\options{}{}{}
@@ -1305,7 +1412,7 @@ searches\cite{taver_eh,taver1}.
 %
 \subsubsection[\&ATOMS ... \&END]{\&ATOMS $\ldots$ \&END}
 %
-This section also contains information on the pseudopotentials to be used. See
+This section also contains the nuclear coordinates and information on the pseudopotentials to be used. See
 section \ref{S_Pseudopotentials} for more details on this.
 %The following \options gives proper indentation, but it is a bad solution
 
@@ -1328,9 +1435,13 @@ section \ref{S_Pseudopotentials} for more details on this.
 \refkeyword{ACM0}\options{}{}{}
 \refkeyword{ACM1}\options{}{}{}
 \refkeyword{ACM3}\options{}{}{}
+\refspekeyword{ANALYTICAL\_DIV}{ANALYTICAL DIV}\options{}{}{}
 \refkeyword{BECKE BETA}\options{}{}{}
+\refkeyword{COULOMB ATTENUATION}\options{}{}{}
+\refspekeyword{CP\_LIBRARY\_ONLY}{CP LIBRARY ONLY}\options{}{}{}
 \refkeyword{EXCHANGE CORRELATION TABLE}\options{}{[NO]}{}
-\refkeyword{FUNCTIONAL}\options{}{}{functionals}
+\refkeyword{FUNCTIONAL}\options{}{}{functional(s)}
+\refkeyword{HUBBARD}\options{[NORM,ORTHO,NUATM=$nuatm$,OCCMAT=$printfreq$,VERB]}{}{}
 \refkeyword{HARTREE}\options{}{}{}
 \refkeyword{HARTREE-FOCK}\options{}{}{}
 \refspekeyword{HFX\_BLOCK\_SIZE}{HFX BLOCK SIZE}\options{}{}{}
@@ -1338,13 +1449,34 @@ section \ref{S_Pseudopotentials} for more details on this.
 \refkeyword{HFX SCREENING}\options{\{WFC,DIAG,EPS\_INT,RECOMPUTE\_TWO\_INT\_LIST\_EVERY\}}{}{}
 \refkeyword{GC-CUTOFF}\options{}{}{}
 \refkeyword{GRADIENT CORRECTION}\options{}{}{functionals}
+\refkeyword{LIBRARY}\options{}{}{library\_for\_functional\_1, library\_for\_functional\_2, \dots}
+\refspekeyword{KERNEL\_LIBRARY}{KERNEL LIBRARY}\options{}{}{library\_for\_kernel\_1, library\_for\_kernel\_2, \dots}
+\refspekeyword{LIBXC\_ONLY}{LIBXC ONLY}\options{}{}{}
 \refkeyword{LDA CORRELATION}\options{}{}{functional}
 \refkeyword{LR KERNEL}\options{}{}{functionals}
 \refkeyword{NEWCODE}\options{}{}{}
+\refspekeyword{NUMERICAL\_DIV}{NUMERICAL DIV}\options{}{}{}
 \refkeyword{OLDCODE}\options{}{}{}
+\refspekeyword{OLD\_DEFINITIONS}{OLD DEFINITIONS}\options{}{}{}
+\refspekeyword{PBE\_FLEX\_KAPPA}{PBE FLEX KAPPA}\options{}{}{}
+\refspekeyword{PBE\_FLEX\_GAMMA}{PBE FLEX GAMMA}\options{}{}{}
+\refspekeyword{PBE\_FLEX\_MU}{PBE FLEX MU}\options{}{}{}
+\refspekeyword{PBE\_FLEX\_BETA}{PBE FLEX BETA}\options{}{}{}
+\refspekeyword{PBE\_FLEX\_UEG\_CORRELATION}{PBE FLEX UEG CORRELATION}\options{}{}{functional}
+\refkeyword{SCALES}\options{}{}{scaling\_for\_functional\_1, scaling\_for\_functional\_2, \dots}
+\refspekeyword{HFX\_SCALE}{HFX SCALE}\options{}{}{scaling\_for\_hfx}
+\refspekeyword{KERNEL\_SCALES}{KERNEL SCALES}\options{}{}{scaling\_for\_kernel\_1, scaling\_for\_kernel\_2, \dots}
+\refspekeyword{KERNEL\_HFX\_SCALE}{KERNEL HFX SCALE}\options{}{}{scaling\_for\_hfx\_in\_kernel}
+\refkeyword{SCREENED EXCHANGE}\options{\{ASHCROFT,CAM,ERFC,EXP\}}{}{}
 \refkeyword{SLATER}\options{}{[NO]}{}
 \refkeyword{SMOOTH}\options{}{}{}
 \refkeyword{REFUNCT}\options{}{}{functionals}
+\refspekeyword{XC\_DRIVER}{XC DRIVER}\options{}{}{}\options{}{}{}
+\refspekeyword{XC\_KERNEL}{XC KERNEL}\options{}{}{functionals}
+\refspekeyword{MTS\_LOW\_FUNC}{MTS LOW FUNC}\options{}{}{functionals}
+\refspekeyword{MTS\_HIGH\_FUNC}{MTS HIGH FUNC}\options{}{}{functionals}
+
+
 %
 %
 \subsubsection[\&PROP ... \&END]{\&PROP $\ldots$ \&END}
@@ -1366,7 +1498,7 @@ the input-file if this section shall be evaluated.
 \refkeyword{OPTIMIZE SLATER EXPONENTS}\options{}{}{}
 \refkeyword{LOCAL DIPOLE}\options{}{}{}
 \refkeyword{NOPRINT ORBITALS}\options{}{}{}
-\refkeyword{POLARISABILITY}\options{}{}{}
+\refkeyword{POLARIZABILITY}\options{}{}{}
 \refkeyword{POPULATION ANALYSIS}\options{}{[MULLIKEN, DAVIDSON, n-CENTER]}{}
 \refkeyword{PROJECT WAVEFUNCTION}\options{}{}{}
 \refkeyword{TRANSITION MOMENT}\options{}{}{}
@@ -1463,6 +1595,9 @@ the input-file if this section shall be evaluated.
 \subsubsection[\&VDW ... \&END]{\&VDW $\ldots$ \&END}
 %
 \options{}{}{}
+\refkeyword{DCACP Z=z}\options{}{}{}
+\refspekeyword{NO\_CONTRIBUTION}{NO CONTRIBUTION}\options{}{}{}
+\refspekeyword{INCLUDE\_METALS}{INCLUDE METALS}\options{}{}{}
 \refkeyword{VDW PARAMETERS}\options{}{}{}
 \refkeyword{VDW-CUTOFF}\options{}{}{}
 \refkeyword{VDW-CELL}\options{}{}{}
@@ -1504,6 +1639,14 @@ the input-file if this section shall be evaluated.
 \refkeyword{VERBOSE}\options{}{}{}
 \refkeyword{WRITE LOCALTEMP}\options{[STEP \{nfi\_lt\}]}{}{}
 %
+\subsubsection[\&MTS ... \&END]{\&MTS $\ldots$ \&END}
+%
+\options{}{}{}
+\refspekeyword{TIMESTEP\_FACTOR}{TIMESTEP FACTOR}\options{}{}{}
+\refspekeyword{PRINT\_FORCES}{PRINT FORCES}\options{}{}{}
+\refspekeyword{LOW\_LEVEL\_FORCES}{LOW LEVEL FORCES}\options{\{DFT, EXTERNAL\}}{}{}
+\refspekeyword{HIGH\_LEVEL\_FORCES}{HIGH LEVEL FORCES}\options{\{DFT, EXTERNAL\}}{}{}
+%
 \clearpage
 %
 %---------------------------------------------------------------------
@@ -1519,22 +1662,28 @@ section \ref{sec:qmmm-input}.
 \keyword{ACM0}{}{}{}{\&DFT}
   \desc{Add exact exchange to the specified \refkeyword{FUNCTIONAL} according
     to the adiabatic connection method 0.~\cite{acm0,adamo2000}
-    This only works for isolated systems
-    and should only be used if an excessive amount of CPU time is available.}
+    % MPB: Not necessarily true anymore...
+    % This only works for isolated systems
+    % and should only be used if an excessive amount of CPU time is available.
+    }
 
 \keyword{ACM1}{}{}{}{\&DFT}
   \desc{Add exact exchange to the specified \refkeyword{FUNCTIONAL} according
     to the adiabatic connection method 1.~\cite{adamo2000,acm1}
-    The parameter is read from the next
-    line. This only works for isolated systems and should only be used if an
-    excessive amount of CPU time is available.}
+    The parameter is read from the next line.
+    % MPB: Not necessarily true anymore...
+    % This only works for isolated systems and should only be used if an
+    % excessive amount of CPU time is available.
+    }
 
 \keyword{ACM3}{}{}{}{\&DFT}
   \desc{Add exact exchange to the specified \refkeyword{FUNCTIONAL} according
     to the adiabatic connection method 3.~\cite{adamo2000,acm3}
-    The three needed parameters are read
-    from the next line. This only works for isolated systems and should only be
-    used if an excessive amount of CPU time is available.}
+    The three needed parameters are read from the next line.
+    % MPB: Not necessarily true anymore...
+    % This only works for isolated systems and should only be
+    % used if an excessive amount of CPU time is available.
+    }
 
 \keyword{ACCEPTOR}{}{[HDASINGLE,WMULT]}{}{\&SYSTEM}
   \desc{Set the \refkeyword{CDFT} acceptor atoms. Parameter NACCR must be 
@@ -1568,6 +1717,11 @@ section \ref{sec:qmmm-input}.
   \desc{Perform the matrix transpose (AllToAll communication) in the
         3D FFT using single/double precision numbers. Default is
         to use double precision numbers.}
+
+\spekeyword{ANALYTICAL\_DIV}{}{}{}{\&DFT}{ANALYTICAL DIV}
+  \desc{Calculate the $\mathbf{G}=0$ term for the Coulomb-attenuated exact
+        exchange using an analytical description of the integral term.
+        This is the default in combination with all internal hybrid xc functionals.}
 
 \keyword{ANDERSON MIXING}{}{$N=n$}{}{\&CPMD}
   \desc{Anderson mixing for the electronic density during self-consistent
@@ -1629,6 +1783,123 @@ Parameter Rcut is read in from next line.}
     positions. The approximated Hessian is updated using the
     Broyden-Fletcher-Goldfarb-Shano procedure~\cite{Fletcher80}.}
 
+\keyword{BICANONICAL ENSEMBLE}{\{CHEMICALPOTENTIAL,\,XWEIGHT\} }{[INFO]}{}{\&CPMD}
+    %
+  \desc{Use the bicanonical ensemble AIMD for simualtion of open
+    systems~\cite{Frenzel2017}. 
+    %
+    \\
+    %
+    Note, requesting this runtype cpmd must be excecuted on more then one MPI
+    thread.
+    %
+    \\
+    Within the bicanonocal ensemble one out of two sampling modes must be 
+    specified in the input:\\
+    %
+    \\[0.5em]
+    %
+    \textbf{CHEMICALPOTENTIAL} requests to sample the bicanonical ensemble at
+    constant chemical potential ($\mu^\dagger_1$) or 
+    %
+    \\[0.25em]
+    %
+    \textbf{XWEIGHT} requests to sample the bicanonical ensemble at constant
+    bicanonical weight ($x_1$).
+    %
+    \\[0.25em]
+    %
+    \textbf{Default} is to use no INFO printing at each AIMD step. 
+    %
+    \\[1em]
+    %
+    Two parameters read in from next line: 
+    %
+    \\[0.5em]
+    %
+    [\textbf{chemicalPotential}$~|~$\textbf{xWeight}]  [\textbf{temperature}]
+    %
+    \\[0.5em]
+    %
+    \textbf{chemicalPotential} 
+    %
+    ($\mu^\dagger_1$) if CHEMICALPOTENTIAL run type was requested. 
+    %
+    \\[0.25em]
+    %
+    A reasonable value can be obtained taking the ensemble average of $\langle
+    \mu^\dagger_1 \rangle_{x_1=0.5}$ of a converged bicanonical AIMD simulation
+    using the XWEIGHT run type (see Ref.~\cite{Frenzel2017}).
+    %
+    \\[0.5em]
+    %
+    \textbf{xWeight} ($x_1$) if XWEIGHT run type was requested. 
+    %
+    \\[0.25em]
+    %
+    The value of \textbf{xWeight} must be within the interval $[0,1]$. 
+    %
+    Setting the value of \textbf{xWeight} to 0 and 1 corresponds to the
+    canonical limits of canonical system 2 and system 1, \textit{i.e.\@} small
+    and the large system, respectively.
+    %
+    \\[0.5em]
+    %
+    \textbf{temperature} specifies the value of the temperature used to calculate 
+    the $\gamma_1$ prefactor (see Ref.~\cite{Frenzel2017}).
+    %
+    \\[1em]
+    %
+    Preparation of the INPUT (see also CPMD regtests BICAN):
+    %
+    \\[0.25em]
+    %
+    The simulation setup requires two input files with the second one having
+    the same name plus the extension "\textsc{\_2}".
+    %
+    The two files are for the large and the small canonical system, system 1
+    and system 2, respectively. 
+    %
+    The two input files must differ in one atom. 
+    %
+    This atom must be declared as the \_last\_ atomic species in the input of
+    system 1.
+    %
+    Thus the INPUT for system 2 is created from 1 by removing that species and
+    then apply optional changes, \textit{e.g.\@} modifiy the number of
+    electrons in that system via the CHARGE keyword. 
+    %
+    Note, positions and velocities of the atomic nuclei must be the same in
+    both systems.
+    %
+    A restart from preoptimized electronic wavefunctions of the inividual
+    canonical systems is recommended (see Sec.~\ref{FILES} and CPMD regtests 
+    BICAN/mdX0\_50, BICAN/c-cnf1, BICAN/c-cnf2).   
+    %
+    The output file of system 2 is written on OUTPUT\_CNF2 while that of system
+    1 is stdout.
+    %
+    The suffixes "\_CNF1" and "\_CNF2" are used to specify the canonical
+    systems for the other cpmd files.
+    %
+    For example the content of the file ENERGIES of a canoncal cpmd run is
+    written to the files ENERGIES\_CNF1 and ENERGIES\_CNF2.
+    %
+    In the bicanonical AIMD the ENERGIES then stores: nfi, chemical potential,
+    xweight, $\Delta U$, and $\mu_{x_1=0.5}$.
+    %
+    Where $\Delta U$ is the difference of the total energy of system 1 and
+    system 2 at timestep nfi. 
+    %
+    \\
+    %
+    Note: For the moment bicanonical ensemble is only implemented for
+    MOLECULAR DYNAMICS.  Other MD types BO, EH, PT, CLASSICAL or FILE 
+    as well as runtypes QMMM, path integral or  surface hopping  
+    are not supported.
+    %
+  }
+
 \keyword{BLOCKSIZE STATES}{}{}{}{\&CPMD}
   \desc{Parameter read in from next line.\\
     {\sl NSTBLK} \\
@@ -1653,7 +1924,7 @@ Parameter Rcut is read in from next line.}
     Specifically, in the unidimensional surface-like case, molecules
     departing from the surface are reflected back along the direction
     orthogonal to the surface, whereas in the bidimensional polymer-like
-    case, they are reflected back in the two dimensons orthogonal to
+    case, they are reflected back in the two dimensions orthogonal to
     the "polymer" axis. Warning: This procedure, although keeping your
     particles inside the cell, affect the momentum conservation. \\
     This feature is {\bf disabled by default}}
@@ -1688,7 +1959,7 @@ Parameter Rcut is read in from next line.}
         \end{minipage}
 
     {\sl KERMIX:} \hfill\begin{minipage}[t]{10cm}
-        Kerker mixing according to the original deinition of Ref.~\cite{Kerker}.
+        Kerker mixing according to the original definition of Ref.~\cite{Kerker}.
         By default the mixing parameter is set to 0.
         \end{minipage}\\
 
@@ -1704,7 +1975,7 @@ Parameter Rcut is read in from next line.}
 \keyword{CAYLEY}{}{}{}{\&CPMD}
   \desc{Used to propagate the Kohn-Sham orbitals in \refkeyword{MOLECULAR DYNAMICS} EH
         and \refkeyword{PROPAGATION SPECTRA}. At present is the only propagation scheme 
-        availabe.}
+        available.}
 
 \keyword{CDFT}{}{[NEWTON, DEKKER],[SPIN, ALL, PCGFI, RESWF, NOCCOR, HDA[AUTO, PHIOUT, PROJECT]]}{}{\&CPMD}
   \desc{The main switch for constrained DFT. Parameters $N_\text{c}$, $V_\text{init}$, 
@@ -1717,7 +1988,7 @@ Parameter Rcut is read in from next line.}
         {\bf ALL} (\defaultvalue{off}) activates dual spin and charge constraint, all inputs for 
         $N_\text{c}$ and $V_\text{init}$ have to be given twice (first for charge then for spin)\\
         {\bf PCGFI} (\defaultvalue{off}) instructs CPMD to do PCG for the first V optimisation cycle
-        regardles of the choice of optimiser.\\
+        regardless of the choice of optimiser.\\
         {\bf RESWF} (\defaultvalue{off}) if activated this switch re-initialises the wavefunction 
         after each $V$ optimisation step. This is useful if the wavefunction convergence between 
         the optimisation steps is slow. Usage in conjunction with \refkeyword{INITIALIZE WAVEFUNCTION}
@@ -1741,7 +2012,7 @@ Parameter Rcut is read in from next line.}
         states from RESTART.REF1 and RESTART.REF2 after the actual HDA calculation in order to project 
         the two constrained states on them and thus calculate the diabatic transition matrix element 
         in an orthogonalised ``dressed'' basis.\\
-        If CDFT is activated the program writes the current $V$ value to CDFT\_RESTART everytime the 
+        If CDFT is activated the program writes the current $V$ value to CDFT\_RESTART every time the 
         RESTART file is written.}
 
 
@@ -1914,12 +2185,12 @@ Parameter Rcut is read in from next line.}
     Refs.~\cite{solve,solve2}.}
 
 \keyword{CONFINEMENT POTENTIAL}{}{}{}{\&ATOMS}
-  \desc{The use of this label activates a spherical gaussian confinement 
+  \desc{The use of this label activates a spherical Gaussian confinement 
     potential in the calculation of the form factor of pseudopotentials.
     In the next line(s) two parameters for each atomic species must
     be supplied: the amplitude $\alpha$ and the cut off radius $r_c$.
-    The gaussian spherical amplitude is computed as 
-    $A=\pi ^{3/2}r_c^3\cdot \alpha$ and the gaussian confinement
+    The Gaussian spherical amplitude is computed as 
+    $A=\pi ^{3/2}r_c^3\cdot \alpha$ and the Gaussian confinement
     potential reads
     \begin{equation*}
     V({\bf G}) = \sum_{\bf G} A \cdot |{\bf G}|\cdot e^{-G^2r_c^2/4}
@@ -1937,7 +2208,7 @@ Parameter Rcut is read in from next line.}
   \desc{Apply a cutoff function to the kinetic energy term~\cite{bernasconi95}
     in order to simulate
     constant cutoff dynamics. The parameters $A$, $\sigma$ and $E_o$ are read
-    from the next line (all quantities have to be given in Rydbergs).
+    from the next line (all quantities have to be given in Rydberg).
     $$
       G^2 \to G^2 + A \left[ 1 + \mbox{erf}
       \left( {\frac{1}{2} G^2 -  \frac{E_o}{\sigma}} \right) \right]
@@ -2059,6 +2330,18 @@ Parameter Rcut is read in from next line.}
     provided, at least for some elements, in the PP library of CPMD and
     are named as *\_HOLE.psp}
 
+\keyword{COULOMB ATTENUATION}{}{}{}{\&DFT}
+  \desc{Activates the long-range correction/Coulomb attenuation method (\textbf{LC,
+    CAM}). With this keyword, all selected \emph{internal} LDA or GGA exchange
+    functionals will be Coulomb-attenuated, and the corresponding exact exchange
+    contribution is added by default. The three CAM parameters
+    $\alpha$, $\beta$ and $\mu$ are read from the next line. Setting
+    $\alpha=0$ and $\beta=1.0$ is equivalent to using the long-range correction (LC)
+    method.
+    This option is only available in combination with the new \refspekeyword{XC\_DRIVER}{XC DRIVER}.
+    The keyword is aliased and may be abbreviated by \textbf{CAM}.}
+
+
 \keyword{COUPLINGS}{\{FD=$\epsilon$,PROD=$\epsilon$\}}{[NAT]}{}{\&SYSTEM}
   \desc{Calculate non-adiabatic couplings~\cite{nonadiabatic} using finite
     differences (FD and PROD are two different finite-difference
@@ -2102,6 +2385,11 @@ Parameter Rcut is read in from next line.}
    read from the next line and shall be a
    divisor of the number of nodes in a parallel run.}
 
+\spekeyword{CP\_LIBRARY\_ONLY}{}{}{}{\&DFT}{CP LIBRARY ONLY}
+ \desc{Use the new xc driver, but use only functionals that are available internally
+       (this excludes libxc).
+       \emph{Cf.{}} \refspekeyword{XC\_DRIVER}{XC DRIVER}.}
+ 
 \keyword{CUBECENTER}{}{}{}{\&PROP}
   \desc{Sets the center of the cubefiles produced by the
   \refkeyword{CUBEFILE} flag. The next line has to contain
@@ -2177,7 +2465,7 @@ Parameter Rcut is read in from next line.}
 \keyword{DAVIDSON RDIIS}{}{}{}{\&TDDFT}
   \desc{This keyword controls the residual DIIS method for TDDFT diagonalization.
         This method is used at the end of a DAVIDSON diagonalization for
-        roots that are not yet converged. The first number gives the maxium
+        roots that are not yet converged. The first number gives the maximum
         iterations, the second the maximum allowed restarts, and the third
         the maximum residual allowed when the method is invoked.\\
 %
@@ -2203,6 +2491,19 @@ Parameter Rcut is read in from next line.}
     if INITIALIZATION and GENERATE REPLICAS are active.
 %
     Default is DEBROGLIE CENTROID and 500~Kelvin.}
+
+\keyword{DCACP}{}{}{}{\&CPMD}
+  \desc{Activates the DCACP scheme ~\cite{opt-ecp04} (dispersion-corrected atom-centred potentials)
+        in order to account for van der Waals-interactions. Advanced settings can
+        be specified in the \&VDW section.}
+
+\keyword{DCACP Z=z}{}{}{}{\&VDW}
+  \desc{Set custom DCACP parameters for the element with core charge $Z=$\texttt{z}.
+        The values of the DCACP projectors $\sigma_1$ and $\sigma_2$ are read from the
+        next line.\\
+        The keyword can be repeated multiple times, once for every element.
+        Useful if the desired parameters are not available in the internally coded
+        library, \emph{e.g.{}} for an exotic xc functional.}
 
 \keyword{DEBUG CODE}{}{}{}{\&CPMD}
   \desc{Very verbose output concerning subroutine calls for debugging purpose.}
@@ -2318,7 +2619,7 @@ Parameter Rcut is read in from next line.}
   \desc{Set the \refkeyword{CDFT} donor atoms. Parameter NACCR must be 
     specified next to the keyword. NDON $\in \mathbb{R}_+$ is the number of Donor 
     Atoms ($N$ being the total number of atoms).  If NDON$>0$ the indices of NDON atoms 
-    separated by whitespaces are read from the next line else only use an
+    separated by whitespace are read from the next line else only use an
     Acceptor group in the CDFT weight.}
 
 \keyword{DUAL}{}{}{}{\&SYSTEM}
@@ -2332,7 +2633,7 @@ Parameter Rcut is read in from next line.}
     cutoff is very low and the corresponding density cutoff
     is too low to represent the augmentation charges accurately.
     In order to maintain good energy conservation and have
-    good convergens of wavefunctions and related parameters,
+    good convergence of wavefunctions and related parameters,
     {\bf DUAL} needs to be increased to values of 6--10. \\
     Warning: You can have some trouble if you use the {\bf DUAL} 
     option with the symmetrization of the electronic density.}
@@ -2354,9 +2655,9 @@ Parameter Rcut is read in from next line.}
       definition of the dummy atom. Then the number of these atoms
       has to be specified on the same line. 
       A negative number of atoms stands for all atoms. 
-      For type 4, the dummy atom is defined as a weigthed average
+      For type 4, the dummy atom is defined as a weighed average
       of coordinates of real atoms with user-supplied weights. This
-      feature is useful e.~g. in constrained dynamics, because
+      feature is useful e.~g.\@ in constrained dynamics, because
       allows to modify positions and weights of dummy atoms according 
       to some relevant quantity such as forces on selected atoms.
 % A negative atom index means that a negative weight is assigned 
@@ -2409,7 +2710,7 @@ Parameter Rcut is read in from next line.}
       Then the two parameters ``elfcut'' and
       ``elfeps'' are read from the next line.
       The particular form of ELF that is implemented is defined
-      in the header of the subroutine elf.F.
+      in the header of the subroutine elf\_utils.mod.F90.
       
       Note 1: it is a {\em very} good idea to increase
       the planewave cutoff and then specify
@@ -2438,7 +2739,9 @@ Parameter Rcut is read in from next line.}
   \desc{Write the band energies (eigenvalues) for k points in the file
       ENERGYBANDS. }
 
-\keyword{EPR}{}{}{options, see response\_p.inc}{\&RESP}
+% MPB: No more include files (has not eneded up in response_p_utils, though)
+%\keyword{EPR}{}{}{options, see response\_p.inc}{\&RESP}
+ \keyword{EPR}{}{}{options}{\&RESP}
   \desc{Calculate the EPR $g$ tensor for the system. This routine
   accepts most, if not all, of the options available in the NMR
   routine (RESTART, NOSMOOTH, NOVIRTUAL, PSI0, RHO0, OVERLAP and
@@ -2458,7 +2761,7 @@ Parameter Rcut is read in from next line.}
       V_{EFF} = -\frac{Z}{r}\mathrm{erf}(r/r_c) + V_{HARTREE} + V_{XC}
       $$
   and $r_c$ (greater than 0) is read on the next line.\\
-  {\bf HYP}: calculates the hyperfine tensors. See epr\_hyp.F for details.\\
+  {\bf HYP}: calculates the hyperfine tensors. See epr\_hyp\_utils.mod.F90 for details.\\
 
   Contact Reinout.Declerck@UGent.be should you require further information.}
 
@@ -2521,7 +2824,7 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
         The amplitude of the vector potential is provided in \textit{aampl} and its polarization is given in \textit{adir} (1 = x-polarized,
         2 = y-polarized, 3 = z-polarized, 4 = all components). The keyword \textit{afreq} gives the frequency of the field and \textit{apara1} is a
         free parameter for a specific user-specified pulse.\\
-        Important points: the applied electromagnetic field needs to be hard coded in the subroutine sh\_tddft.F, in the subroutine SH\_EXTPOT.
+        Important points: the applied electromagnetic field needs to be hard coded in the subroutine sh\_tddft\_utils.mod.F90, in the subroutine SH\_EXTPOT.
         The vector potential is used for the coupling with the amplitudes equations. Be careful to use a time step small enough for a correct
          description of the pulse. The pulse is printed in the file SH\_EXTPT.dat (step, A(t), E(t)).
        }
@@ -2549,7 +2852,7 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
   \desc{Obtain the fictitious nuclear masses $M_I^\prime$
         within path integral molecular
         dynamics from the real physical atomic masses $M_I$
-        (as tabulated in the DATA ATWT / \ldots /  statement in atoms.F)
+        (as tabulated in the DATA ATWT / \ldots /  statement in atoms\_utils.mod.F90)
         by {\em multiplying} them with the dimensionless factor WMASS
         that is read from the following line;
         if the NORMAL MODES or STAGING propagator is used
@@ -2562,20 +2865,21 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
   \desc{Step for propagating string (see \cite{Eijnden06}).\\
     \textbf{Default} value is \defaultvalue{1.0}}
 
-\keyword{FFTW WISDOM}{}{[ON,OFF]}{}{\&CPMD}
-  \desc{ Controls the use of the ``wisdom'' facility when using 
-    FFTW or compatible libraries. When enabled, CPMD will switch 
-    to using the ``measure'' mode, which enables searching for 
-    additional runtime optimizations of the FFT. The resulting 
-    parameters will be written to a file called {\sl FFTW\_WISDOM} and 
-    re-read on subsequent runs. The parameters in the file are 
-    machine specific and when moving a job to a different machine, 
-    the file should be deleted. 
-
-    The use of fftw wisdom incurs additional overhead and thus may
-    lead to slower execution. It is recommended to stick with the 
-    default settings unless you know what you are doing.
-}
+% MPB: No more FFTW
+% \keyword{FFTW WISDOM}{}{[ON,OFF]}{}{\&CPMD}
+%   \desc{ Controls the use of the ``wisdom'' facility when using 
+%     FFTW or compatible libraries. When enabled, CPMD will switch 
+%     to using the ``measure'' mode, which enables searching for 
+%     additional runtime optimizations of the FFT. The resulting 
+%     parameters will be written to a file called {\sl FFTW\_WISDOM} and 
+%     re-read on subsequent runs. The parameters in the file are 
+%     machine specific and when moving a job to a different machine, 
+%     the file should be deleted. 
+% 
+%     The use of fftw wisdom incurs additional overhead and thus may
+%     lead to slower execution. It is recommended to stick with the 
+%     default settings unless you know what you are doing.
+% }
 
 \keyword{FILE FUSION}{}{}{}{\&CPMD}
   \desc{ Reads in two separate \refkeyword{RESTART} files for ground state and 
@@ -2618,7 +2922,7 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
       occupation numbers are calculated, the density is updated,
       and a new wavefunction optimization is started.
       The variations of the density coefficients are used as
-      convergence criterium. The default electron temperature is
+      convergence criterion. The default electron temperature is
       1000 K and 4 unoccupied states are added.
       Implemented also for k-points.
       Only one sub-option is allowed per line and the respective parameter
@@ -2654,7 +2958,7 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
 %_FM[  
 \keyword{FORCEMATCH}{}{}{}{\&CPMD}
   \desc{Activates the QM/MM force matching procedure. This keywords requires the presence 
-  of a \&QMMM ... \&END section with a correspoding \refkeyword{FORCEMATCH ... END FORCEMATCH} block. See sections~\ref{sec:qmmm} and~\ref{sec:forcematch-desc} for more details.} 
+  of a \&QMMM ... \&END section with a corresponding \refkeyword{FORCEMATCH ... END FORCEMATCH} block. See sections~\ref{sec:qmmm} and~\ref{sec:forcematch-desc} for more details.} 
 %_FM]
 
 \keyword{FORCE STATE}{}{}{}{\&TDDFT}
@@ -2678,8 +2982,67 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
 \keyword{FULL TRAJECTORY}{}{}{}{\&CLASSIC}
   \desc{Not documented}
 
-\keyword{FUNCTIONAL}{}{}{functionals}{\&DFT}
-  \desc{Single keyword for setting up XC-functionals.\\
+\keyword{FUNCTIONAL}{}{}{functional\_1, functional\_2, \dots}{\&DFT}
+  \desc{The xc functional(s) are specified on the same line, separated by a space.
+      \\~\\
+      \textbf{XC\_DRIVER}:\\
+      Both functionals from the internal CP library and those linked from
+      libxc are available within the same run and can be freely mixed when using the
+      \refspekeyword{XC\_DRIVER}{XC DRIVER}.
+      Please note that the internal CP functionals offer a considerable performance
+      advantage over libxc.
+      While the code will default to the internal implementations,
+      use of libxc for single functionals can be requested by the keyword \refkeyword{LIBRARY}.
+      % MPB: No space for this
+      % or may be forced for all the functionals by using \refspekeyword{LIBXC\_ONLY}{LIBXC ONLY}.
+      % (Similarly, the use of libxc can be specifically excluded by using
+      % \refspekeyword{CP\_LIBRARY\_ONLY}{CP LIBRARY ONLY}.)
+      The functional code names for the functionals available internally follow the nomenclature
+      introduced by libxc: The functional name must be preceeded by a tag specifying its level
+      (hybrid, MGGA, GGA...). B3LYP would therefore be specified as HYB\_GGA\_XC\_B3LYP. \\
+      Fixed (hybrid) exchange-correlation functionals available in the internal CP library include:
+      \\~\\
+      \textbf{GGA\_XC} \_BLYP, \_BP86, \_HCTH\_93, \_HCTH\_120, \_HCTH\_147, \_HCTH\_407, \_OLYP, \_OPBE, \_PBE, \_PBE\_SOL, \_REVPBE
+      \\
+      \textbf{MGGA\_XC} \_TPSS, \_M06\_L,\_M11\_L, \_MN12\_L
+      \\
+      \textbf{HYB\_GGA\_XC} \_B3LYP, \_CAM\_B3LYP,  \_O3LYP, \_PBE0, \_PBE0\_SOL, \_REVPBE0
+      \\
+      \textbf{HYB\_MGGA\_XC} \_M05, \_M05\_2X, \_M06, \_M06\_2X, \_M06\_HF, \_M08\_SO, \_M08\_HX, \_M11, \_MN12\_SX
+      \\~\\
+      % MPB: No space for this on one page
+      % Please note that, for your convenience, some of these combinations have been hard-coded in the internal library only,
+      % they may not be available directly in libxc.
+      % \\~\\
+      The following exchange and correlation functionals are available as separate keywords
+      within the internal CP library, both in spin-restricted and spin-unrestricted form,
+      and can be freely combined:
+      \\~\\
+      \textbf{LDA\_X}
+      \\
+      \textbf{LDA\_C} \_PZ, \_PW, \_OB\_PW, \_VWN
+      \\
+      \textbf{GGA\_X} \_B88, \_OPTX, \_PBE, \_PBE\_SOL, \_REVPBE, \_PBE\_FLEX
+      \\
+      \textbf{GGA\_C} \_LYP, \_P86, \_PBE, \_PBE\_SOL, \_PBE\_FLEX
+      \\
+      \textbf{MGGA\_X} \_TPSS
+      \\
+      \textbf{MGGA\_C} \_TPSS
+      \\~\\
+      The parameters for VWN used within the CP library correspond to what is sometimes denoted `VWN5'.
+      The version of HCTH available in prior releases corresponds to GGA\_XC\_HCTH\_120.
+      The definitions for the LDA part of the P86, PBE and TPSS correlation have been updated to comply with the standard definitions of most
+      codes, for certain functionals, the definitions used in CPMD versions prior to 4.3 may be accessed by using
+      \refspekeyword{OLD\_DEFINITIONS}{OLD DEFINITIONS}.
+      A custom value of the parameter $\beta$ used in GGA\_X\_B88 can be input using the keyword \refkeyword{BECKE BETA}. \\
+      A completely customised parameterisation of PBE can be set up by using the \_PBE\_FLEX routines in combination with
+      the PBE\_FLEX\_\dots keywords in the \&DFT section. Since many different but highly specific parametrisations
+      of PBE exist, this allows access to virtually all declinations based on the PBE xc equations.
+      \\~\\
+      \textbf{NEWCODE} and \textbf{OLDCODE}:\\
+      Single keyword for setting up XC-functionals. 
+      Only \emph{one single} functional keyword can be specified in when using \refkeyword{OLDCODE} or \refkeyword{NEWCODE}. \\
       Available functionals are NONE, SONLY, LDA (in PADE form),
       \goodbreak BONLY, BP, BLYP, XLYP, GGA (=PW91), PBE, PBES, REVPBE,
       \goodbreak HCTH, OPTX, OLYP, TPSS, PBE0, B1LYP, B3LYP, X3LYP,PBES,
@@ -2755,7 +3118,9 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
 \keyword{GRADIENT CORRECTION}{}{}{[functionals]}{\&DFT}
   \desc{Individual components of gradient corrected functionals can be
     selected. Rarely needed anymore, use the \refkeyword{FUNCTIONAL}
-    keyword instead.\\
+    keyword instead. Only available for \textbf{OLDCODE} and \textbf{NEWCODE}; but 
+    the new \refspekeyword{XC\_DRIVER}{XC DRIVER} offers similar flexibility in combination
+    with the \textbf{FUNCTIONAL} keyword.\\
 
       Functionals implemented are for the
       exchange energy:\\
@@ -2812,7 +3177,7 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
   \desc{Do a Hartree calculation. Only of use for testing purposes.}
 
 \keyword{HESSCORE}{}{}{}{\&CPMD}
-  \desc{Calculates the partial Hessian after relaxation of the enviroment,
+  \desc{Calculates the partial Hessian after relaxation of the environment,
        equivalent to {\sl NSMAXP=0} ({\bf PRFO NSMAXP}).}
 
 \keyword{HESSIAN}{}{[DISCO,SCHLEGEL,UNIT,PARTIAL]}{}{\&CPMD}
@@ -2829,20 +3194,20 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
       copied.  The keywords \refkeyword{RESTART} PHESS are required.}
 
 \spekeyword{HFX\_BLOCK\_SIZE}{}{}{}{\&DFT}{HFX BLOCK SIZE}
- \desc{Set the block size for the HFX calculations. This keyword is active only when no thresholdings of the integrals is used.
+ \desc{Set the block size for the HFX calculations. This keyword is active only when no thresholding of the integrals is used.
    Default is 2. The block size is read from the next line.
 }
 
 \keyword{HFX CUTOFF}{}{}{}{\&SYSTEM}
  \desc{
- Set an additional cutoff for wavefunctionand density to be used in the calculation
+ Set an additional cutoff for wavefunction and density to be used in the calculation
  of exact exchange. Cutoffs for wavefunctions and densities are read from the next
  line in Rydberg units. Defaults are the same cutoffs as for the normal calculation.
  Only lower cutoffs than the defaults can be specified.
  }
 
 \spekeyword{HFX\_DISTRIBUTION}{}{}{}{\&DFT}{HFX DISTRIBUTION}
- \desc{Set the block distribution for the parallel HFX calculations. This keyword is active only when no thresholdings of the integrals is used.
+ \desc{Set the block distribution for the parallel HFX calculations. This keyword is active only when no thresholding of the integrals is used.
    Default is BLOCK\_CYCLIC. The distribution is read from the next line.
 }
 
@@ -2854,15 +3219,55 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
         are included ({\sl DIAG}). {\sl RECOMPUTE\_TWO\_INT\_LIST\_EVERY} 
         allows to set how often the integral list is recomputed. }
 
+\spekeyword{HIGH\_LEVEL\_FORCES}{\{DFT, EXTERNAL\}}{}{}{\&MTS}{HIGH LEVEL FORCES}
+ \desc{
+    Set the computational model for the calculation of high level forces in the MTS scheme.
+    For now two options exists: (i) The forces are obtained from the DFT code internal to CPMD. 
+    In that case, the high level functional has to be set in the 
+    \&DFT section with the \refspekeyword{MTS\_HIGH\_FUNC}{MTS HIGH FUNC} keyword.
+    (ii) The forces are calculated by an external program which called via a script which should be named
+    \texttt{EXT\_HIGH\_FORCES}. When the forces are needed, CPMD will write a file \texttt{geometry.xyz} containing
+    the current geometry in xyz format (carthesian coordinates in Aangstroms). Then the script will 
+    be called and CPMD will wait until a file \texttt{forces.xyz} becomes available with the new forces
+    in xyz format (atomic units are expected). See the \texttt{get\_external\_forces} routine in the
+    \texttt{interface\_utils.mod.F90} file.
+
+    The keyword \refspekeyword{LOW\_LEVEL\_FORCES}{LOW LEVEL FORCES} can be used in exactly the same way for the 
+    selection of the computational model used to calculate the low level forces in the MTS scheme.
+    Similarly, if the DFT code internal to CPMD is chosen as low level, 
+    the keyword \refspekeyword{MTS\_LOW\_FUNC}{MTS LOW FUNC} 
+    (\&DFT section), can be used to select the low level density functional. \\
+
+    {\bf Default:} Forces are calculated with the DFT code internal to CPMD.
+ }
+
 \keyword{HTHRS}{}{}{}{\&LINRES}
  \desc{
  Threshold for Hessian in preconditioner for linear response optimizations.
  Default is 0.5.
  }
 
+\keyword{HUBBARD}{[NORM,ORTHO,NUATM=$nuatm$,OCCMAT=$printfreq$,VERB]}{}{}{\&DFT}
+\desc{Use the \textbf{HUBBARD-U} correction to partly correct the self interaction error of DFT.
+Specifying NORM and/or ORTHO causes the orbitals for the projections to be normalized and/or orthogonalized, respectively.
+VERB causes the occupation matrix to be printed in the output, otherwise it is printed to the file OCCMAT.
+The keyword OCCMAT=$printfreq$ specifies the frequency in which the OCCMAT is written. Default is 1.
+$nuatm$ is the number of atoms which are treated with the Hubbard U correction (U-atom). Default is 1.
+
+For each U-atom the atom number, the U parameter [eV], the linear response parameter $\alpha$ [eV] and the number of different angular momenta for projectors is read from a new line. %In case of a broken symmetry calculation, two U parameters (U\_BS and U\_HS) are expected.
+%For each of the angular momenta for projectors
+For each of those, the shell number of the projector and angular momentum $l$ is read from the next lines.}
+
 \keyword{IMPLICIT NEWTON RAPHSON}%
         {\{PREC, CONTINUE, VERBOSE, ALTERNATIVE, STEP\}}{[N=nreg]}{}{\&CPMD}
   \desc{Not documented.}
+
+\spekeyword{INCLUDE\_METALS}{}{}{}{\&VDW}{INCLUDE METALS}
+  \desc{When using the \refkeyword{DCACP} dispersion-correction scheme, 
+        include contributions from metal centres, too (where available).
+        This should only rarely be needed. In the vast majority of cases
+       (metal complexes, metallo-organic compounds), contributions from the
+        metal centres are vanishingly small.}
 
 \keyword{INITIALIZATION}{}{}{}{\&PIMD}
   \desc{Provide an initial configuration for all replicas as specified either
@@ -2893,7 +3298,7 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
 \keyword{INTERFACE}{\{EGO,GMX\}}{\{[MULLIKEN, LOWDIN, ESP, HIRSHFELD],PCGFIRST\}}{}{\&CPMD}
   \desc{Use CPMD together with a classical molecular dynamics code.
     CPMD and the classical MD code are run simultaneously and
-    communicate via a file based protocol. See the file egointer.F
+    communicate via a file based protocol. See the file egointer\_utils.mod.F90
     for more details.
     This needs a specially adapted version of the respective classical MD code.
     So far, there is an interface\cite{egoqmmm,gmxqmmm} to the MD programs
@@ -2975,7 +3380,7 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
 \keyword{KPERT}{}{[MONKHORSTPACK,SCALE]}{}{\&RESP}
 \label{sec:kpert}
   \desc{Calculation of total energy and electronic density of states with
-    an arbitraty number of k-points (at almost no additional
+    an arbitrary number of k-points (at almost no additional
     computational effort).  The method is based on a
     ${\bf k}\cdot {\bf p}-$like approximation developed in the framework
     of the density functional perturbation theory \cite{mimp}.
@@ -3126,7 +3531,7 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
   \desc{
    lanczos\_dim  iterations   conv\_threshold
    lanczos\_dim= dimension of the vibrational d.o.f.
-   iterations = no. of iterations desired for this run
+   iterations = no.\@ of iterations desired for this run
    conv\_threshold = threshold for convergence on eigenvectors
    CONTINUE = argument for continuing Lanczos diagonalization
               from a previous run
@@ -3134,7 +3539,7 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
    DETAILS  = argument for verbosity. prints a lot of stuff
    }
 
-\keyword{LANGEVIN}{\{WHITE, CPMD, OPTIMAL, CUSTOM\}}{[MOVECM]}{[W0, NS]}{\&CPMD}
+\keyword{LANGEVIN}{\{WHITE, CPMD, OPTIMAL, SMART, CUSTOM\}}{[MOVECM]}{[W0, NS]}{\&CPMD}
   \desc{Use a (generalized) Langevin equation to thermostat the simulation\cite{Ceriotti10}. 
    By default, the component of the noise parallel to the center of mass velocity is 
      removed at each step of the thermostat. Removal can be disabled by the option {\sl MOVECM}.
@@ -3171,6 +3576,18 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
                   next line. Ionic frequencies down to $10^{-4}${\sl W0} will be sampled 
                   efficiently, but not as much as for the {\sl OPTIMAL} keyword. 
                       \end{minipage}
+                      
+    {\sl SMART:} \hfill\begin{minipage}[t]{10cm}
+                  A generalized Langevin dynamics that aims to be as efficient as possible
+                  on the slowest time scale accessible to a typical ab initio simulation. 
+                  In practice, vibrations with a time scale which is about 10000 time steps
+                  will be sampled optimally, and faster modes will be sampled as efficiently
+                  as possible without disturbing slower modes. 
+                  The highest ionic frequency {\sl W0} (in cm$^{-1}$) is read from the 
+                  next line. Will be about 50\%{} more efficient than {\sl OPTIMAL} for slow
+                  modes, but less efficient for fast vibrations. Use only with Born-Oppenheimer
+                  dynamics.
+                      \end{minipage}                      
   }
 
 \keyword{LBFGS}{}{[NREM, NTRUST, NRESTT, TRUSTR]}{}{\&CPMD}
@@ -3212,7 +3629,7 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
       \refkeyword{RESTART} LSSTAT, \refkeyword{PRINT} LSCAL ON and others.}
 
 \keyword{LDA CORRELATION}{}{}{[functional]}{\&DFT}
-  \desc{The LDA correlation functional is specified. \\
+  \desc{The LDA correlation functional is specified. Only available for \textbf{OLDCODE} and \textbf{NEWCODE}.\\
       Possible functionals are {\bf NO}
       (no correlation functional),
       {\bf PZ}~\cite{Perdew81}, \penalty 1000 {\bf VWN}~\cite{Vosko80},
@@ -3235,6 +3652,27 @@ with {\bf{PERT\_AMPLI}} (in \&PTDDFT).}
  you need to symmetrize charge density for which you must
 specify the \refkeyword{POINT GROUP}.
 }
+
+\keyword{LIBRARY}{}{}{library\_for\_functional\_1, library\_for\_functional\_2, \dots}{\&DFT}
+ \desc{In combination with \refspekeyword{XC\_DRIVER}{XC DRIVER}, both
+       functionals from a new, internal CP library and from libxc are available.
+       On the same line, for every functional specified in \textbf{FUNCTIONAL},
+       the library has to be indicated by \textbf{INTERNAL} or \textbf{CP} for the
+       internal CP library, or by \textbf{LIBXC} for libxc. If the keyword is
+       omitted, the functionals will default to the internal CP library.\\
+       The use of LIBXC is usually associated to a considerable overhead
+       with respect to the internal implementation. It is therefore discouraged
+       for functionals that are also available in the internal library, \emph{cf.{}}
+       \refkeyword{FUNCTIONAL}.}
+
+\spekeyword{KERNEL\_LIBRARY}{}{}{library\_for\_kernel\_1, library\_for\_kernel\_2, \dots}{\&DFT}{KERNEL LIBRARY}
+ \desc{Same functionalty as \refkeyword{LIBRARY}, but applies to the \refkeyword{FUNCTIONAL} rather than the
+       \refkeyword{LR KERNEL}.}
+
+\spekeyword{LIBXC\_ONLY}{}{}{}{\&DFT}{LIBXC ONLY}
+ \desc{Use the new xc driver, but use only functionals from libxc
+       (this excludes all internal functionals).
+       \emph{Cf.{}} \refspekeyword{XC\_DRIVER}{XC DRIVER}.}
 
 \keyword{LINEAR RESPONSE}{}{}{}{\&CPMD}
   \desc{A perturbation theory calculation is done, according to the
@@ -3267,7 +3705,11 @@ specify the \refkeyword{POINT GROUP}.
       specified in the section \&CPMD section.}
 
 \keyword{LR KERNEL}{}{}{functional}{\&DFT}
-  \desc{Use another functional for the linear response kernel.}
+  \desc{Use another functional for the linear response kernel. To be used like
+        \refkeyword{FUNCTIONAL}.}
+
+\spekeyword{XC\_KERNEL}{}{}{functional}{\&DFT}{XC KERNEL}
+  \desc{Alias for \refkeyword{LR KERNEL}.}
 
 \keyword{LR-TDDFT}{}{}{}{\&TDDFT}
   \desc{Use full linear response version of TDDFT. Default is to use
@@ -3275,13 +3717,15 @@ specify the \refkeyword{POINT GROUP}.
 
 \keyword{LSD}{}{}{}{\&CPMD}
   \desc{Use the local spin density approximation.\\
-      {\bf Warning:} Not all functionals are implemented for this
-      option.}
+      {\bf Warning:} Not all functionals in \textbf{OLDCODE} or \textbf{NEWCODE}
+       are implemented for this option. Only in the \textbf{XC\_DRIVER}, all functionals
+       are available both for spin-restricted and -unrestricted calculations.}
 
 \keyword{LOCAL SPIN DENSITY}{}{}{}{\&CPMD}
-  \desc{Use the local spin density approximation.\\
-      {\bf Warning:} Not all functionals are implemented for this
-      option.}
+  \desc{Alias for \refkeyword{LSD}.}
+
+\spekeyword{LOW\_LEVEL\_FORCES}{\{DFT, EXTERNAL\}}{}{}{\&MTS}{LOW LEVEL FORCES}
+ \desc{Analogue to \refspekeyword{HIGH\_LEVEL\_FORCES}{HIGH LEVEL FORCES}.}
 
 \keyword{LOW SPIN EXCITATION}{}{[ROKS,ROSS,ROOTHAAN,CAS22]}{}{\&SYSTEM}
   \desc{Use the low spin excited state functional~\cite{Frank98}. 
@@ -3310,10 +3754,10 @@ For ROKS calculations, see also the \refkeyword{ROKS} keyword in the \&CPMD-sect
         Do NOT use this keyword together with 
         \refkeyword{SURFACE HOPPING} in \&CPMD, which invokes the surface hopping scheme based on
         \refkeyword{ROKS} (see \refkeyword{SURFACE HOPPING}).
-        See also the related approach beased on Tully's hopping probabilities~\refkeyword{T-SHTDDFT}.}
+        See also the related approach based on Tully's hopping probabilities~\refkeyword{T-SHTDDFT}.}
 
-\keyword{MAXCPUTIME}{}{}{}{\&CPMD}
-  \desc{The maximum CPU TIME in seconds to be used is read from the 
+\keyword{MAXRUNTIME}{}{}{}{\&CPMD}
+  \desc{The maximum RUN TIME (ELAPSED TIME) in seconds to be used is read from the 
         next line. The calculation will stop after the given amount of time.\\
       {\bf Default} is no limit.}
 
@@ -3389,14 +3833,14 @@ For ROKS calculations, see also the \refkeyword{ROKS} keyword in the \&CPMD-sect
   \desc{Perform a molecular dynamics (MD) run.
       {\bf CP} stands for a Car-Parrinello type MD.
       With the option {\bf BO} a Born-Oppenheimer MD is performed
-      where the wavefunction is reconverged after each MD-step. 
+      where the wavefunction is re-converged after each MD-step. 
       {\bf EH} specifies Ehrenfest type dynamics according to which the Kohn-Sham
       orbitals are propagated in time (real electronic dynamics coupled to the nuclear dynamics). 
       In this case the time step has to be decreased accordingly due to the small mass of the
-      electrons (typical values between 0.01 and 0.1 au). If you use EH dynamics and additional input
-      section {\&PTDDFT} need to be specified. You need to start the dynamics with well converged
+      electrons (typical values between 0.01 and 0.1 au). If you use EH dynamics an additional input
+      section {\&PTDDFT} has to be specified. You need to start the dynamics with well converged
       KS orbitals from the RESTART file (before starting the EH dynamics do an optimization of the
-      wavefunction with a convergence of {1.D-8} or {1.D-9}, if possibe. An additional file
+      wavefunction with a convergence of {1.D-8} or {1.D-9}, if possible. An additional file
       called "wavefunctions" is produced, which containes the complex KS orbitals needed for
       the restart of the EH dynamics (see restart options in {\&PTDDFT}). Typical (minimal) input
       \&CPMD and \&PTDDFT sections to be used with EH dynmiacs\\
@@ -3419,9 +3863,21 @@ For ROKS calculations, see also the \refkeyword{ROKS} keyword in the \&CPMD-sect
       The keywords CAYLEY and RUNGE-KUTTA specifies the algorithms used for the propagation of the KS
       orbitals (are the default and recommended options).\\
       {\bf CLASSICAL }
-      means that a MD that includes classical atoms is performed.
+      means that a MD that includes classical atoms is performed.\\
+      {\bf BD} stands for Bohminan Dynamics. In the next line the number of trajectories
+      ($N_{traj}$) used to describe the nuclear wavepacket are specified.
+      The initial spread of the Gaussians associated to each element is guessed from the De Broglie wavelength.
+      A special tuning of this value for the different elements may be necessary (not yet automatized).
+      During the dynamics the $N_{traj}$ trajectories (each corresponding to a configuration space point or
+      fluid element) are interacting within each other through the action of the quantum potential.
+      For the more details about the implementation see Ref.~\cite{ABDY}.
 
-      If {\bf FILE} is set, then the trajectory is reread from a file instead of being calculated. This is useful for performing analysis on a previous trajectory. Can be used in conjonction with the standard MD options like DIPOLE DYNAMICS and WANNIER; some other features like LINEAR RESPONSE are also enabled. The trajectory is read from a file named TRAJSAVED (usually a copy of a previous TRAJECTORY file), or TRAJSAVED.xyz if {\bf XYZ} is set. {\bf NSKIP} and {\bf NSAMPLE} control the selection of frames read: the frame read at step ISTEP is NSKIP+ISTEP*NSAMPLE.
+      If {\bf FILE} is set, then the trajectory is reread from a file instead of being calculated. This
+      is useful for performing analysis on a previous trajectory. Can be used in conjunction with the 
+      standard MD options like DIPOLE DYNAMICS and WANNIER; some other features like LINEAR RESPONSE are 
+      also enabled. The trajectory is read from a file named TRAJSAVED (usually a copy of a previous TRAJECTORY file), 
+      or TRAJSAVED.xyz if {\bf XYZ} is set. {\bf NSKIP} and {\bf NSAMPLE} control the selection of 
+      frames read: the frame read at step ISTEP is NSKIP+ISTEP*NSAMPLE.
 
       {\bf Default} is {\bf CP}.}
 
@@ -3453,6 +3909,17 @@ For ROKS calculations, see also the \refkeyword{ROKS} keyword in the \&CPMD-sect
       The multiplicity (2$S$+1) is read from the next line.\\
       {\bf Default} is the {\bf smallest possible} multiplicity.}
 
+\spekeyword{MTS\_HIGH\_FUNC}{}{}{functionals}{\&DFT}{MTS HIGH FUNC}
+  \desc{Alias for \refkeyword{FUNCTIONAL} that makes sense when used with the MTS scheme since it
+  corresponds to the high level functional in that context (see \&MTS section).
+  {\bf Note:} The functionals in combination with the MTS scheme have to be set with 
+      \refspekeyword{XC\_DRIVER}{XC DRIVER}.}
+
+\spekeyword{MTS\_LOW\_FUNC}{}{}{functionals}{\&DFT}{MTS LOW FUNC}
+  \desc{Select the low level functional in the MTS scheme. To be used like \refkeyword{FUNCTIONAL}.
+  {\bf Note:} The functionals in combination with the MTS scheme have to be set with 
+      \refspekeyword{XC\_DRIVER}{XC DRIVER}.}
+
 \spekeyword{N\_CYCLES}{}{}{}{\&PTDDFT}{N-CYCLES}
   \desc{Defines the number of cycles (time steps) used in the propagation
         of the perturbed KS orbitals in a \refkeyword{PROPAGATION SPECTRA} calculation.
@@ -3462,7 +3929,11 @@ For ROKS calculations, see also the \refkeyword{ROKS} keyword in the \&CPMD-sect
   \desc{Number of equilibration steps discarded to calculate the mean force.}
 
 \keyword{NEWCODE}{}{}{}{\&DFT}%
-  \desc{Switch to select one out of two versions of
+  \desc{This keyword will be deprecated in a future release. Both \textbf{NEWCODE}
+      and \textbf{OLDCODE} have been replaced by the new 
+      \refspekeyword{XC\_DRIVER}{XC DRIVER}. \\~\\
+      The following description applies up to CPMD version prior to 4.1:\\
+      \textbf{NEWCODE} is a switch to select one out of two versions of
       code to calculate exchange-correlation functionals. \\
       NEWCODE is the default, but not all functionals are available with
       NEWCODE, if you select one of these, \refkeyword{OLDCODE} is used automatically.
@@ -3474,7 +3945,9 @@ For ROKS calculations, see also the \refkeyword{ROKS} keyword in the \&CPMD-sect
 \keyword{NLOOP}{}{}{}{\&PATH}
   \desc{Maximum number of string searches for Mean Free Energy Path searches.}
 
-\keyword{NMR}{}{}{options, see response\_p.inc}{\&RESP}
+% MPB: response_p.inc is gone
+%\keyword{NMR}{}{}{options, see response\_p.inc}{\&RESP}
+\keyword{NMR}{}{}{options}{\&RESP}
   \desc{Calculate the NMR chemical shielding tensors for the
   system. Most important option: FULL, does a calculation with
   improved accuracy for periodic systems but takes a lot of
@@ -3483,6 +3956,11 @@ For ROKS calculations, see also the \refkeyword{ROKS} keyword in the \&CPMD-sect
   shielding is calculated without contribution from the core
   electrons. Contact sebastia@mpip-mainz.mpg.de for further details.}
 
+\spekeyword{NO\_CONTRIBUTION}{}{}{}{\&VDW}{NO CONTRIBUTION}
+  \desc{If the \refkeyword{DCACP} van der Waals-correction scheme is adpoted, 
+        the indeces of atomic species (in the same order as specified in the
+        \&ATOMS section) that shall not contribute to the dispersion forces
+        (capping atoms, metals...) are read from the next line.}
 
 \keyword{NOGEOCHECK}{}{}{}{\&CPMD}
   \desc{Default is to check all atomic distances and stop the program
@@ -3585,7 +4063,7 @@ For ROKS calculations, see also the \refkeyword{ROKS} keyword in the \&CPMD-sect
       species at a time. Hence, the topology and/or the input should be
       such that atoms of different CAFES group are in different species.\\
       {\bf NOTE:} CAFES is currently not restartable.\\[2ex]
-      The keyword {\bf LOCAL} collects groups of atoms to seperate
+      The keyword {\bf LOCAL} collects groups of atoms to separate
       thermostats, each having its own Nos\'e-Hoover chain. Specify
       the local thermostats as follows:\\[1ex]
       \begin{tabular}{lll}
@@ -3613,12 +4091,18 @@ For ROKS calculations, see also the \refkeyword{ROKS} keyword in the \&CPMD-sect
 \keyword{NPREVIOUS}{}{}{}{\&PATH}
   \desc{String index to restart from. Note that this is just for numbering files, the initial path in collective variables for the search is always {\em string.inp}.}
 
+\spekeyword{NUMERICAL\_DIV}{}{}{}{\&DFT}{NUMERICAL DIV}
+  \desc{Calculate the $\mathbf{G}=0$ term for the Coulomb-attenuated exact
+        exchange using a numerical description of the integral term.
+        This is the default only when CAM-B3LYP is used with LIBXC.
+        In all other situations, \refspekeyword{ANALYTICAL\_DIV}{ANALYTICAL DIV} is used.}
+
 \keyword{OACP}{}{[DENSITY, REF\_DENSITY, FORCE]}{}{\&RESP}
   \desc{Not documented.}
   
 \keyword{OCCUPATION}{}{[FIXED]}{}{\&SYSTEM}
   \desc{The occupation numbers are read from the next line.\\
-      This keyword must be preceeded by  \refkeyword{STATES}.
+      This keyword must be preceded by  \refkeyword{STATES}.
       The FIXED option fixes the occupation numbers for the
       diagonalization scheme, otherwise this option is meaningless.}
 
@@ -3637,8 +4121,16 @@ For ROKS calculations, see also the \refkeyword{ROKS} keyword in the \&CPMD-sect
       {\bf ODIIS NO\_RESET}, this number can be changed, or DIIS resets can
       be {\bf disabled} altogether with a value of -1.}
 
+\spekeyword{OLD\_DEFINITIONS}{}{}{}{\&DFT}{OLD DEFINITIONS}
+   \desc{For certain functionals, older versions of CPMD did not use standard
+         definitions. When using the new \refspekeyword{XC\_DRIVER}{XC DRIVER},
+         those definitions can be invoked by using \textbf{OLD\_DEFINITIONS}.
+         The option is available in combination with any derivative of PBE
+         and TPSS correlation.}
+
 \keyword{OLDCODE}{}{}{}{\&DFT}
-   \desc{see \refkeyword{NEWCODE}}
+  \desc{This keyword will be deprecated in a future release. Please use the new
+      \refspekeyword{XC\_DRIVER}{XC DRIVER}. \emph{Cf.{}} \refkeyword{NEWCODE}.}
 
 \keyword{OPTIMIZE GEOMETRY}{[XYZ, SAMPLE]}{}{}{\&CPMD}
   \desc{This option causes the program to optimize the geometry of the 
@@ -3756,6 +4248,28 @@ For ROKS calculations, see also the \refkeyword{ROKS} keyword in the \&CPMD-sect
       MD as activated by the keyword PATH INTEGRAL and as specified in the
       section \&PIMD ... \&END.}
 
+
+\spekeyword{PBE\_FLEX\_BETA}{}{}{}{\&DFT}{PBE FLEX BETA}
+  \desc{In combination with the PBE\_FLEX correlation functional, the
+        parameter $\beta$ can be specified on the next line.}
+
+\spekeyword{PBE\_FLEX\_GAMMA}{}{}{}{\&DFT}{PBE FLEX GAMMA}
+  \desc{In combination with the PBE\_FLEX correlation functional, the
+        parameter $\gamma$ can be specified on the next line.}
+
+\spekeyword{PBE\_FLEX\_KAPPA}{}{}{}{\&DFT}{PBE FLEX KAPPA}
+  \desc{In combination with the PBE\_FLEX exchange or correlation functionals, the
+        parameter $\kappa$ can be specified on the next line.}
+
+\spekeyword{PBE\_FLEX\_MU}{}{}{}{\&DFT}{PBE FLEX MU}
+  \desc{In combination with the PBE\_FLEX exchange or correlation functionals, the
+        parameter $\mu$ can be specified on the next line.}
+
+\spekeyword{PBE\_FLEX\_UEG\_CORRELATION}{}{}{functional}{\&DFT}{PBE FLEX UEG CORRELATION}
+  \desc{In combination with the PBE\_FLEX correlation functional, the
+        LDA correlation functional can be specified on the same line. Available options
+        are LDA\_C\_PZ, LDA\_C\_PW (the default), LDA\_C\_OBPW and LDA\_C\_PZ.}
+
 \keyword{PCG PARAMETER}{}{}{}{\&TDDFT}
   \desc{The parameters for the PCG diagonalization are read from the
        next line. If {\sl MINIMIZE} was used in the \refkeyword{DIAGONALIZER}
@@ -3785,7 +4299,7 @@ function (constant value after $t=0$).}
 or \refkeyword{PROPAGATION SPECTRA} is read from the next line. }
 
  \spekeyword{PERT\_DIRECTION}{}{}{}{\&PTDDFT}{PERT-DIRECTION}
-   \desc{Use with MOLECULAR DYNAMICS EH or PROPAGATION SPACTRA to specify the
+   \desc{Use with MOLECULAR DYNAMICS EH or PROPAGATION SPECTRA to specify the
 direction (x=1,y=2,z=3) of the perturbing field. The direction code (1,2,3) is
 read from the next line.}
 
@@ -3795,7 +4309,7 @@ read from the next line.}
 \keyword{PIPULSE}{}{}{}{\&PTDDFT}
   \desc{Specifies a time dependent pi-pulse to be used with MOLECULAR DYNAMICS EH.
         Use PIPULSE together with TD\_POTENTIAL. The pulse strength is read from the
-        next line (see subroutine gaugepot\_laser in td\_util.F for further details).}
+        next line (see subroutine gaugepot\_laser in td\_utils.mod.F90 for further details).}
 
 \keyword{POINT GROUP}{}{[MOLECULE], [AUTO], [DELTA=delta]}{}{\&SYSTEM}
   \desc{The point group symmetry of
@@ -3852,7 +4366,7 @@ read from the next line.}
    gradient algorithm. Can be safer in the convergence.
    }
 
-\keyword{POLARISABILITY}{}{}{}{\&PROP}
+\keyword{POLARIZABILITY}{}{}{}{\&PROP}
   \desc{Computes the polarisability of a system, intended as dipole
         moment per unit volume.}
 
@@ -3983,6 +4497,15 @@ read from the next line.}
 \keyword{PRINT FF}{}{}{}{\&CLASSIC}
   \desc{Not documented}
 
+\spekeyword{PRINT\_FORCES}{[OFF]}{}{}{\&MTS}{PRINT FORCES}
+  \desc{
+     Turn on/off the printing of the high and low level forces along the MTS-MD trajectory.
+     The forces are printed to two distinct trajectory files in the \texttt{.xyz} format,
+     \texttt{MTS\_LOW\_FORCES.xyz} and \texttt{MTS\_HIGH\_FORCES.xyz}. \\
+
+     {\bf Default}: OFF.
+  }
+
 \keyword{PRINT LEVEL}{}{}{}{\&PIMD}
   \desc{The detail of printing information is read as an integer number
         from the next line.
@@ -4106,7 +4629,7 @@ for the propagation of the KS orbitals.}
       The QM driver is the standard CPMD.
       An interface program ({\bf MM\_Interface}) and a classic force field
       (Gromos\cite{gromos96}/Amber\cite{amber7}-like) are needed to run the
-      code in hybdrid mode\cite{qmmm02,qmmm03,qmmm04,qmmm05,qmmm06}. 
+      code in hybrid mode\cite{qmmm02,qmmm03,qmmm04,qmmm05,qmmm06}. 
       This code requires a {\it special licence} and
       is {\bf not} included in the standard CPMD code.
 % FIXME: AK 2005/07/10
@@ -4151,7 +4674,7 @@ for the propagation of the KS orbitals.}
 \keyword{READ REPLICAS}{}{}{}{\&PIMD}
   \desc{Read all $P$ replicas from a file with a name to be specified
         in the following line, for the input format see subroutine
-        rreadf.F.}
+        rreadf\_utils.mod.F90.}
 
 \keyword{REAL SPACE WFN KEEP}{}{[SIZE]}{}{\&CPMD}
   \desc{The real space wavefunctions are kept in memory for later reuse.
@@ -4297,6 +4820,10 @@ for the propagation of the KS orbitals.}
                Restart with k points.
          \item[DENSITY]
               Restart with electronic density.
+         \item[GLE]
+              Restart the extended variables of the GLE dynamics
+         \item[PRNG]
+              Restart the internal state of the Marsaglia random number generator
          \item[CONSTRAINTS]
               Restart with old values for constraints. This option
               is mainly for restraints with GROWTH option.
@@ -4326,9 +4853,9 @@ for the propagation of the KS orbitals.}
          (\refkeyword{PROPAGATION SPECTRA}). The restart option is read from the 
          next line: 0(=default) restart from the (complex)wavefunctions in the file
          wavefunctions. This option is used in case of a continuation run; 
-         1. restart from the the orbital files WAVEFUNCTION.n, where
-         $n$ is the index of the KS orbital and runs from $1$ to the number of s
-         tates (This states a prepare in a previuos run using the KOHN-SHAM ENERGIES
+         1. restart from the orbital files WAVEFUNCTION.n, where $n$ is the index 
+         of the KS orbital and runs from $1$ to the number of states (This states 
+         a prepare in a previous run using the KOHN-SHAM ENERGIES
          principal keyward), 2; restart from the orbitals stored in RESTART (obtained
          from a optimization run with tight convergence (at least 1.D-7)).}
 
@@ -4359,7 +4886,8 @@ for the propagation of the KS orbitals.}
       wavefunctions:}
 \begin{verbatim}
             RHOOUT BANDS
-              3 -5 -7 -8
+              3 
+              -5 -7 -8
 
 \end{verbatim}
     \desc{
@@ -4412,8 +4940,52 @@ for the propagation of the KS orbitals.}
       in \AA and atomic units together with the atomic coordinates in
       the direct lattice basis.}
 
+\keyword{SCALES}{}{}{scaling\_for\_functional\_1, scaling\_for\_functional\_2, \dots}{\&DFT}
+  \desc{Only available in combination with \refspekeyword{XC\_DRIVER}{XC DRIVER}.
+        On the same line, rescaling values ($\in [0,1]$) for the different exchange-correlation
+        functionals specified in \refkeyword{FUNCTIONAL} are read in the same
+        order in which the functionals were specified.}
+
+\spekeyword{HFX\_SCALE}{}{}{scaling\_for\_exact\_exchange}{\&DFT}{HFX SCALE}
+  \desc{Only available in combination with \refspekeyword{XC\_DRIVER}{XC DRIVER}.
+        On the same line, a scaling value ($\in [0,1]$) for the exact exchange contribution to the
+        overall xc functional is specified.
+        If used with a built-in hybrid functional, the default value is changed; if used with any other functional,
+        the keyword activates the inclusion of exact exchange. Note that its value should always be set to one
+        if combined with a Coulomb-attenuated functional (in which case the global scaling can be modified by changing
+        the CAM parameters $\alpha$ and $\beta$, instead).}
+
+\spekeyword{KERNEL\_SCALES}{}{}{scaling\_for\_kernel\_1, scaling\_for\_kernel\_2, \dots}{\&DFT}{KERNEL SCALES}
+  \desc{Identical functionality as described in \refkeyword{SCALES}, but applies to the \refkeyword{LR KERNEL}
+        rather than the \refkeyword{FUNCTIONAL}.}
+
+\spekeyword{KERNEL\_HFX\_SCALE}{}{}{scaling\_for\_exact\_exchange\_in\_kernel}{\&DFT}{KERNEL HFX SCALE}
+  \desc{Identical functionality as described in \refspekeyword{HFX\_SCALE}{HFX SCALE}, but applies to the \refkeyword{LR KERNEL}
+        rather than the \refkeyword{FUNCTIONAL}.}
+
+\keyword{SCREENED EXCHANGE}{\{ASHCROFT,CAM,ERFC,EXP\}}{}{}{\&DFT}
+  \desc{Screening / range separation applied to the Hartree-Fock exchange term \emph{only}.
+        Possible options are: 
+
+     \begin{description}
+        \item[ASHCROFT]\hfill \\
+          {Ashcroft exchange. $r_\text{cut}$ is read from the next line.}
+        \item[CAM]\hfill \\
+          {Coulomb-attenuation method. $\alpha$, $\beta$ and $\mu$ are read from the next line.
+           Please note that in case attenuation of the (semi-)local part is desired, too, the
+           keyword \refkeyword{COULOMB ATTENUATION} has to be used.}
+        \item[ERFC]\hfill \\
+          {Screened exchange using the complementary error function.
+           The switching parameter $\gamma$ is read from the next line.}
+        \item[EXP]\hfill \\
+          {Screened exchange using an exponential function.
+           The switching parameter $\gamma$ is read from the next line.}
+     \end{description}
+
+        }
+
 \keyword{SHIFT POTENTIAL}{}{}{}{\&CPMD}
-  \desc{After this keyword, useful in hamiltonian diagonalization, the 
+  \desc{After this keyword, useful in Hamiltonian diagonalization, the 
       shift value $V_{\rm shift}$ must be provided in the next line.
       This option is used in the Davidson diagonalization 
       subroutine and shifts rigidly the total electronic potential as 
@@ -4439,6 +5011,12 @@ for the propagation of the KS orbitals.}
       G is the wavevector, $G_{cut} = \alpha\,G_{max}$ and
       $\Delta = \beta\,G_{max}$. Values for $\alpha$ and $\beta$
       have to be given on the next line.}
+
+\keyword{SOC}{}{}{}{\&CPMD}
+ \desc{Compute the spin-orbit coupling (SOC) elements between the two states specified in the next line.
+       To be used together with the principal keyword SPECTRA.
+       The calculation is based on the Auxiliary Many-Electron Wavefunction Approach for TDDFT developed
+       in Ref.~\cite{taver}. For more information see Ref.~\cite{SOC}.}
 
 \keyword{SPLINE}{}{[POINTS, QFUNCTION, INIT, RANGE]}{}{\&CPMD}
   \desc{This option controls the generation of the pseudopotential
@@ -4490,7 +5068,7 @@ for the propagation of the KS orbitals.}
   \desc{Use the staging representation~\cite{Tuckerman96}
         of the path integral propagator. It is possible to impose a
         mass disparity between centroid and non--centroid coordinates by
-        dividing the fictitous masses of only the {\em non}--centroid
+        dividing the fictitious masses of only the {\em non}--centroid
         $s=2, \dots ,P$ replicas by
         the adiabaticity control factor FACSTAGE. This dimensionless
         factor {\em must always} be specified in the following line.
@@ -4503,7 +5081,7 @@ for the propagation of the KS orbitals.}
 \keyword{STATES}{}{}{}{\&SYSTEM}
   \desc{The number of states used in the calculation is read
       from the next line. \\
-      This keyword has to preceed the keyword
+      This keyword has to precede the keyword
       {\bf OCCUPATION}.}
 
 \keyword{NSUP}{}{}{}{\&SYSTEM}
@@ -4528,7 +5106,7 @@ for the propagation of the KS orbitals.}
       is used by default. The preconditioning is controlled by the
       keyword {\bf HAMILTONIAN CUTOFF}.
       Optionally preconditioning can be disabled.\\
-      For ions optimization, the steplength is controlled by the
+      For ions optimization, the step length is controlled by the
       keywords {\bf TIMESTEP} and {\bf EMASS}.}
 
 \keyword{STEPLENGTH}{}{}{}{\&LINRES}
@@ -4726,7 +5304,7 @@ for the propagation of the KS orbitals.}
   \desc{Defines a time dependent external potential to be used in Ehrenfest dynamics
         (\refkeyword{MOLECULAR DYNAMICS} EH). Can be used with the keyword \refkeyword{PIPULSE}.
         The frequency of the external field is read from the next line (in atomic units).
-        For more information see subroutine gaugepot\_laser in tdi\_util.F .}
+        For more information see subroutine gaugepot\_laser in td\_utils.mod.F90 .}
 
 \keyword{TEMPCONTROL}{}{[IONS, ELECTRONS, CELL]}{}{\&CPMD}
   \desc{The {\bf temperature} of the {\bf ions} in Kelvin
@@ -4746,7 +5324,12 @@ for the propagation of the KS orbitals.}
       {\bf Default} is $1000$K.}
 
 \keyword{TEMPERATURE}{}{[RAMP]}{}{\&CPMD}
-  \desc{The {\bf initial temperature} in Kelvin of the {\bf system} is read from the next line. With the additional keyword {\bf RAMP} the temperature can be linearly ramped to a target value and two more numbers are read, the ramping target temperature in Kelvin and the ramping speed in Kelvin per atomic time unit (to get the change per timestep you have to multiply it with the value of \refkeyword{TIMESTEP}). Note that this ramping affects the target temperatures for \refkeyword{TEMPCONTROL}, \refkeyword{BERENDSEN} and the global \refkeyword{NOSE} thermostats.}
+  \desc{The {\bf initial temperature} in Kelvin of the {\bf system} is read from the next line. 
+        With the additional keyword {\bf RAMP} the temperature can be linearly ramped to a target 
+	value and two more numbers are read, the ramping target temperature in Kelvin and the
+        ramping speed in Kelvin per atomic time unit (to get the change per timestep you have to multiply it
+        with the value of \refkeyword{TIMESTEP}). Note that this ramping affects the target temperatures for
+        \refkeyword{TEMPCONTROL}, \refkeyword{BERENDSEN} and the global \refkeyword{NOSE} thermostats.}
 
 \keyword{TESR}{}{}{}{\&SYSTEM}
   \desc{The number of additional supercells included in the real space sum for
@@ -4781,7 +5364,9 @@ for the propagation of the KS orbitals.}
    }
 
 \keyword{TIMESTEP ELECTRONS}{}{}{}{\&CPMD}
-  \desc{The time step for electron dynamics in atomic units is read from the next line. This is can be used to tweak the convergence behavior of the wavefunction optimization in Born-Oppenheimer dynamics, where the default time step may be too large. see, e.g. \refkeyword{PCG}}
+  \desc{The time step for electron dynamics in atomic units is read from the next line. This is can
+   be used to tweak the convergence behavior of the wavefunction optimization in Born-Oppenheimer
+   dynamics, where the default time step may be too large. see, e.g. \refkeyword{PCG}}
 
 \keyword{TIMESTEP IONS}{}{}{}{\&CPMD}
   \desc{The time step in atomic units is read from the next line.}
@@ -4790,6 +5375,15 @@ for the propagation of the KS orbitals.}
   \desc{The time step in atomic units is read from the next line. \\
       {\bf Default} is a time step of {\bf 5 a.u.}
       ($1\, a.u. = 0.0241888428$ fs).}
+
+\spekeyword{TIMESTEP\_FACTOR}{}{}{}{\&MTS}{TIMESTEP FACTOR}
+  \desc{
+     The time step factor ($n$) used in the MTS scheme is read from the next line. \\
+
+  For instance, if \refkeyword{TIMESTEP IONS} is set to {\bf 15 a.u.}, and ($n=4$) then the high level correction
+  to the forces in the MTS scheme will be calculated every 4 steps, i.e. every {\bf 60 a.u.}
+  {\bf Default} is a factor of 1, i.e. the MD will be identical to a Velocity-Verlet MD with the high level forces.
+  }
 
 \keyword{TRACE}{}{[ALL,MASTER]}{}{\&CPMD}
 \desc{ Activate the tracing of the procedures. {\sl ALL} specifies that all the mpi tasks are traced.
@@ -4818,7 +5412,7 @@ for the propagation of the KS orbitals.}
       for {\em NTRAJ} is $1$. A negative value of {\em NTRAJ} will
       disable output of the {\em TRAJECTORY} file, but e.g. {TRAJEC.xyz}
       will still be written every {\em -NTRAJ} steps. A value of 0 for
-      {\em NTRAJ} will disable writing of the trajectory files alltogether.
+      {\em NTRAJ} will disable writing of the trajectory files altogether.
 
       The TRAJECTORY file is written in binary format
       if the keyword BINARY is present. If FORCES is specified also the forces
@@ -4891,6 +5485,9 @@ for the propagation of the KS orbitals.}
    This shall be used with {\sl USE\_IN\_STREAM} and /or {\sl USE\_OUT\_STREAM}.
  }
 
+\spekeyword{USE\_MTS}{}{}{}{\&CPMD}{USE MTS}
+ \desc{Switch on the Multiple Time-Step scheme for molecular dynamics (see \&MTS section).\cite{Liberatore2018}}
+
 \keyword{VDW CORRECTION}{[ON,OFF]}{}{}{\&CPMD}
 
 \desc{An empirical van der Waals correction scheme is applied to
@@ -4902,6 +5499,8 @@ for the propagation of the KS orbitals.}
   WANNIER CORRECTION are mutually exclusive.
   See \refkeyword{VDW PARAMETERS} for more details.}
 
+\keyword{VDW DCACP}{}{}{}{\&VDW}
+\desc{Synonymous to \refkeyword{DCACP}.}
 
 \keyword{VDW PARAMETERS}{}{}{}{\&VDW}
 
@@ -4916,7 +5515,7 @@ for the propagation of the KS orbitals.}
   $\beta$, where $\alpha$ and $\beta$ are the indexes of
   pseudopotentials (and their associated groups of atoms) in the order
   they are listed in the \&ATOMS section. For type {\bf DFT-D2} only $\alpha$
-  and $\beta$ are required. If the other parameters are ommited the internal
+  and $\beta$ are required. If the other parameters are omitted the internal
   table of parameters is used.
 % Note:  References to two papers by R. LeSar have
 % been removed from this entry because Elstner's
@@ -4982,7 +5581,7 @@ and the type of functional is read from the next line. One of the following labe
 
 \keyword{WANNIER CORRECTION}{END WANNIER CORRECTION}{}{}{\&VDW}
 \desc{Between these opening and ending keywords, the partitioning of the system
- and the calculation procedure must be selected. Three implementatons are available
+ and the calculation procedure must be selected. Three implementations are available
  for partitioning the system: 
  (1) choosing a {\it zlevel}, namely a z coordinate separating
   the first fragment form the second (this is appropriate for cases where
@@ -5087,7 +5686,7 @@ and the type of functional is read from the next line. One of the following labe
 
 \keyword{WANNIER DOS}{}{}{}{\&CPMD}
   \desc{Outputs the projected density of states of the Wannier orbitals 
-    (file WANNIER\_DOS) and the KS hamiltonian in the Wannier states 
+    (file WANNIER\_DOS) and the KS Hamiltonian in the Wannier states 
     representation (file WANNIER\_HAM). 
 
     When running \refkeyword{MOLECULAR DYNAMICS} CP the files WANNIER\_DOS and 
@@ -5102,7 +5701,7 @@ and the type of functional is read from the next line. One of the following labe
 
 \keyword{WANNIER NPROC}{}{}{}{\&CPMD}
 \desc{ Set the number of mpi tasks to be used for localization. 
-  Default is to use all the tasks avalable. The number of tasks is
+  Default is to use all the tasks available. The number of tasks is
    read from the next line and shall be a
    divisor of the number of tasks in a parallel run.
 }
@@ -5130,7 +5729,7 @@ and the type of functional is read from the next line. One of the following labe
       ${\bf R}_I \to {\bf R}_I-(x, y, z)$).
       The default value is the center of the supercell, if
       \refkeyword{CENTER MOLECULE} keyword is active (Note, that
-      this is implicitely turned on, for calculations with
+      this is implicitly turned on, for calculations with
       \refkeyword{SYMMETRY} 0). Otherwise it is set to (0,0,0), which
       is usually not the center of the box.
       In order to get the best results displaying the
@@ -5156,7 +5755,7 @@ and the type of functional is read from the next line. One of the following labe
       or only some of the functions can be printed. This will be
       done at the end of each calculation of Wannier functions.
       For {\bf PARTIAL} output you have to give the indices of the 
-      first and the last wannier function to print; the {\em LIST}
+      first and the last Wannier function to print; the {\em LIST}
       directive follows the syntax of \refkeyword{RHOOUT} {\em BANDS}.
     }
 \begin{verbatim}
@@ -5209,6 +5808,19 @@ and the type of functional is read from the next line. One of the following labe
  For the analytic third derivatives of some LDA XC functionals,
  \refspekeyword{XC\_ANALYTIC}{XC-ANALYTIC} can be combined with this keyword
  }
+
+\spekeyword{XC\_DRIVER}{}{}{}{\&DFT}{XC DRIVER}
+ \desc{Use the new CP xc driver. This keyword replaces both \refkeyword{OLDCODE}
+       and \refkeyword{NEWCODE} and offers more ample customisation options (\emph{cf.{}}
+       \refkeyword{COULOMB ATTENUATION}, \refkeyword{LIBRARY} and \refkeyword{SCALES}).
+       All functionals are now consistently available for both spin-restricted and open-shell systems.
+       Additionally, functionals from libxc can be used and freely mixed with the internal functionals,
+       \emph{cf.{}} \refkeyword{LIBRARY}.
+       Please note that the new \refkeyword{FUNCTIONAL} abbreviations differ from \textbf{OLDCODE}
+       and \textbf{NEWCODE}, \emph{cf.{}} the corresponding entry for a list of available functionals.
+       The new driver uses the standard definitions for all functionals; where those definitions
+       differ from older versions of CPMD, the old definitions (where implemented)
+       can be accessed by using the keyword \refspekeyword{OLD\_DEFINITIONS}{OLD DEFINITIONS}.}
 
 \keyword{ZDIIS}{}{}{}{\&LINRES}
   \desc{The subspace size for the optimizer is read from the next line.}
@@ -5274,7 +5886,7 @@ and the type of functional is read from the next line. One of the following labe
             \item[.] For {\bf Vanderbilt ultrasoft pseudopotentials}
                 one of the following options has to be specified:
                 {\bf BINARY} indicates the binary version of the output
-                file from Vanderbilts atomic code. \\
+                file from Vanderbilt's atomic code. \\
                 {\bf FORMATTED} indicates the formatted version of the
                 Vanderbilt pseudopotential files after a conversion with
                 the program `reform.f' from the
@@ -5283,10 +5895,10 @@ and the type of functional is read from the next line. One of the following labe
                 The nonlinear core correction will always be used if the
                 pseudopotential was generated with a partial core. \\
                 It is strongly recommended to use only Vanderbilt pseudopotentials that
-                were generated with a new version of Vanderbilts atomic code
+                were generated with a new version of Vanderbilt's atomic code
                 (version 7.3.0 or newer).
             \item[.] The  label {\bf CLASSIC} indicates that the following atoms are to be
-                traeted with classical force fields only. See section \&CLASSIC for more information.
+                treated with classical force fields only. See section \&CLASSIC for more information.
             \item[.] The  label {\bf \_EAM\_} indicates that the following atoms are treated using
                 the EAM approach.
             \item[.] The  label {\bf FRAC} indicates that the core charge of
@@ -5595,7 +6207,7 @@ but the actual values are {\bf not} used.
               See Ref.~\cite{Sprik98a}. The harmonic potential spring constant is $kval$.
              \item[COORSP] $n1$ $is$ $K$ $RC$ $C0$ $kval$ \hfill\\
               Retraint on the coordination number (CN) of one selected atom $n1$ with respect
-              to a single selcted species $is$. The CN is defined by a Fermi-like function 
+              to a single selected species $is$. The CN is defined by a Fermi-like function 
               as for $COORD$. 
               As in all the above cases, the harmonic potential spring constant is $kval$.
              \item[COOR\_RF] $n1$ $is$ $N$ $M$ $RC$ $C0$ $kval$ \hfill\\
@@ -5770,19 +6382,29 @@ Lmax
 \end{verbatim}
 
 \subsubsection{Van der Waals potential}
-
 This section ( \&VDW \ldots \&END) contains information about the
-empirical van der Waals correction. There are currently two major
-types of corrections implemented: the one described by 
-M.~Elstner~{\itshape et al.}\cite{Elstner} requires parameter sets 
+van der Waals correction scheme. Currently, three schemes are
+available:
+\begin{itemize}
+\item A Wannier-center based approach (\refkeyword{VDW WANNIER})
+\item A non-local potential-based approach (\refkeyword{DCACP}~\cite{opt-ecp04})
+\item A parametrized force-field-like potential (\refkeyword{VDW CORRECTION})
+\end{itemize}
+The first two approaches both depend on the actual electron density of the system, the third is
+a post-SCF correction that is solely dependent on nuclear coordinates.\\~\\
+\textbf{DCACP:} When using DCACP, the electron density is updated self-consistently according to the vdW potential
+that the system experiences. See the description of the keywords \refkeyword{DCACP Z=z},
+\refspekeyword{NO\_CONTRIBUTION}{NO CONTRIBUTION} and \refspekeyword{INCLUDE\_METALS}{INCLUDE METALS}
+for customisation options. \\~\\
+\textbf{VDW CORRECTION:} Two major types of correction types are implemented in
+connection with the \refkeyword{VDW CORRECTION} keyword:
+The one described by M.~Elstner~{\itshape et al.}\cite{Elstner} requires parameter sets 
 designed to use only in conjunction with a specific corresponding 
 density functional, the alternate parametrization by S.~Grimme\cite{Grimme06}
 is less specific and therefore easier to use and independent
 of the chose functional. Parameters for elements up to Xe have
-been directly coded into CPMD.
-(This part of the input is read via the code in vdwin.F).
-See the description of the keyword \refkeyword{VDW PARAMETERS}
-for more details.
+been directly coded into CPMD. See the description of the keyword
+\refkeyword{VDW PARAMETERS} for more details regarding custom input.
 \vfill
 \clearpage
 
@@ -5896,8 +6518,8 @@ from which the first line gives the number of the total atoms. An .xyz
 file can also be recorded directly during the simulation Using the
 \refkeyword{TRAJECTORY} keyword with the option {\bf XYZ}.\\
 Please note, that CPMD does not apply the minium image convention
-to these trajectory files, i.e. atoms are \textbf{nor} replaced by their
-images, if they leave the supercell.
+to these trajectory files, i.e. atoms are \textbf{not} replaced by their
+images if they leave the supercell.
 
 \medskip
 
@@ -5921,12 +6543,12 @@ references \cite{Allen87,Frenkel02}.
 
 \subsection{The MOVIE format}
 
-Besides the TRAJECTORY file CPMD also produces a specialy
+Besides the TRAJECTORY file CPMD also produces a specially
 formated trajectory in the MOVIE file. This file contains the position
 of all atoms of the system in Angstrom units at a rather low
 precision ($10^{-4}$). The sampling of the positions can be done
 independently from the trajectory file. The sets of coordinates are
-follwoing each other contigously. The format of each line is \\[10pt]
+following each other contiguously. The format of each line is \\[10pt]
 x-coordinate, y-coordinate, z-coordinate, atomic number, type .
 
 
@@ -6008,11 +6630,11 @@ forces due to the augmentation charges may need a higher density cutoff
 and/or a tighter real space grid.
 This can be achieved by either using a higher plane wave cutoff or via
 increasing \refkeyword{DUAL} to 5.0 or even 6.0 and/or setting
-the real space grid explicitely via the \refkeyword{MESH}
+the real space grid explicitly via the \refkeyword{MESH}
 keyword in the \&SYSTEM section. For the same reason, these options
 may be needed to increase energy conservation during molecular dynamics runs.
 Use these options with care, as they will increase the cpu time
-and memory requirements significantly und thus can easily take away
+and memory requirements significantly and thus can easily take away
 one of the major advantages of ultra-soft pseudopotentials.
 
 \subsection{Wavefunction Convergence}\label{hints:wfconv}
@@ -6024,10 +6646,10 @@ should be considered slow.\\[1ex]
 Optimizations using ODIIS that have repeated resets
 (more than a few) will probably never converge.
 %
-Convergence for LSD is normaly slower and more
+Convergence for LSD is normally slower and more
 difficult than for unpolarized cases.\\[1ex]
 %
-If the ODIIS converger gets stuck (more than one reset)
+If the ODIIS convergence gets stuck (more than one reset)
 stop the run and restart using
 \begin{verbatim}
   PCG MINIMIZE
@@ -6083,7 +6705,7 @@ changed between different CPMD versions, $500 \to 3000 \to 5000$).
 A very good test is to start always from the same
 RESTART file and only do one single step. This
 way ALL energies have to be exactly the same and
-no problems with different convergence rates occure.
+no problems with different convergence rates occur.
 
 
 
@@ -6097,29 +6719,28 @@ images in the Poisson solver) are initialized with:\\
 
 The box is assumed to be orthorhombic. With the additional options
 \refkeyword{SURFACE} or \refkeyword{POLYMER} periodic boundary
-conditions in two or one dimensions, respectively, are assumed.
-Poisson solvers available are:\\
-\refkeyword{POISSON SOLVER} \{HOCKNEY,TUCKERMAN,MORTENSEN\}
-
+conditions in two or one dimensions, respectively, are assumed. 
+\\
+Three different kinds of \refkeyword{POISSON SOLVER} \{HOCKNEY,TUCKERMAN,MORTENSEN\}
+are available.
 All methods require that the charge density is zero at
-the border of the box. For normal systems this means that
-about 3 Angstrom space between the outermost atoms and
-the box should be enough. However, for some systems and for
-high accuracy this may not be enough.
+the border of the box. For normal systems and the Hockney solver,
+this means that about 3 Angstrom space between the outermost atoms and
+the box should be enough. For large molecules, Tuckerman will require
+a considerably higher margin, see below.
+However, for some systems and for high accuracy these rules of thumb may not be enough.
 Some methods have additional requirements (see below).
-
-The \refkeyword{ISOLATED MOLECULE} keyword has only an effect on the
+\\
+Note that the \refkeyword{ISOLATED MOLECULE} keyword has only an effect on the
 calculation of the degrees of freedom (3N-6 vs. 3N-3 for periodic
-systems).
-
-\refkeyword{CENTER MOLECULE} ON/OFF: The main purpose of this is to
+systems). The main purpose of \refkeyword{CENTER MOLECULE} ON/OFF is to
 center the molecule (center of mass) in the box. This is needed for the
 HOCKNEY Poisson solver. This solver gives wrong results if the charge
 density is not centered in the computational box. All other solvers
 behave like the periodic counterpart, i.e. the relative position of the
 charge density and the box are not important.
-
-Further requirements:\\
+\\
+Further requirements on the Poisson solvers:\\
 
 HOCKNEY Method:
 \begin{itemize}
@@ -6132,10 +6753,11 @@ HOCKNEY Method:
  \item  \refkeyword{SURFACE} is available and works.
 \end{itemize}
 
-TUCKERMAN Method:
+TUCKERMAN-MARTYNA Method:
 \begin{itemize}
- \item box size : molecule + 3 {\AA} border AND 2*size of charge distribution
-                 \item expensive for large systems, smaller boxes might be used without
+ \item box size : molecule + 3 {\AA} border \textbf{and} - imperatively! - \emph{twice} the size of the electron charge distribution
+       (check the density after a single-point wavefunction optimization).
+ \item expensive for large systems, smaller boxes might be used without
  loosing too much accuracy
  \item \refkeyword{SURFACE} or \refkeyword{POLYMER} are not available
 \end{itemize}
@@ -6308,7 +6930,7 @@ RESTART}.
 
   The restart options used in wavefunction optimizations are \\ {\bf RESTART
 WAVEFUNCTION COORDINATES}. The suboption COORDINATES is not really necessary
-but it is adviced to use it anyway, as in this way the correspondence of
+but it is advised to use it anyway, as in this way the correspondence of
 wavefunction and ionic geometry is assured.
 
 \paragraph{Geometry optimizations}
@@ -6521,7 +7143,7 @@ perturbation theory can be applied to compute how the system reacts
 onto the perturbation. Generally, the Schr\"odinger equation is
 expanded in powers of the perturbation parameter (ex: the strength of
 the electric field), and the equations obtained for those powers are
-solved individually. At power zero, one refinds the equation of the
+solved individually. At power zero, one finds the equation of the
 unperturbed system:
 
 \beq
@@ -6555,7 +7177,7 @@ n\one (\rv) &=& \sum_k
 
 The Hamiltonian depends on the electronic density. Therefore, the
 first order density correction implies automatically an additional
-indirect perturbation hamiltonian coming from the expansion of the
+indirect perturbation Hamiltonian coming from the expansion of the
 unperturbed Hamiltonian in the density. It has to be added to the
 explicit perturbation Hamiltonian determined by the type of the
 (external) perturbation. The contribution is
@@ -6574,7 +7196,7 @@ analytic expressions for the derivative of the xc-potential with
 respect to the density, this is done numerically. That means that at
 each step, the xc-potential is calculated for the density
 $n\zero+\epsilon n\one$ and for $n\zero-\epsilon n\one$ (with an
-$\epsilon$ empirically set to 0.005), and the dervative needed in
+$\epsilon$ empirically set to 0.005), and the derivative needed in
 (\ref{eqn:implicit-hamiltonian}) is calculated as
 
 \beq
@@ -6612,7 +7234,7 @@ specified. Either one of the following keywords must appear:
 \end{quote}
 
 The first six types are discussed in detail in the following. An overview is also
-contained in the file \respkeyword{respin\_p.F}. In addition to the
+contained in the file respin\_p\_utils.mod.F90. In addition to the
 specific keywords of every option, there are several keywords which
 are common to all perturbation types. They determine fine-tuning
 parameters of the wavefunction optimization process, and usually you
@@ -6638,7 +7260,7 @@ analytically assuming a purely linear equation, according to the
 Numerical Recipes Eq.\ 10.6.4. However, this is somewhat expensive,
 and experience shows that the time step is almost constant except at
 the very beginning. Therefore, it is only calculated a few times, and
-lateron, the last calculated value is used. This option controls the
+later on, the last calculated value is used. This option controls the
 number of times the step length is calculated analytically. Default is
 3 for NMR and 99 for all other perturbations.
 
@@ -6648,18 +7270,18 @@ number of times the step length is calculated analytically. Default is
 The analytic formula for the time step assumes that the equation to be
 solved is purely linear. However, this is not the case, since the
 right hand side can still depend on the first order wavefunctions
-through the dependence of the perturbation hamiltonian $H\one$ on the
+through the dependence of the perturbation Hamiltonian $H\one$ on the
 perturbation density $n\one$. Therefore, the analytic formula has a
 tendency to overshoot. This is corrected by an empirical prefactor
 which is controlled by this option. Default is 0.7.
 
 
-\item[\#] \respkeyword{CONVERGENCE:} The criterium which determines
+\item[\#] \respkeyword{CONVERGENCE:} The criterion which determines
 when convergence is reached is that the maximum element of the
 gradient of the energy with respect to the wavefunction coefficients
-be below a certain threashold. This value is read from the next
+be below a certain threshold. This value is read from the next
 line. Default is 0.00001. Experience shows that often, it is more
-crucial to use a strict convergence criterium on the ground state
+crucial to use a strict convergence criterion on the ground state
 wavefunctions than for the response. A rule of thumb is that good
 results are obtained with a 10 times stricter convergence on the
 ground state orbitals compared to that of the response orbitals.
@@ -6696,7 +7318,7 @@ is saved. However, the use of this option is strongly discouraged.
 \item \respkeyword{POLAK:} There are several variants of the conjugate
 gradient algorithm. This keyword switches to the Polak-Ribiere
 formulation (see the Numerical Recipes, Eq.~10.6.7) which is usually
-significantly slowlier but safer in the convergence.  By default, the
+significantly slower but safer in the convergence.  By default, the
 Fletcher-Reeves formula is used.
 
 
@@ -6776,7 +7398,7 @@ with respect to their equilibrium positions. The electrons principally
 follow them, in order to minimize again the energy of the system.
 
 The expansion of the Hamiltonian in powers of the displacement
-$u^R_\alpha$ of the ion (labeled by its position $R$) in the cartesian
+$u^R_\alpha$ of the ion (labeled by its position $R$) in the Cartesian
 direction $\alpha=1,2,3$ consists of two parts\footnote
 %
   {The reader might wonder whether Einstein summations over repeated
@@ -6847,7 +7469,7 @@ the unperturbed pseudopotential projectors.
 
 
 
-A perturbative displacement in cartesian coordinates can have
+A perturbative displacement in Cartesian coordinates can have
 components of trivial eigenmodes, that is translations and rotations.
 They can be written {\em a priori} (in mass weighted coordinates in this case)
 and thus projected out from the Hessian matrix;
@@ -6894,10 +7516,10 @@ should appear in the \&RESP section.
 \textbf{Phonon output}
 
 In total analogy to \cpmd's \refkeyword{VIBRATIONAL ANALYSIS}, the
-displacement of all atoms in all cartesian directions are performed
+displacement of all atoms in all Cartesian directions are performed
 successively. The difference is, of course, that there is no real
 displacement but a differential one, calculated in perturbation
-theory. Thus, only one run is neccessary per ion/direction\footnote{In
+theory. Thus, only one run is necessary per ion/direction\footnote{In
 contrast to this, the \refkeyword{VIBRATIONAL ANALYSIS} displaces each
 atom in each direction first by +0.01 and then by -0.01.}.
 
@@ -6986,7 +7608,7 @@ but they are perfectly equivalent. It is controlled by the same keyword
 
 The input for the Lanczos routine is given by the keyword
 \refkeyword{LANCZOS} plus some optional arguments and a mandatory following
-line with numerical data. Plese note that this keyword
+line with numerical data. Please note that this keyword
 is analogous to that for the  Lanczos diagonalization of the electronic
 degrees of freedom. Given its presence in the \&RESP section
 there should be no ambiguity.
@@ -7069,7 +7691,7 @@ The report of the perturbation for a water dimer reads like;
  **** atom=    6     H    .15765937      .27370013      .29183999
  cpu time for wavefunction initialization:          89.22 seconds
 \end{verbatim}\eofverbsize
-where at every atom corresponds the x,y,z displacemnts applied to calculate
+where at every atom corresponds the x,y,z displacements applied to calculate
 the perturbed wavefunctions.
 
 At every iteration information about the elements of the $\bT_k$ matrix,
@@ -7248,7 +7870,7 @@ the shielding tensor is not symmetric. To obtain unique eigenvalues, it is
 symmetrized ($A_{ij} \mapsto (A_{ij}+A_{ji})/2$) before the
 diagonalization.
 
-All values are given in ppm, parts per millon. Chemical shieldings are
+All values are given in ppm, parts per million. Chemical shieldings are
 dimensionless quantities.
 
 
@@ -7310,7 +7932,7 @@ CH}}_4)$,
 %
 where TMS=tetramethylsilane, the standard reference molecule for
 H-shifts, one would have to calculate the H-shielding of TMS and of
-CH$_4$ and substract them. Unfortunately, TMS is nontrivial to
+CH$_4$ and subtract them. Unfortunately, TMS is nontrivial to
 calculate, because it is a large molecule and the geometry is
 complicated (and the shieldings probably must be calculated taking
 into account vibrational and rotational averaging). Thus, in most
@@ -7361,7 +7983,7 @@ where $\phi _I =(\partial {\bf F}_I/\partial N)_{V^{ext}}=
 -(\partial \mu /\partial R_I)_N$, $N$ is the number of electrons,
 $f({\bf r})$ the electronic Fukui function \cite{fukui,fukui2},
 $V^{ext}({\bf r})$ the external
-potential at {\bf r}, ${\bf R}_I$ the cartesian coordinate of the
+potential at {\bf r}, ${\bf R}_I$ the Cartesian coordinate of the
 $I^{th}$ nucleus and ${\bf F}_I$ the force on the $I^{th}$ nucleus.
 
 \subsubsection{KPERT: kdp k-point calculations}
@@ -7411,7 +8033,7 @@ default value, but, since the range of applications of MTD is quite wide, it is 
 the default values do not fit your problem. Therefore some effort is required to choose the
 optimal conditions for your run.
 Of course, it is important to know something about MTD before using it. There are some references
-about the method \cite{alaio, iannuzzi, micheletti, gerlaio, michele}, and about some successfull
+about the method \cite{alaio, iannuzzi, micheletti, gerlaio, michele}, and about some successful
 applications, as e.g. \cite{andras, gervasio, iannuzzi2, sergey, scwo, ikeda, rna, Nair-jacs-08, mb11}.
 It can be of great help to read about the choices and results obtained by other users.
 But I remark that there are very few general rules that can be held valid for different
@@ -7469,7 +8091,7 @@ specific CV (if CV is a distance it will be $a.u.^2$,
 if an angle $radiants^2$, etc.). In analogy, the units of the
 fictitious mass are $Hartree ((t)/(u.s.))^2$, where $t$ indicates the unit of time.
 Some guide lines on the choice of these parameters will be given in the following paragraphs.
-By choosing the temperture $T_{\bf s}$, the velocities of the components
+By choosing the temperature $T_{\bf s}$, the velocities of the components
 of $\bf s$ can be initialized giving via a Boltzmann distribution.
 Moreover, the velocities can be kept in a desired range by the
 activation of a temperature control algorithm (at the moment only the
@@ -7511,7 +8133,7 @@ $s_{\alpha}$, so that
 $\langle \delta s_{\alpha}\rangle /scf_{\alpha} = \Delta s^{\perp} \, \forall \alpha$.
 
 Other implemented shapes of $V(t)$ are:\\
-{\bf Shift:} the tails of the Gaussians are cutoffed, by
+{\bf Shift:} the tails of the Gaussians are cutoff, by
 setting to zero the Gaussian at a distance $R_{cutoff}\Delta s^{\perp}$
 from its center. In this way the problem of the overlap of the
 tails in regions far from the actual trajectory is reduced. \\
@@ -7565,12 +8187,12 @@ Otherwise, you can write ${\bf MCV}$  followed by the desired value for
 $M$ in $Hartree ((t)/(u.s.))^2/1822 = a.m.u. (a.u./a.s.)^2$. \\
 {\bf k:} it determines the dynamics of $s$ with respect to the dynamics of the
 physical CV. If $S(\cdots)$ is dominated by fast modes,
-it is reccomanded that $s$ be slower and its fluctuations span the entire well.
+it is recommended that $s$ be slower and its fluctuations span the entire well.
 Given the characteristic frequencies of the normal modes $\omega_{0}$, $k$ can
 be chosen such that $\sqrt{k/M}< \omega_{0}$. On the other hand,
 we want $k$ big enough, so that $s$ and $S$ stay close, and $S$ fluctuates
 many times at each position in the configuration space.
-By satisfing the latter condition, the average forces due to the
+By satisfying the latter condition, the average forces due to the
 underlying potential can be accurately estimated, and the trajectory
 lays on the minimum energy path. Therefore, also for $k$, the default
 value is chosen in terms of  $T_s$ and $scf_{\alpha}\cdot\delta s_{\alpha}$
@@ -7624,7 +8246,7 @@ Different cutoff distances are allowed for each type of $A$ atoms.
 \end{equation}
 After the keyword {\tt COORGROUP}, $N_A$ and $k$ should be specified.
 In the next lines should be:\\
- $i$, $N_B(i)$, $d^0(i)$ \\
+ $i$, $d^0(i)$, $N_B(i)$ \\
  \hspace*{1cm}$j(1) \cdots j(N_B(i))$ \\
 This has to be done for all $i$ in list of $A$ type atoms.
 \item{COOR\_RF:} CN of one selected atom $i$ with respect to one selected
@@ -7664,7 +8286,7 @@ The same functional forms and input options are used, as those
 described for $COOR\_RF$, but the index of one selected species $isp$
 is read in place of the index of one atom.
 \item{DISPL1:} Average displacement of one group of species with respect
-to a second group of species, computed along one specified diraction in
+to a second group of species, computed along one specified direction in
 space (lattice axis in crystals).
 This  CV is useful to study diffusion processes in condensed matter.
 If the keyword $MIL$ is found, the 3 Miller indexes, which define the direction
@@ -7733,8 +8355,11 @@ The dipole of the atoms $i_1,...,i_N$ with respect to the atom $j$ is defined as
 \begin{eqnarray}
 \vec D_j={1\over Q}\sum_{i=i_1,..,i_N}q_i(\vec r_i -\vec r_j);\;\;\; Q=\sum_{i=i_1,..,i_N} q_i
 \end{eqnarray}
-The three spherical coordinates of $\vec D_j $, that is $(\rho_j,\theta_j,\phi_j)$, can be used independently as CV. The keywords are {\bf DIPOLERHO}, {\bf DIPOLETHA}, {\bf DIPOLEPHI}. In the same line after the keywords are read the index of the atom $j$ and the number $N$ of atoms which constitute the dipole.
-In the next two lines are read the indexes of the $N$ atoms and the corresponding charge $q_i$.    
+The three spherical coordinates of $\vec D_j $, that is $(\rho_j,\theta_j,\phi_j)$, can be used
+independently as CV. The keywords are {\bf DIPOLERHO}, {\bf DIPOLETHA}, {\bf DIPOLEPHI}. In the same
+line after the keywords are read the index of the atom $j$ and the number $N$ of atoms which
+constitute the dipole.  In the next two lines are read the indexes of the $N$ atoms and the
+corresponding charge $q_i$.    
 \end{itemize}
 
 If $CELL $ $FULL$ is defined in the first line of the MTD input, none of the CV defined above is used.
@@ -8048,7 +8673,7 @@ has fallen in one of the known basins when all the actual CV values
 satisfy the values characterizing that basin, within a certain tolerance.
 Given a set of coordinates, one can start a CPMD run where this check
 is iterated as many times as you like, in order to establish the
-committor distribution.The search for the saddle point region is
+commitor distribution.The search for the saddle point region is
                 initialized when in the section \&ATOMS \&END of the input file,
 the keyword $SADDLE$ $POINT$ is found.
 In what follows, a subsection for the description of the selected CV
@@ -8113,7 +8738,9 @@ for example some dissociation reactions require the localized variant to enable 
 In order to make sure that the chosen algorithm works for a certain system, the conservation of energy
 during a molecular dynamics simulation and the shape of the orbitals should always be checked.
 One of the SOMOs should have the same nodal structure
-as the HOMO obtained by a ground state calculation. If using the unmodified Goedecker-Umrigar scheme (GOEDECKER), the energy of the singlet may collapse to approximately the triplet energy if the two SOMOs do not have different symmetries. The triplet energy can be calculated by specifiying
+as the HOMO obtained by a ground state calculation. If using the unmodified Goedecker-Umrigar scheme
+(GOEDECKER), the energy of the singlet may collapse to approximately the triplet energy if the two
+SOMOs do not have different symmetries. The triplet energy can be calculated by specifiying
 \begin{verbatim}
        ROKS TRIPLET
 \end{verbatim}
@@ -8304,8 +8931,9 @@ Here $\mathbf{F}_{\text{Bound},k}$ denotes forces due to the finite cutoff. They
 \end{array}
 \right)\sin\vartheta \;d\vartheta d\varphi
 \end{eqnarray}
-As we do have a cartesian grid we need to perform the integral as an integral over a thin shell in real space. $R_c$ times the vector is just the position vector of a point on the surface $(x,y,z)$ and the surface element can be expressed in cartesian coordinates as
-\begin{equation}
+As we do have a Cartesian grid we need to perform the integral as an integral over a thin shell in
+real space. $R_c$ times the vector is just the position vector of a point on the surface $(x,y,z)$
+and the surface element can be expressed in Cartesian coordinates as \begin{equation}
 \sin\vartheta\;d\vartheta d\varphi = \sgn(z) \frac{y\;dx dz-x\;dy dz}{R_c(R_c^2-z^2)}
 \end{equation}
 
@@ -8334,7 +8962,9 @@ Approximating the wave functions of the two states by slater determinants built 
 \begin{eqnarray}
 S_{AB}=\langle \phi_B \vert \phi_A \rangle= \det \left[\sum_G (c_i^A(G))^\star c_j^B(G)\right]=\det \Phi_{ij},
 \end{eqnarray}
-where the $c_{i,j}^{A,B}(G)$ denote the plane wave coefficients of the respective wave function for their respective electronic states $i$ and $j$ and $\Phi$ denotes the full overlap matrix. Note that the diagonal elements of $\mathbb{S}$ are equal to one due to the normalisation of the two states.
+where the $c_{i,j}^{A,B}(G)$ denote the plane wave coefficients of the respective wave function for
+their respective electronic states $i$ and $j$ and $\Phi$ denotes the full overlap matrix. Note that
+the diagonal elements of $\mathbb{S}$ are equal to one due to the normalisation of the two states.
 The off-diagonal $\mathbb{W}$ matrix element is given by:
 \begin{equation}
 \label{eq::wab}
@@ -8345,8 +8975,14 @@ with $\Phi_{(i,j)}$ being the $i,j$th minor of $\Phi$ and the integral given by
 \label{eq::gspacetransme}
 \langle \phi^i_B \vert W \vert \phi^j_A \rangle=\sum_{G,G^\prime}(c_i^A(G))^\star c_j^B(G) \tilde{W}(G-G^\prime).
 \end{equation}
-Note that Equ.~\ref{eq::gspacetransme} actually constitutes a convolution in G-space. Therefore the most efficient way to calculate the elements $\langle \phi^i_B \vert W \vert \phi^j_A \rangle$ is by transforming Equ.~\ref{eq::gspacetransme} back into real-space where the convolution becomes a simple multiplication. Additionally CPMD already stores the wavefunctions in real-space (REAL SPACE WFN KEEP which is activated automatically by the CDFT HDA calculation) and thus saves us the necessary FFTs.
-Calculating every minor determinant of the overlap matrix in Equ.~(\ref{eq::wab}) would be rather costly, therefore we note that the second part of Equ.~(\ref{eq::wab}) is actually the cofactor matrix $C$ of $\Phi$.
+Note that Equ.~\ref{eq::gspacetransme} actually constitutes a convolution in G-space. Therefore the
+most efficient way to calculate the elements $\langle \phi^i_B \vert W \vert \phi^j_A \rangle$ is by
+transforming Equ.~\ref{eq::gspacetransme} back into real-space where the convolution becomes a
+simple multiplication. Additionally CPMD already stores the wavefunctions in real-space (REAL SPACE
+WFN KEEP which is activated automatically by the CDFT HDA calculation) and thus saves us the
+necessary FFTs.  Calculating every minor determinant of the overlap matrix in Equ.~(\ref{eq::wab})
+would be rather costly, therefore we note that the second part of Equ.~(\ref{eq::wab}) is actually
+the cofactor matrix $C$ of $\Phi$.
 \begin{equation}
 (-1)^{i+j} \det \Phi_{(i,j)}=C_{ij},
 \end{equation}
@@ -8359,8 +8995,9 @@ The diagonal elements of $\mathbb{W}$ are just the constraint values $N_c$ for t
 Having performed this calculation we symmetrise $\mathbb{H}_\text{no}$ in order to correct for inaccuracies of the approximations we made.
 
 \paragraph{Full diabatic non-orthogonal Hamiltonian}
-However, the matrix $\mathbb{H}_\text{no}$ is not the full Hamiltonian as it neglects the fact that the two diabatic wavefunctions form a non-orthogonal basis ($S_{AB}\neq 0$). Nevertheless, we can construct the full Hamiltonian using the overlap matrix element $S_{AB}$:
-\begin{equation}
+However, the matrix $\mathbb{H}_\text{no}$ is not the full Hamiltonian as it neglects the fact that
+the two diabatic wavefunctions form a non-orthogonal basis ($S_{AB}\neq 0$). Nevertheless, we can
+construct the full Hamiltonian using the overlap matrix element $S_{AB}$: \begin{equation}
 \mathbb{H}_\text{full}=\frac{1}{1-S_{AB}^2}\left(\begin{array}{c c} H_{BB}-S_{AB}H_{AB} & H_{BA}-S_{AB}H_{AA}\\ H_{AB}-S_{AB}H_{BB} & H_{AA}-S_{AB}H_{BA}\end{array}\right),
 \end{equation}
 
@@ -8377,8 +9014,10 @@ To calculate the diabatic orthogonal Hamiltonian we then perform the similarity 
 The off-diagonal elements of $\mathbb{H}_\text{diab}$ --or their average if the two states have been very different-- are then the desired transition matrix element.
 
 \paragraph{Adiabatic Hamiltonian}
-The adiabatic energies of ground and excited state $\varepsilon_{g,e}$ and their mixing coefficients $\mathbf{x}_{g,e}$ can be calculated by simply diagonalising the the diabatic Hamiltonian (in principle either one as a similarity transform does not change the eigenvalues of a matrix, here we use the full Hamiltonian)
-\begin{equation}
+The adiabatic energies of ground and excited state $\varepsilon_{g,e}$ and their mixing coefficients
+$\mathbf{x}_{g,e}$ can be calculated by simply diagonalising the diabatic Hamiltonian (in
+principle either one as a similarity transform does not change the eigenvalues of a matrix, here we
+use the full Hamiltonian) \begin{equation}
  \mathbb{H}_\text{full}\mathbf{x}_{g,e}=\varepsilon_{g,e}\mathbf{x}_{g,e}
 \end{equation}
 With the matrix $\mathbb{X}$ of mixing coefficients we could then in principle also calculate the adiabatic states themselves via
@@ -8389,7 +9028,10 @@ With the matrix $\mathbb{X}$ of mixing coefficients we could then in principle a
 
 
 \paragraph{Projection on reference states}
-Unfortunately, CDFT only constrains a total charge density, thus sometimes one may get a spurious delocalisation of the orbitals over both donor and acceptor leading to a too large overlap $S_{AB}$ of the two diabatic states. One possible way to overcome this is to project the wavefunctions on non-interacting reference states and transform the diabatic Hamiltonian into this basis.
+Unfortunately, CDFT only constrains a total charge density, thus sometimes one may get a spurious
+delocalization of the orbitals over both donor and acceptor leading to a too large overlap $S_{AB}$
+of the two diabatic states. One possible way to overcome this is to project the wavefunctions on
+non-interacting reference states and transform the diabatic Hamiltonian into this basis.
 
 The reference states are constructed from four wavefunctions $\Phi_{D^-},\Phi_{D^+},$ $\Phi_{A^+},\Phi_{A^-}$ describing donor and acceptor in the charge states corresponding to the two diabatic states
 \begin{eqnarray}
@@ -8410,8 +9052,10 @@ These, so called ``dressed'', states are not yet orthogonal which we rectify usi
 \begin{equation}
 \left( \begin{array}{c} \psi_1\\ \psi_2\end{array}\right)=\mathbb{S}^{-1/2} \left( \begin{array}{c} \psi^\prime_a\\ \psi^\prime_b\end{array}\right),
 \end{equation}
-with the elements of the L\"owdin matrix $\mathbb{S}$ defined as $\mathbb{S}_{j,k}=\langle \psi_j^\prime \vert \psi_k^\prime \rangle$ where $j,k \in {a,b}$. Combining this with Equ.~\ref{eq::projection} we can then express the new projected diabatic states in terms of the adiabatic constrained states:
-\begin{equation}
+with the elements of the L\"owdin matrix $\mathbb{S}$ defined as $\mathbb{S}_{j,k}=\langle
+\psi_j^\prime \vert \psi_k^\prime \rangle$ where $j,k \in {a,b}$. Combining this with
+Equ.~\ref{eq::projection} we can then express the new projected diabatic states in terms of the
+adiabatic constrained states: \begin{equation}
 \left( \begin{array}{c} \psi_1\\ \psi_2\end{array}\right)=\mathbb{S}^{-1/2} \mathbb{K} \left( \begin{array}{c} \psi^\text{ad}_a\\ \psi^\text{ad}_b\end{array}\right).
 \end{equation}
 The similarity transformation from the adiabatic Hamiltonian matrix $\mathbb{H}_\text{ad}$ to the projected diabatic Hamiltonian $\mathbb{H}^\text{p}_\text{diab}$ is then simply
@@ -8420,19 +9064,32 @@ The similarity transformation from the adiabatic Hamiltonian matrix $\mathbb{H}_
 \end{equation}
 
 \subsection{Fragment Orbital DFT (FO-DFT)}
-The basic idea of FO-DFT, as formulated by Senthilkumar, Grozema, Bickelhaupt, and Siebbeles \cite{Senthilkumar03}, is to construct the two reference states from calculations of the non-interacting isolated donor and acceptor groups, respectively. This way one avoids spurious delocalisation of electrons over both groups, but also neglects polarisation effects of the donor on the acceptor and vice versa. Thus the diabatic states - and therefore the matrix element $H_{AB}$ - will in general be slightly different from those calculated with CDFT.
+The basic idea of FO-DFT, as formulated by Senthilkumar, Grozema, Bickelhaupt, and Siebbeles
+\cite{Senthilkumar03}, is to construct the two reference states from calculations of the
+non-interacting isolated donor and acceptor groups, respectively. This way one avoids spurious
+delocalization of electrons over both groups, but also neglects polarisation effects of the donor on
+the acceptor and vice versa. Thus the diabatic states - and therefore the matrix element $H_{AB}$ -
+will in general be slightly different from those calculated with CDFT.
 
 With these diabatic reference states the transition matrix element is then in principle given by:
 \begin{equation}
 H_{AB}= \left\langle \psi^D_\text{HOMO}\left\vert \mathcal{H}_\text{KS} \right\vert\psi^A_\text{HOMO}\right\rangle,
 \end{equation}
-where $\mathcal{H}_\text{KS}$ denotes the Kohn-Sham Hamiltonian and $\psi^{D,A}_\text{HOMO}$ the highest occupied molecular orbitals (HOMO's) of donor and acceptor, respectively. Here we make the assumption that we can - to a sufficient degree of accuracy - approximate the acceptors LUMO (lowest unoccupied molecular orbital) by its HOMO in a system with one more electron. Successful applications of our implementation of FO-DFT can be found in ref.\cite{Oberhofer10acie}.
+where $\mathcal{H}_\text{KS}$ denotes the Kohn-Sham Hamiltonian and $\psi^{D,A}_\text{HOMO}$ the
+highest occupied molecular orbitals (HOMO's) of donor and acceptor, respectively. Here we make the
+assumption that we can - to a sufficient degree of accuracy - approximate the acceptors LUMO (lowest
+unoccupied molecular orbital) by its HOMO in a system with one more electron. Successful
+applications of our implementation of FO-DFT can be found in ref.\cite{Oberhofer10acie}.
 
 \subsubsection{FODFT with CPMD}
 An FO-DFT calculation in CPMD consists of six different calls to CPMD:
 \begin{description}
-\item[1 and 2:] the respective wavefunction optimisation of donor and acceptor, on positions as they would be if they were combined (\textbf{CENTER MOLECULE OFF}). Note that here the calculated acceptor state should be the desired acceptor state plus one electron, which is necessary because CPMD does not calculate Kohn-Sham matrix elements for unoccupied orbitals. These two calls are the only time consuming ones in the procedure.
-\item[3 and 4:] the diagonalisation of the two states in order to get their respective Kohn-Sham Orbitals (KOHN-SHAM ENERGIES).
+\item[1 and 2:] the respective wavefunction optimisation of donor and acceptor, on positions as they
+would be if they were combined (\textbf{CENTER MOLECULE OFF}). Note that here the calculated
+acceptor state should be the desired acceptor state plus one electron, which is necessary because
+CPMD does not calculate Kohn-Sham matrix elements for unoccupied orbitals. These two calls are the
+only time consuming ones in the procedure.  \item[3 and 4:] the diagonalization of the two states in
+order to get their respective Kohn-Sham Orbitals (KOHN-SHAM ENERGIES).
 \item[5:] the combination and orthogonalisation of both wavefunctions with keywords COMBINE WAVEFUNCTION and one of the orthogonalisation schemes (ORTHOGONALIZATION LOWDIN of GRAM-SCHMIDT).
 \item[6:] the calculation of the Kohn-Sham matrix for the combined and orthogonalised states (keyword KSHAM).
 \end{description}
@@ -8442,7 +9099,7 @@ If both donor and acceptor atoms are set the constraint value $N_\text{c}$ denot
 
 \paragraph{TODO's and usage WARNINGS}
 \begin{itemize}
-\item WARNING: don't use diagonalisation schemes (e.g. Lanczos) during the MD because it breaks the force calculation.
+\item WARNING: don't use diagonalization schemes (e.g. Lanczos) during the MD because it breaks the force calculation.
 \item WARNING: don't use non-orthogonal supercells, only SYMMETRY 0, 1 or 8 should be used.
 \item WARNING: CDFT and FODFT are not implemented for QM/MM calculations, yet.
 \end{itemize}
@@ -8456,7 +9113,7 @@ If both donor and acceptor atoms are set the constraint value $N_\text{c}$ denot
 \label{sec:qmmm-overview}
 An additional interface code ({\bf MM\_Interface} folder) and an adapted
 classical force field code  \cite{gromos96} ({\bf Gromos} folder) are
-needed to run CPMD in fully hamiltonian hybrid QM/MM
+needed to run CPMD in fully Hamiltonian hybrid QM/MM
 mode\cite{qmmm02}. To use this code a {\it Gromos license} is required
 and therefore it is {\bf not} included in the standard CPMD code. The
 interface code and the adapted classical force field code can be
@@ -8465,7 +9122,7 @@ obtained by directly contacting the CPMD developers.
 To create a makefile for compilation of a QM/MM enabled CPMD binary,
 you have to copy  the two above folders (or create symbolic links to
 them) in the CPMD source directory and then to add the \texttt{-qmmm}
-flag when executing the \texttt{mkconfig.sh} script (see section
+flag when executing the \texttt{config.sh} script (see section
 \ref{installation}).  The resulting binary can be used for normal CPMD 
 runs as well as for QM/MM simulations.
 % FIXME: add contact and web reference here (again).
@@ -8562,7 +9219,7 @@ is always re-centered in the given supercell (the current offset of
 the QM cell is recorded in the file MM\_CELL\_TRANS).
 
 The quantum atoms are specified in the \&ATOMS section similar to normal
-CPMD calculations. Instead of explicite coordinates one has to provide
+CPMD calculations. Instead of explicit coordinates one has to provide
 the atom index as given in the Gromos topology and coordinates files.
 
 
@@ -8727,7 +9384,7 @@ solver used (see section \ref{hints:symm0}).\\
 
 \keyword{EXCLUSION}{\{GROMOS,LIST\{NORESP\}\}}{}{}{\&QMMM}
 \desc{Specify charge interactions that should be excluded
-   from the QM/MM hamiltonian. With the additional flag GROMOS,
+   from the QM/MM Hamiltonian. With the additional flag GROMOS,
    the exclusions from the Gromos topology are used. With the
    additional flag LIST, an explicit list is read from following lines.
    The format of that list has the number of exclusions in the first
@@ -8769,20 +9426,30 @@ solver used (see section \ref{hints:symm0}).\\
 \keyword{FORCEMATCH ... END FORCEMATCH}{}{}{}{\&QMMM}
 \desc{Input block for the QM/MM forcematching. A general description is given in section \ref{sec:forcematch-desc}. \\
    \textbf{READ REF FORCES [FILE,COVALENT]}\\
-Flag to read the QM/MM reference forces directly from the file FM\_REF\_FORCES, i.e. no QM/MM SPs are computed. \textbf{Default}: false. An alternative file name can be specified on the next line with the option \textbf{FILE}. With the option \textbf{COVALENT} covalent forces are read from the file FM\_REF\_COVFORCES. \\
-    \textbf{READ REF TRAJ [FILE]} \\
+Flag to read the QM/MM reference forces directly from the file FM\_REF\_FORCES, i.e. no QM/MM SPs
+are computed. \textbf{Default}: false. An alternative file name can be specified on the next line
+with the option \textbf{FILE}. With the option \textbf{COVALENT} covalent forces are read from the
+file FM\_REF\_COVFORCES. \\ \textbf{READ REF TRAJ [FILE]} \\
 Read reference trajectory from file TRAJECTORY\_REF (or set the \textbf{FILE} option to read a non-default file name from the next line) with a given stride and compute single points on the respective frames. \\
 \textbf{RESTART SP} \\
-If in a previous force matching run not all of the SPs could be computed (e.g. limited wall time) this flag indicates cpmd to restart the SP calculations. The FM\_REF* files from the previous run have to be present and they will be appended. With this option make sure that the frames contained in the already existing FM\_REF* files are consistent. \textbf{Default}: false. \\
-\textbf{READ REF STRIDE} \\
+If in a previous force matching run not all of the SPs could be computed (e.g. limited wall time)
+this flag indicates cpmd to restart the SP calculations. The FM\_REF* files from the previous run
+have to be present and they will be appended. With this option make sure that the frames contained
+in the already existing FM\_REF* files are consistent. \textbf{Default}: false. \\ \textbf{READ REF
+STRIDE} \\
 Stride to apply when reading the TRAJECTORY\_REF file is read from the next line. Default=1, i.e. every frame is used for the SP calculations. \\
 \textbf{TOPOL OUT} \\
 Filename for the final topology file. \textbf{Default}: FMATCH.top. \\
 \textbf{INITWF [OFF]} \\
 Generate an initial guess for the wfkt for the SP calculations based on AOs (default). With the \textbf{OFF} option the wfkt of the previous frame is used as an intial guess.\\
 \textbf{CHARGES [ONLY,NO],[FIX]} \\
-Charge fitting is on by default and can be switched off with the \textbf{NO} option. In this case the charges from the initial topology will not be modified. \textbf{ONLY} will let the program stop after the charge fitting and the other parameters are not updated. \\
-With the \textbf{FIX} option target values for the restraints in the charge fitting on specific atoms can be specified by the user. Usually the charges are restraint to the respective Hirschfeld values. On the next line the number of charges to be fixed has to be given and then the corresponding number of lines with: gromos index \ \ \ \ charge. \\
+Charge fitting is on by default and can be switched off with the \textbf{NO} option. In this case
+the charges from the initial topology will not be modified. \textbf{ONLY} will let the program stop
+after the charge fitting and the other parameters are not updated. \\ With the \textbf{FIX} option
+target values for the restraints in the charge fitting on specific atoms can be specified by the
+user. Usually the charges are restraint to the respective Hirshfeld values. On the next line the
+number of charges to be fixed has to be given and then the corresponding number of lines with:
+gromos index \ \ \ \ charge. \\
 \textbf{MV} \\
 Weight on the potential in the charge fitting. \textbf{Default}=0.1.\\
 \textbf{WF} \\
@@ -8901,7 +9568,7 @@ Per default the RMS on the forces is computed after the fitting has been complet
   the name of the trajectory file, the filename can be set (Default is
   TRAJECTORY). Finally the flag REVERSE will reverse the sign of the
   velocities, so the system will move backwards from the selected point
-  in the trajecory.}
+  in the trajectory.}
 
 \keyword{SAMPLE INTERACTING}{[OFF,DCD]}{}{}{\&QMMM}
 \desc{The sampling rate for writing a trajectory of the interacting subsystem
@@ -8922,7 +9589,7 @@ Per default the RMS on the forces is computed after the fitting has been complet
   the MM forces calculation is performed on a separate node.
   This is mostly useful for systems with a large MM-part and runs with
   many nodes where the accumulated time used for the classical part has
-  a larger impact on the performace than losing one node for the (in
+  a larger impact on the performance than losing one node for the (in
   total) much more time consuming QM-part.\\
  {\bf Default} is \refkeyword{NOSPLIT}.}
 
@@ -8946,7 +9613,7 @@ Per default the RMS on the forces is computed after the fitting has been complet
 \keyword{WRITE LOCALTEMP}{[STEP \{nfi\_lt\}]}{}{}{\&QMMM}
 \desc{The Temperatures of the QM subsystem, the MM solute (without
   the QM atoms) and the solvent (if present) are calculated
-  separately and writen to the standard output and a file \texttt{QM\_TEMP}.
+  separately and written to the standard output and a file \texttt{QM\_TEMP}.
   The file has 5 columns containing the QM temperature, the MM temperature,
   the solvent temperature (or 0.0 if the solvent is part of the solute),
   and the total temperature in that order.
@@ -9049,7 +9716,7 @@ their meaning.
   \item[BONDTYPE]~\\
     This section contains the list of parameters for bonded
     interactions. You have to pick the two matching entries from this
-    list for the O-H and H-H potential, when using the the
+    list for the O-H and H-H potential, when using the 
     \refkeyword{FLEXIBLE WATER} keyword to convert solvent water back
     into solute (e.g. to included them into the QM part).
   \item[SOLVENTATOM]~\\
@@ -9098,7 +9765,7 @@ Contains the coordinates and the velocities (in TRAJECTORY format) of the atoms
 listed in INTERACTING.pdb. The format is the same as in the files TRAJECTORY and MOVIE,
 hence frames belonging to different runs are separated by the line <<<<< NEW DATA >>>>>.
 
-The atoms in this file do not necessarely coincide with the NN atoms, that are written
+The atoms in this file do not necessarily coincide with the NN atoms, that are written
 at every update of the pair list in the file INTERACTING\_NEW.pdb.
 
 
@@ -9115,7 +9782,7 @@ The MOVIE-like file corresponding to TRAJECTORY\_INTERACTING.
 %
 
 \item {\bf ESP}\\
-Containes the ESP charges of the QM atoms in CPMD order (the corresponding Gromos
+Contains the ESP charges of the QM atoms in CPMD order (the corresponding Gromos
 numbers can be found in QMMM\_ORDER). The first column is the frame number.
 
 
@@ -9135,7 +9802,7 @@ the quantum system in a.u.  The order is: D(1),D(2),D(3),Q(1,1),Q(2,2),Q(1,2),Q(
 
 \item {\bf MM\_CELL\_TRANS}\\
 Contains, the Trajectory of the re-centering offset for the QM-box. The first column
-ist the frame number (NFI) followed by the x-, y-, and z-component of the cell-shift vector.
+is the frame number (NFI) followed by the x-, y-, and z-component of the cell-shift vector.
 %
 %CHJ
 %????
@@ -9159,9 +9826,9 @@ the distance between the link atom and the (full-QM) neighbor atom
 to the (full-QM) equilibrium distance, to preserve the electronic
 structure in the center of the QM subsystem. You should be aware of
 the fact, that this is a rather crude approximation and that the
-contraint will create a small imbalance in the forces between the QM and
+constraint will create a small imbalance in the forces between the QM and
 MM subsystems, that can result in a drift in the total energy, if the
-length of the contraint is badly chosen.
+length of the constraint is badly chosen.
 
 A more rigorous approach would be to use an optimized pseudopotential
 constructed with the method described in ref.~\cite{opt-ecp04}, that
@@ -9200,7 +9867,7 @@ protocol of the required steps.
   \item if you have added a new atom type, you have to add the
     corresponding entries in the LJPARAMETERS section as well.
     Since the capping hydrogen atoms should be invisible from the MM
-    hamiltonian all Lennard-Jones parameters are set to 0.0 for those
+    Hamiltonian all Lennard-Jones parameters are set to 0.0 for those
     new entries. This section is a triangular matrix, so you have to
     add NRATT lines (and increase NRATT2 accordingly).
   \item Add new residues named DUM (one for each capping hydrogen) to
@@ -9273,29 +9940,60 @@ diagonalization method at some point.
 %_FM[
 \subsubsection{QM/MM Force Matching}
 \label{sec:forcematch-desc}
-This tool allows the automated (re)parametrization of classical force fields
-from QM/MM reference calculations via a force matching protocol as published in \cite{FM-maurer}. Thereby only MM parameters among the atoms comprised in the QM subsystem are reparametrized. In this first release VdW parameters are excluded from the optimization and kept constant. Fitting of these parameters will be a feature of a future release. \\
+This tool allows the automated (re)parametrization of classical force fields from QM/MM reference
+calculations via a force matching protocol as published in \cite{FM-maurer}. Thereby only MM
+parameters among the atoms comprised in the QM subsystem are reparametrized. In this first release
+VdW parameters are excluded from the optimization and kept constant. Fitting of these parameters
+will be a feature of a future release. \\
 The jobs requires a QM/MM reference TRAJECTORY file and the corresponding gromos topology, input and 
 coordinate files and the cpmd input that were used to generate the reference TRAJECTORY file.
  The initial topology can be a reasonable guess and will be refined during the actual
  force matching procedure. Currently the QM/MM reference trajectory 
  has to be generated prior to the force matching job. \\
-The actual forcematching job is envoked by the \refkeyword{FORCEMATCH} in \&CPMD and the
+The actual forcematching job is invoked by the \refkeyword{FORCEMATCH} in \&CPMD and the
 \refkeyword{FORCEMATCH ... END FORCEMATCH} block in \&QMMM. Besides, the \&CPMD and \&QMMM sections should contain sensible keywords and parameters for high quality reference forces (e.g. convergence orbitals 1.0d-7). \\
-The parametrization protocol consists of a three-step process: First, the reference trajectory is read with a given stride. On each of the selected frames QM/MM reference forces (BO) are calculated. The forces on the atoms of the QM subsystem are stored (FM\_REF\_FORCES) along with the Hirschfeld charges (FM\_REF\_CHJ) as well as the electrostatic potential and field on the nearby MM atoms (FM\_REF\_PIP). Second, a set of atomic point charges that reproduce the electrostatic potential and forces that the QM system exerts on the surrounding classical atoms is derived. Third, the nonbonded contributions, computed with the charges obtained in the second step and given Lennard-Jones parameters, are subtracted from the total reference forces on the QM atoms. The remaining forces are assumed to be derived from bonded interactions. The parameters for bonded interactions (torsions, bending and bonds) are thus adjusted in order to reproduce the remaining forces. See reference \cite{FM-maurer} for details. An updated topology file FMATCH.top is written at the end of the run. To check the quality of the fitting procedure a section with the absolute and relative force RMS per atom is printed at the end to standard output. \\
-Files generated by the force matching code (Some of the following default filenames can be changed via the respective keywords in the FORCEMATCH block):
+The parametrization protocol consists of a three-step process: First, the reference trajectory is
+read with a given stride. On each of the selected frames QM/MM reference forces (BO) are calculated.
+The forces on the atoms of the QM subsystem are stored (FM\_REF\_FORCES) along with the Hirshfeld
+charges (FM\_REF\_CHJ) as well as the electrostatic potential and field on the nearby MM atoms
+(FM\_REF\_PIP). Second, a set of atomic point charges that reproduce the electrostatic potential and
+forces that the QM system exerts on the surrounding classical atoms is derived. Third, the nonbonded
+contributions, computed with the charges obtained in the second step and given Lennard-Jones
+parameters, are subtracted from the total reference forces on the QM atoms. The remaining forces are
+assumed to be derived from bonded interactions. The parameters for bonded interactions (torsions,
+bending and bonds) are thus adjusted in order to reproduce the remaining forces. See reference
+\cite{FM-maurer} for details. An updated topology file FMATCH.top is written at the end of the run.
+To check the quality of the fitting procedure a section with the absolute and relative force RMS per
+atom is printed at the end to standard output. \\ Files generated by the force matching code (Some
+of the following default filenames can be changed via the respective keywords in the FORCEMATCH
+block):
 \begin{itemize}
 \item \textbf{FMATCH.top} \\
       Updated topology file at the end of the job.
 \item \textbf{FM\_REF\_CHJ} \\
-      Hirschfeld charges on the QM atoms from the reference force calculations. Format: Two lines per frame. First line contains frame index from the original reference trajectory file. Second line gives the Hirschfeld charges on the QM atoms in cpmd ordering.
-\item \textbf{FM\_REF\_PIP} \\
+      Hirshfeld charges on the QM atoms from the reference force calculations. Format: Two lines
+per frame. First line contains frame index from the original reference trajectory file. Second line
+gives the Hirshfeld charges on the QM atoms in cpmd ordering.  \item \textbf{FM\_REF\_PIP} \\
       Electrostatic potential and field on the NN atoms from the reference force calculations.
 \item \textbf{FM\_REF\_FORCES} \\            
-      For each frame extracted from the reference TRAJECTORY file and for which QM/MM forces were calculated, the QM/MM forces on the QM atoms are dumped into this file. One line per frame with the original frame index and the number of QM atoms. Then for each QM atom in cpmd ordering:\\
-atom index,x,y,z,fx,fy,fz            
+      For each frame extracted from the reference TRAJECTORY file and for which QM/MM forces were
+calculated, the QM/MM forces on the QM atoms are dumped into this file. One line per frame with the
+original frame index and the number of QM atoms. Then for each QM atom in cpmd ordering:\\ atom
+index,x,y,z,fx,fy,fz            
 \end{itemize}
-All force matching related information written to standard output are labeled with '  fm '. After the initialization the reference trajectory file is parsed and the line 'fm extracting total number of frames for SPs' is printed. For each frame you should find the following lines: 'frame number', 'computing reference forces' and 'Total nr. of iterations:'. The beginning of the second part of the force matching protocol is marked with the line 'Reading values for charge fitting from file'. At the end the RMS deviation of the charges, electrostatic potential and field are printed. The third part starts with 'Will now loop over reference frames again' to compute the non-bonded interactions. After 'Done with classical loop' the covalent parameters are fitted and you can monitor the change of the absolute and relative RMS deviation from the reference covalent forces during the optimization. 'Optimization successful' indicates the end of the fitting of the covalent parameters, FMATCH.top is written and, finally, the total (non-bonded plus covalent) forces are calculated with the updated topology to get the RMS deviation of the total force. The force matching related output ends with a block containing 'computing RMS per atom'.
+All force matching related information written to standard output are labeled with '  fm '. After
+the initialization the reference trajectory file is parsed and the line 'fm extracting total number
+of frames for SPs' is printed. For each frame you should find the following lines: 'frame number',
+'computing reference forces' and 'Total nr. of iterations:'. The beginning of the second part of the
+force matching protocol is marked with the line 'Reading values for charge fitting from file'. At
+the end the RMS deviation of the charges, electrostatic potential and field are printed. The third
+part starts with 'Will now loop over reference frames again' to compute the non-bonded interactions.
+After 'Done with classical loop' the covalent parameters are fitted and you can monitor the change
+of the absolute and relative RMS deviation from the reference covalent forces during the
+optimization. 'Optimization successful' indicates the end of the fitting of the covalent parameters,
+FMATCH.top is written and, finally, the total (non-bonded plus covalent) forces are calculated with
+the updated topology to get the RMS deviation of the total force. The force matching related output
+ends with a block containing 'computing RMS per atom'.
 %_FM]
 
 %
@@ -9383,6 +10081,27 @@ gromacs distribution from. \\
 % FIXME:
 %\subsubsection{Alternative QM/MM interfaces}
 %Ego interface, use ego interface for PES scanning driver.
+%%% QM/(P)MM Interface
+\subsection{QM/(P)MM Interface to IPHIGENIE}
+The interface of CPMD to the PMM-MD program IPHIGENIE\cite{Schwoerer2013,Schwoerer2015} (\url{https://sourceforge.net/projects/iphigenie})
+supersedes the 
+CPMD interface of Eichinger et al.\ \cite{egoqmmm} to the MD program EGO.\cite{ego1}
+It provides a Hamiltonian coupling to polarizable MM force fields (PMM).
+Here, similar to the Eichinger implementation and the derived CPMD/Gromacs coupling\cite{gmxqmmm},
+CPMD is used only to compute energies and forces 
+but the propagation of the equations of motion is done
+externally by IPHIGENIE. 
+
+The implementation is based on a single executable, which links
+CPMD and the interface routines as libraries to the IPHIGENIE MD executable 'iffi'.
+For CPMD-3.17 a patch is provided on \url{www.cpmd.org} with example configurations 
+for the compilation. For CPMD-4.0 and later the interface to IPHIGENIE is provided as a module.
+Here, using the configure.sh script with the option {\tt -iphigenie}  generates
+a makefile which builds the interface library along with a regular cpmd.x executable.
+
+For further instructions on compiling and example inputs for QM/PMM runs please consult
+the main iphigenie page \url{https://sourceforge.net/projects/iphigenie} and the
+associated Wiki pages.
 
 \subsection{CPMD on parallel computers}
 
@@ -9424,7 +10143,7 @@ The actual strategy has to be chosen at compile time.
          {\tt REAL SPACE MESH:} in the output. As the mesh sizes
          only vary between 20 (very small systems, low cutoffs) and
          300 (large systems, high cutoff) we have a rather coarse grain
-         parallelisation. To avoid load inbalance the number of processors
+         parallelization. To avoid load unbalance the number of processors
          should be a divisor of the mesh size. It is therefore clear that even
          for large systems no speedup can be achieved beyond 300 processors.
          A solution to this problem is provided with the keyword
@@ -9441,7 +10160,7 @@ The actual strategy has to be chosen at compile time.
          in cases where the number of  \refkeyword{STATES} is smaller than the total number of
                    the available processors, one must choose a value for {\bf NSTBLK} such
          that only a subgroup of the processors participate in the distributed
-         linear algbera calculations. The same argument is also relevant when
+         linear algebra calculations. The same argument is also relevant when
          the number of  \refkeyword{STATES} is only moderately larger than the number of processors.
 
    \item Mixed shared/distributed memory parallelization\\[8pt]
@@ -9449,7 +10168,7 @@ The actual strategy has to be chosen at compile time.
          in such a way that they don't interfere. Therefore it is easy
          to combine them if this is supported by hardware (shared/distributed
          memory architecture) and software (libraries). Since the MPI
-         parallization is very efficient for a small to medium number of
+         parallelization is very efficient for a small to medium number of
          nodes and all modern MPI libraries are able to take advantage
          from shared memory communication, using the mixed
          shared/distributed memory parallelization is of most use if
@@ -9462,6 +10181,77 @@ The actual strategy has to be chosen at compile time.
 As with all general statements, these are only guidelines. The only
 way to get reliable information is to run benchmarks with the system
 you want to calculate.
+
+
+\subsection{Using the new xc driver and assembling functionals}
+The new \refspekeyword{XC\_DRIVER}{XC DRIVER} offers more flexibility compared to \textbf{OLDCODE} and
+\textbf{NEWCODE}. The minimal setup for the use of, \emph{e.g.{}}, the BLYP xc functional:
+\begin{verbatim}
+&DFT
+ XC_DRIVER
+ FUNCTIONAL GGA_XC_BLYP
+&END
+\end{verbatim}
+is equivalent to specifying
+\begin{verbatim}
+&DFT
+ XC_DRIVER
+ FUNCTIONAL GGA_X_BLYP GGA_C_LYP
+&END
+\end{verbatim}
+or, in a more verbose way,
+\begin{verbatim}
+&DFT
+ XC_DRIVER
+ FUNCTIONAL GGA_X_BLYP GGA_C_LYP
+ SCALES     1.0        1.0
+ LIBRARY    CP         CP
+&END
+\end{verbatim}
+
+If not explicitly stated, the xc driver will always use the internal CP functional library. The use of 
+libxc functionals can be requested by using the keyword \refkeyword{LIBRARY}, and both libxc and internal
+CP functionals may be used simultaneously. The following example combines a particular parametrisation of VWN
+available in libxc with Slater exchange computed within the internal CP library.
+\begin{verbatim}
+&DFT
+ XC_DRIVER
+ FUNCTIONAL LDA_X LDA_C_VWN_3
+ LIBRARY    CP    LIBXC
+&END
+\end{verbatim}
+If not specified, all functionals will contribute equally to the total xc energy and the potential. A scaling factor
+for every functional can be introduced by using \refkeyword{SCALES}. A manual setup equivalent to
+HYB\_GGA\_XC\_CAM\_B3LYP, but using different attenuation parameters $\alpha=0.19, \beta=0.66, \mu=0.330$ would read:
+\begin{verbatim}
+&DFT
+ XC_DRIVER
+ FUNCTIONAL GGA_X_B88 GGA_C_LYP LDA_C_VWN
+ SCALES     1.00      0.81      0.19
+ COULOMB ATTENUATION
+ 0.190  0.660  0.330
+&END
+\end{verbatim}
+
+It is also possible to use a linear response kernel different from the one used to generate the ground-state orbitals.
+In this case, duplicates of the aforementionned exist with the prefix \textbf{KERNEL\_}.
+Note that is currently not possible to combine different forms of the Coulomb operator between the kernel and the ground-state
+functional (\emph{i.e.{}} it is not possible to use the combination of B3LYP and CAM-B3LYP; however, combinations between GGA and any
+(screened) hybrid are possible).
+\begin{verbatim}
+&DFT
+ XC_DRIVER
+ FUNCTIONAL       GGA_X_B88 GGA_C_LYP LDA_C_VWN_3
+ LIBRARY          CP        CP        LIBXC 
+ SCALES           0.80      0.81      0.19
+ HFX_SCALE        0.20
+ LR_KERNEL        GGA_X_B88 GGA_C_LYP LDA_C_VWN
+ KERNEL_LIBRARY   CP        CP        CP
+ KERNEL_SCALES    0.75      0.81      0.19
+ KERNEL_HFX_SCALE 0.25
+&END
+\end{verbatim}
+
 
 \clearpage
 %---------------------------------------------------------------------
@@ -9490,11 +10280,13 @@ input and the output of the run, so that others can try to reproduce
 the error. Again, please state the version of CPMD you are using and
 the platform you are running on.
 
-A good general guide on how to report bugs can be found at:\\
-\htref{http://freshmeat.net/articles/view/149/}{http://freshmeat.net/articles/view/149/},\\
-the corresponding guide for people responding can be found at:\\
-\htref{http://freshmeat.net/articles/view/1082/}{http://freshmeat.net/articles/view/1082/}.\\
-Another useful article about how to ask questions the smart way is at:\\
+% MPB: Links broken...
+% A good general guide on how to report bugs can be found at:\\
+% \htref{http://freshmeat.net/articles/view/149/}{http://freshmeat.net/articles/view/149/},\\
+% the corresponding guide for people responding can be found at:\\
+% \htref{http://freshmeat.net/articles/view/1082/}{http://freshmeat.net/articles/view/1082/}.\\
+% Another useful article about how to ask questions the smart way is at:\\
+A useful article about how to ask questions the smart way is at:\\
 \htref{http://www.catb.org/~esr/faqs/smart-questions.html}{http://www.catb.org/\~{}esr/faqs/smart-questions.html}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -9502,9 +10294,15 @@ Another useful article about how to ask questions the smart way is at:\\
 \subsection{Explanation of Warnings and Error Messages}
 \label{sec:expl-warn-error}
 
+If execution of CPMD aborts with an error message, please do not only
+consult the standard output, but also the \textbf{LocalError} files which
+are produced in the run directory. They may contain more valuable information
+of the problem at hand.\\~\\
+
 \iffaqsum
 FAQ on warnings and errors:
 \begin{itemize}
+\item{\reffaqquestion{crash}{The code crashes without leaving any error message.}}
 \item{\reffaqquestion{wannier}{WANNIER CODE WARNING: GRADIENT FOR RESTA
 FUNCTIONAL}\\(during CP molecular dynamics)}
 \item{\reffaqquestion{xcpp}{WARNING! XC FUNCTIONALS INCONSISTENT}}
@@ -9513,13 +10311,32 @@ optimization)}
 \item{\reffaqquestion{spline}{Warning! Spline region smaller than maximum
 G-value}\\(during geometry optimization with variable cell)}
 \item{\reffaqquestion{gorder}{GORDER| PROGRAMING ERROR. INFORM THE
-PROGRAMER} (during startup of WAVEFUNCTION or GEOMETRY optimization)}
+PROGRAMER}\\(during startup of WAVEFUNCTION or GEOMETRY optimization)}
 \end{itemize}
 \fi
 
 %%%%%%%%%%
+%! Martin
+\faqquestion{crash}
+My CPMD run suddenly aborted without any error message. What happened?
+
+\faqanswer
+CPMD will only print error messages to the output file in some very
+specific cases. Usually, if an error is encountered, every task
+writes to a file called \emph{LocalError-X-X-X.log} (where $x$ denotes
+a task ID), where you will find an \emph{error message}, the 
+\emph{procedure} and \emph{file name} where the error occured, as well as a 
+\emph{call stack} (although the latter may sometimes be incomplete). 
+In case the error message is empty, you may have to consult the source
+code directly.
+
+If no \emph{LocalError} files are produced, the processes may have
+exited due to an insufficient amount of RAM available for a single task.
+
+%! End
+
 \faqquestion{wannier}
-Could anybody tell me the follwing error in the cpmd output
+Could anybody explain to me the follwing error in the cpmd output
 during CP Molecular Dynamics runs with the flag
 \refkeyword{WANNIER WFNOUT} LIST DENSITY?
 
@@ -9540,9 +10357,9 @@ and you get the warning.  This is not serious and you can ignore it.
 \faqquestion{xcpp}
 A warning message appeared in the output file:
 \begin{verbatim}
- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- ?WARNING! XC FUNCTIONALS INCONSISTENT FOR h.pp
- ?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ !WARNING! XC FUNCTIONALS INCONSISTENT FOR h.pp
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 \end{verbatim}
 
 Does it mean that my pseudopotential file is wrong? I used fhi98PP
@@ -9551,51 +10368,57 @@ more should I do to the output file of fhi98PP?
 
 \faqanswer
 It means that the XC functional used to generate the pseudo potential
-and the functional which you want to use in CPMD are not the same; it
-could be more or less serious: Some of the XC functionals in CPMD are
-just minor variations of each others, e.g. the LDA part is evaluated
-using Perdew-Wang'92, Perdew-Zunger'7? or the Pade-interpolation
-formula. If this is the case, the resulting error is usually small,
-however if your pseudos were generated e.g. with PBE and you try to
-use BLYP, the error might become serious. I suggest you to see what
-are the two functionals (pp \& CPMD-input), and look if the difference
-is significant or not.
-% apsi
+and the functional which you want to use in CPMD are not the same. This
+could be more or less serious depending on the specific situation:
+Some of the XC functionals in CPMD are
+just minor variations of each other, e.g. the LDA part may evaluated
+using Perdew-Wang, Perdew-Zunger, VWN or the Pade-interpolation
+formula. If this is the case, the resulting error is usually small.
+However, if your pseudo potential was generated \emph{e.g.{}} with PBE
+and you try to use it with the BLYP functional, the error might become
+non-negligible. You may compare the two functionals (pp \& CPMD-input),
+and judge for yourself if the difference is significant or not. \\
+For \textbf{hybrid} and \textbf{meta} functionals, there are usually
+no pseudo potentials available. In these cases, it is common practice to use
+the pseudo potentials of related GGA xc functionals (\emph{e.g.{}} PBE for TPSS,
+BLYP for CAM-B3LYP, etc.{}), or, if there is no `close relative', LDA
+(this is possible \emph{e.g.{}} in combination with the Minnesota xc functionals).
+% apsi / MPB
 %%%%%%%%%%
-
-\faqquestion{lsdgeoopt}
-When I am running a GEOMETRY OPTIMIZATION using the keywords LSD and
-MULTIPLICITY, I get the following output:
-\begin{verbatim}
- ================================================================
- =                  GEOMETRY OPTIMIZATION                       =
- ================================================================
- NFI      GEMAX       CNORM           ETOT        DETOT      TCPU
- EWALD SUM IN REAL SPACE OVER  1* 1* 1 CELLS
- STOPGM! STACK OF MAIN CALLS:
- STOPGM! CALL    FORCEDR
- STOPGM! CALL     FORCES
- STOPGM! CALL    VOFRHOB
- STOPGM! CALL      GCLSD
-
- PROGRAM STOPS IN SUBROUTINE LSD_GGAX| NOT PROGRAMMED
-\end{verbatim}
-I would like to know how to solve this problem?
-
-\faqanswer
-This simply means that the LSD version of this specific
-functional has not been implemented (yet). Feel free to
-implement it yourself and submit a patch.
-
-Possible solutions are:\\
-\begin{enumerate}
-\item you implement it into CPMD (see file lsd\_func.F)\\
-\item you switch to the PBE functional, which is
-   the modern variant of this functional and is
-   implemented both for spin-restricted and unrestricted cases.
-\end{enumerate}
-%jgh
-%%%%%%%%%%
+% MPB: Outdated (new stopping, new functionals, new everything) 
+%   \faqquestion{lsdgeoopt}
+%   When I am running a GEOMETRY OPTIMIZATION using the keywords LSD and
+%   MULTIPLICITY, I get the following output:
+%   \begin{verbatim}
+%    ================================================================
+%    =                  GEOMETRY OPTIMIZATION                       =
+%    ================================================================
+%    NFI      GEMAX       CNORM           ETOT        DETOT      TCPU
+%    EWALD SUM IN REAL SPACE OVER  1* 1* 1 CELLS
+%    STOPGM! STACK OF MAIN CALLS:
+%    STOPGM! CALL    FORCEDR
+%    STOPGM! CALL     FORCES
+%    STOPGM! CALL    VOFRHOB
+%    STOPGM! CALL      GCLSD
+%   
+%    PROGRAM STOPS IN SUBROUTINE LSD_GGAX| NOT PROGRAMMED
+%   \end{verbatim}
+%   I would like to know how to solve this problem?
+%   
+%   \faqanswer
+%   This simply means that the LSD version of this specific
+%   functional has not been implemented (yet). Feel free to
+%   implement it yourself and submit a patch.
+%   
+%   Possible solutions are:\\
+%   \begin{enumerate}
+%   \item you implement it into CPMD (see file lsd\_func.F)\\
+%   \item you switch to the PBE functional, which is
+%      the modern variant of this functional and is
+%      implemented both for spin-restricted and unrestricted cases.
+%   \end{enumerate}
+%   %jgh
+%   %%%%%%%%%%
                 
 \faqquestion{spline}
 I am trying to optimize a crystal structure (both ion positions and
@@ -9677,8 +10500,6 @@ following error either when I restarted (only wavefunctions) or if I
 started from scratch.
 \begin{verbatim}
  GORDER| PROGRAMING ERROR. INFORM THE PROGRAMER
-
-PROGRAM STOPS IN SUBROUTINE GORDER| ERROR IN G-VEC ORDERING (NHG) [PROC= 0]
 \end{verbatim}
 Is there something wrong with the code?
 
@@ -9705,7 +10526,7 @@ results should not be affected (except for MD if
 you do restarts).
 
 To avoid the stop, comment out the two lines
-at the end of file lodapa.F of the form
+at the end of file loadpa\_utils.mod.F90 of the form
 \begin{verbatim}
         CALL STOPGM('GORDER','ERROR IN G-VEC ORDERING (NHG)')
 \end{verbatim}
@@ -9868,9 +10689,10 @@ with the \refkeyword{PRINT ENERGY} keyword.
 %%%%%%%%%%
 
 \faqquestion{gnmax}
-What do GNMAX, GNORM and CNSTR in a geometry optimization mean?
+What do GNMAX, GNORM and CNSTR mean in a geometry optimization?
 
 \faqanswer
+These are abbreviations for the following quantities:
 \begin{description}
 \item[GNMAX] max${}_{I,a}$ ($|F_{Ia}| $) = largest absolute
   component ($a=x,y,z$) of the force on any atom $I$.
@@ -10033,8 +10855,8 @@ machines of different architecture, for example COMPAQ, IBM, and
 LINUX machine. Please help me with any comments.
 
 \faqanswer
-The code to read and write the RESTART file is in the files rv30.F
-and wv30.F. Feel free to implement an ASCII version of the restart,
+The code to read and write the RESTART file is in the files rv30\_utils.mod.F90
+and wv30\_utils.mod.F90. Feel free to implement an ASCII version of the restart,
 but be aware that the file will be \textbf{huge}.
 
 But you may not need to do that. Let's say you decide to use big-endian
@@ -10264,10 +11086,16 @@ section is used in CPMD for two purposes:
 How do I add support for a new functional?
 
 \faqanswer
-Have a look at the file dftin.F, where you can see
-how CPMD reads the \&DFT section and then follow the flow
-of the defined variables through the files, e.g. functionals.F,
-gcener.F, lsd\_func.F, and so on.
+The exchange-correlation functionals and scratch variables
+are set and handled in the module
+cp\_xc\_utils.mod.F90. The individual functionals are grouped in modules
+(cp\_gga\_exchange\_utils.mod.F90 etc.{}) which are in turn used in
+cp\_xc\_utils.mod.F90. If you wish to implement higher-order analytical derivatives
+for LR-TDDFT, cp\_dxc\_utils.mod.F90, and the cp\_dgga\dots routines may be of interest. \\
+The inclusion of hybrids will require additional modifications to dftin\_utils.mod.F90 and
+cpfunc\_func\_init (in cp\_xc\_utils.mod.F90). The variables for
+range separation are currently still found in func.mod.F90 and the range separated exact exchange
+is handled in initclust\_utils.mod.F90.
 %
 % AK
 %%%%%%%%%%
@@ -10504,6 +11332,13 @@ Phys.~Rev.~B  {\bf 73}, 094204,(2006).
     {\em Practical Methods of Optimizations}, vol. 1, 
     Wiley,: New York, 1980.
 
+\bibitem{Frenzel2017}
+    J.~Frenzel, B.~Meyer, D.~Marx, 
+    \em{Bicanonical Ab Initio Molecular Dynamics for Open Systems}
+    J. Chem. Theory Comput., Just Accepted Manuscript 
+    (2017), 
+    DOI: 10.1021/acs.jctc.7b00263 .
+
 \bibitem{Johnson88}
     D.~D. Johnson, Phys.~Rev.~B {\bf 38}, 12807 (1988).
 
@@ -10721,6 +11556,10 @@ Phys.~Rev.~B  {\bf 73}, 094204,(2006).
     J.~Hutter, M.~Parrinello, and S.~Vogel,
     J.~Chem.~Phys. {\bf 101}, 3862 (1994).
 
+\bibitem{ABDY}
+    I. Tavernelli,
+    Phys. Rev. A {\bf 87}, 042501 (2013).
+
 \bibitem{HutterIP}
     J.~Hutter, M.~E. Tuckerman, and M.~Parrinello.
     J.~Chem.~Phys. {\bf 102}, 859 (1995).
@@ -10791,6 +11630,9 @@ Phys.~Rev.~B  {\bf 73}, 094204,(2006).
     K.~Laasonen, M.~Sprik, M.~Parrinello and R.~Car,
     J.~Chem.~Phys. {\bf 99}, 9081 (1993).
 
+\bibitem{SOC} F. Franco de Carvalho, B.F.E. Curchod, T. Penfold, I. Tavernelli,
+     J. Chem. Phys.  {\bf 140}, 144103 (2014).
+
 \bibitem{SSIC} J. VandeVondele and M. Sprik,
      Phys.~Chem.~Chem.~Phys. {\bf 7}, 1363 (2005).
 
@@ -10809,6 +11651,10 @@ Phys.~Rev.~B  {\bf 73}, 094204,(2006).
 \bibitem{knoll-marx-00} 
     L. Knoll and D. Marx,
     Eur.~Phys.~J.~D {\bf 10}, 353 (2000).
+
+\bibitem{Liberatore2018} 
+   E.~Liberatore, R.~Meli, and U.~Rothlisberger,
+   J.~Chem.~Theory~Comput., {\bf 14}, 2834 (2018).
 
 \bibitem{mooij:99}
     W.~T.~M. Mooij, F.~B. van Duijneveldt,J.~G.~C.~M. van Duijneveldt-van de Rijdt,
@@ -10979,6 +11825,14 @@ Phys.~Rev.~B  {\bf 73}, 094204,(2006).
 
 \bibitem{heat2}
     G.~Wu and B.~Li, Phys.~Rev.~B {\bf 76}, 085424 (2007).
+
+\bibitem{Schwoerer2013}
+M.~Schw\"{o}rer, B.~Breitenfeld, P.~Tr\"{o}ster, S.~Bauer, K.~Lorenzen, P.~Tavan, and G.~Mathias,
+ J.\ Chem.\ Phys., {\bf 138},  244103  (2013).
+
+\bibitem{Schwoerer2015}
+M.~Schw\"{o}rer, K.~Lorenzen, G.~Mathias, and P.~Tavan,
+ J.\ Chem.\ Phys., {\bf 142}   (2015).
 
 %-> References correctly reordered until this point.
 

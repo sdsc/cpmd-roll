@@ -1,6 +1,6 @@
 NAME       = sdsc-cpmd-roll-test
 VERSION    = 1
-RELEASE    = 3
+RELEASE    = 4
 PKGROOT    = /root/rolltests
 
 CUDAVER=

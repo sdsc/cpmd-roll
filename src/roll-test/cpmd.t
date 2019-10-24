@@ -82,12 +82,12 @@ open(OUT, ">$TESTFILE.sh");
 print OUT <<END;
 #!/bin/bash
 CUDAEXT=\$1
-module load cpmd \$2
+module load cpmd \$1
 /bin/cp /opt/cpmd/lib/SI_SGS ./${TESTFILE}SI_SGS
-output=`mpirun -np 2 /opt/cpmd/bin/cpmd\${CUDAEXT}.x $TESTFILE.cpmd 2>&1`
+output=`mpirun -np 2 /opt/cpmd/bin/cpmd\$2.x $TESTFILE.cpmd\$2 2>&1`
 if [[ "\$output" =~ "run-as-root" ]]; then
   # Recent openmpi requires special option for root user
-  output=`mpirun -np 2 --allow-run-as-root /opt/cpmd/bin/cpmd\${CUDAEX}.x $TESTFILE.cpmd 2>&1`
+  output=`mpirun -np 2 --allow-run-as-root /opt/cpmd/bin/cpmd\$2.x $TESTFILE.cpmd\$2 2>&1`
 fi
 echo \$output
 /bin/rm -f GEOMETRY* LATEST RESTART.1
@@ -108,7 +108,7 @@ SKIP: {
   SKIP: {
     skip 'CUDA_VISIBLE_DEVICES undef', 1
       if ! defined($ENV{'CUDA_VISIBLE_DEVICES'});
-    $output = `/bin/bash $TESTFILE.sh _cuda CUDAVER 2>&1`;
+    $output = `/bin/bash $TESTFILE.sh CUDAVER _cuda 2>&1`;
     like($output, qr/TOTAL ENERGY.*-31.21877\d* A.U./, 'cpmd cuda test run');
   }
 
